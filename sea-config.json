@@ -1,0 +1,7 @@
+{
+  "main": "dist/sea-bundle.cjs",
+  "output": "sea-prep.blob",
+  "disableExperimentalSEAWarning": true,
+  "useCodeCache": false,
+  "useSnapshot": false
+}

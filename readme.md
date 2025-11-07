@@ -1,6 +1,6 @@
 # Biblioteka do generowania wizualizacji PDF faktur i UPO
 
-Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta.
+Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta oraz z linii poleceń.
 
 ---
 
@@ -91,6 +91,25 @@ Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy
 ---
 
 Raport: /coverage/index.html
+
+---
+
+### 🆕 Tryb CLI
+
+Biblioteka obsługuje teraz również **tryb linii poleceń (CLI)**, który umożliwia generowanie PDF bez uruchamiania aplikacji webowej.  
+Szczegóły znajdziesz w [CLI-README.md](./cli/CLI-README.md).
+
+**Szybki start CLI:**
+```bash
+# Budowanie CLI
+npm run build:cli
+
+# Generowanie faktury PDF
+node dist/cli/index.js invoice examples/invoice.xml output/faktura.pdf
+
+# Generowanie UPO PDF
+node dist/cli/index.js upo examples/upo.xml output/upo.pdf
+```
 
 ---
 

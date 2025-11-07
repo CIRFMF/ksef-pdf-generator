@@ -4,6 +4,12 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
+    "build:cli": "tsc --project tsconfig.cli.json && node -e \"require('fs').mkdirSync('dist/app/build', {recursive: true})\" && node -e \"require('fs').copyFileSync('src/app/build/ksef-pdf-generator.es.js', 'dist/app/build/ksef-pdf-generator.es.js')\"",
+    "build:sea": "node build-sea.mjs",
+    "build:sea:windows": "pwsh -ExecutionPolicy Bypass -File build-sea-windows.ps1",
+    "cli": "node ./dist/cli/index.js",
+    "cli:invoice": "node ./dist/cli/index.js invoice",
+    "cli:upo": "node ./dist/cli/index.js upo",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -35,13 +41,14 @@
     "@typescript-eslint/parser": "^8.40.0",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
+    "esbuild": "^0.25.12",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.3.0",
+    "happy-dom": "^20.0.10",
     "jiti": "^2.5.1",
-    "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
@@ -50,6 +57,8 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "commander": "^12.1.0",
+    "happy-dom": "^15.11.7",
     "pdfmake": "^0.2.20",
     "xml-js": "^1.6.11"
   }

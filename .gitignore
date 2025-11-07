@@ -13,5 +13,9 @@ out
 *.tsbuildinfo
 
 .idea
+dist/
+output/
+ksef-pdf.exe
+sea-prep.blob
 .vscode
 *.swp
