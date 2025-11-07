@@ -97,7 +97,7 @@ Raport: /coverage/index.html
 ### 🆕 Tryb CLI
 
 Biblioteka obsługuje teraz również **tryb linii poleceń (CLI)**, który umożliwia generowanie PDF bez uruchamiania aplikacji webowej.  
-Szczegóły znajdziesz w [CLI-README.md](./cli/CLI-README.md).
+Szczegóły znajdziesz w [CLI-README.md](./src/cli/CLI-README.md).
 
 **Szybki start CLI:**
 ```bash
