@@ -1,6 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateFA1 } from './FA1-generator';
+import { generateFA1 } from './FA1-generator.js';
 import { Faktura } from './types/fa1.types';
 
 import { AdditionalDataTypes } from './types/common.types';

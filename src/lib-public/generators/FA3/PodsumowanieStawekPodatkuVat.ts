@@ -6,8 +6,8 @@ import {
   getNumberRounded,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Fa, Faktura, FP } from '../../types/fa3.types';
 import { TaxSummaryTypes } from '../../types/tax-summary.types';
 

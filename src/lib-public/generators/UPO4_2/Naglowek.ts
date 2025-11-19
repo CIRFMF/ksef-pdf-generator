@@ -1,7 +1,7 @@
 import { Content } from 'pdfmake/interfaces';
 import { Potwierdzenie } from '../../types/upo-v4_2.types';
-import { createLabelText, generateTwoColumns } from '../../../shared/PDF-functions';
-import { Position } from '../../../shared/enums/common.enum';
+import { createLabelText, generateTwoColumns } from '../../../shared/PDF-functions.js';
+import { Position } from '../../../shared/enums/common.enum.js';
 
 export function generateNaglowekUPO(potwierdzenie: Potwierdzenie): Content[] {
   return [

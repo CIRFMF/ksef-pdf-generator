@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { createHeader, createSubHeader } from '../../../shared/PDF-functions';
-import { generateAdres } from './Adres';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { createHeader, createSubHeader } from '../../../shared/PDF-functions.js';
+import { generateAdres } from './Adres.js';
 import { Adres } from '../../types/fa2.types';
 import { Margins } from 'pdfmake/interfaces';
 

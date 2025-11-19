@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmiotUpowazniony } from './PodmiotUpowazniony';
+import { generatePodmiotUpowazniony } from './PodmiotUpowazniony.js';
 import type { PodmiotUpowazniony } from '../../types/fa2.types';
 
-import { createHeader, createLabelText, hasValue } from '../../../shared/PDF-functions';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
-import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe';
-import { getRolaUpowaznionegoString } from '../../../shared/generators/common/functions';
+import { createHeader, createLabelText, hasValue } from '../../../shared/PDF-functions.js';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto.js';
+import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe.js';
+import { getRolaUpowaznionegoString } from '../../../shared/generators/common/functions.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(() => [{ text: 'Header: Podmiot upoważniony' }]),

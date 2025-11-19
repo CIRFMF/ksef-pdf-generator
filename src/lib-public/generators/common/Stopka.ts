@@ -11,13 +11,13 @@ import {
   getContentTable,
   getTable,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 import { FP, Naglowek, Stopka } from '../../types/fa2.types';
 import { Zalacznik } from '../../types/fa3.types';
-import { generateZalaczniki } from './Zalaczniki';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateZalaczniki } from './Zalaczniki.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Informacje, Rejestry } from '../../types/fa1.types';
 import { AdditionalDataTypes } from '../../types/common.types';
 

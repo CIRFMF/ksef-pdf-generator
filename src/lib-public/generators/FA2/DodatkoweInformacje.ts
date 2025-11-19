@@ -7,10 +7,10 @@ import {
   getContentTable,
   getTable,
   getValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { DodatkowyOpi, Fa } from '../../types/fa2.types';
-import FormatTyp from '../../../shared/enums/common.enum';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 
 export function generateDodatkoweInformacje(faVat: Fa): Content[] {

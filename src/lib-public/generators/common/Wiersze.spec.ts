@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { shouldAddMarza } from './Wiersze';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { shouldAddMarza } from './Wiersze.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 
 const getMockFaVat = (mockedObjects?: Record<string, any>) =>
   ({

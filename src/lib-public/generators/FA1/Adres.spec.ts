@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Adres } from '../../types/fa1.types';
-import { generateAdres } from './Adres';
+import { generateAdres } from './Adres.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createLabelText: vi.fn().mockImplementation((label, value) => [{ text: `LABEL:${label}${value._text}` }]),

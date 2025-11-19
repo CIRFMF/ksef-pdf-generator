@@ -1,6 +1,6 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText, getValue, hasValue } from '../../../shared/PDF-functions';
-import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types';
+import { createLabelText, getValue, hasValue } from '../../../shared/PDF-functions.js';
+import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types.js';
 
 export function generateDaneIdentyfikacyjne(daneIdentyfikacyjne: DaneIdentyfikacyjneTPodmiot2Dto): Content[] {
   const result: Content[] = [];

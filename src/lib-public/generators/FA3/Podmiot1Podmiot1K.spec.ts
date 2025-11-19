@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Content } from 'pdfmake/interfaces';
 import type { Podmiot1, Podmiot1K } from '../../types/fa3.types';
-import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K';
-import { generateAdres } from './Adres';
+import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K.js';
+import { generateAdres } from './Adres.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string): Content[] => [{ text, style: 'header' }]),

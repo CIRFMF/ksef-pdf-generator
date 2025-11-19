@@ -1,9 +1,9 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, generateTwoColumns } from '../../../shared/PDF-functions';
+import { createHeader, generateTwoColumns } from '../../../shared/PDF-functions.js';
 import { Przewoznik } from '../../types/fa3.types';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
-import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto.js';
+import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types.js';
 
 export function generatePrzewoznik(przewoznik: Przewoznik | undefined): Content {
   if (!przewoznik) {

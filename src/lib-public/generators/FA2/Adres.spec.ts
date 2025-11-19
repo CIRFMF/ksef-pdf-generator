@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, test } from 'vitest';
-import { generateAdres } from './Adres';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateAdres } from './Adres.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, style: string) => ({ text, style })),
@@ -8,7 +8,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   createLabelText: vi.fn((label: string, value: any) => [{ text: `${label}${value ?? ''}` }]),
 }));
 
-import { formatText, createLabelText } from '../../../shared/PDF-functions';
+import { formatText, createLabelText } from '../../../shared/PDF-functions.js';
 
 describe(generateAdres.name, () => {
   beforeEach(() => {

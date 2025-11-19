@@ -7,13 +7,13 @@ import {
   getContentTable,
   getTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { FP, Platnosc, PlatnosciCzesciowe, TerminyPlatnosci } from '../../types/fa1.types';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
-import { generujRachunekBankowy } from './RachunekBankowy';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TableWithFields, TerminPlatnosciContent } from '../../types/fa1-additional-types';
+import { getFormaPlatnosciString } from '../../../shared/generators/common/functions.js';
+import { generujRachunekBankowy } from './RachunekBankowy.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TableWithFields, TerminPlatnosciContent } from '../../types/fa1-additional-types.js';
 
 export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (!platnosc) {

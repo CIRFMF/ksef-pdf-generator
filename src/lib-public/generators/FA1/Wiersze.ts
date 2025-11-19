@@ -7,13 +7,13 @@ import {
   getContentTable,
   getTable,
   getValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { Procedura, TRodzajFaktury } from '../../../shared/consts/const';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
+import { Procedura, TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa, FP } from '../../types/fa1.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
-import { shouldAddMarza } from '../common/Wiersze';
+import { shouldAddMarza } from '../common/Wiersze.js';
 
 export function generateWiersze(faVat: Fa): Content {
   const table: Content[] = [];

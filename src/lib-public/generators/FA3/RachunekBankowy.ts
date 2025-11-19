@@ -1,8 +1,8 @@
 import { Content, ContentTable } from 'pdfmake/interfaces';
-import { createHeader, createSection, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { createHeader, createSection, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { RachunekBankowy } from '../../types/fa3.types';
-import { getTypRachunkowWlasnych } from '../../../shared/generators/common/functions';
+import { getTypRachunkowWlasnych } from '../../../shared/generators/common/functions.js';
 
 export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: string): Content[] => {
   const result: Content[] = [];

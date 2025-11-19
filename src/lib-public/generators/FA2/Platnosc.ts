@@ -7,12 +7,12 @@ import {
   getContentTable,
   getTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { Platnosc, TerminPlatnosci, ZaplataCzesciowa } from '../../types/fa2.types';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
-import { generujRachunekBankowy } from './RachunekBankowy';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { getFormaPlatnosciString } from '../../../shared/generators/common/functions.js';
+import { generujRachunekBankowy } from './RachunekBankowy.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { FP } from '../../types/fa1.types';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 

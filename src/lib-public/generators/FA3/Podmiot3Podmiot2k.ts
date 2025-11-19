@@ -5,13 +5,13 @@ import {
   generateTwoColumns,
   getTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { Podmiot3Podmiot2KDto } from '../../types/fa2-additional-types';
-import { getRolaString } from '../../../shared/generators/common/functions';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { Podmiot3Podmiot2KDto } from '../../types/fa2-additional-types.js';
+import { getRolaString } from '../../../shared/generators/common/functions.js';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 import { Podmiot1DaneKontaktowe, Podmiot3 } from '../../types/fa3.types';
 import { Podmiot2K } from '../../types/fa2.types';
 import { Adres } from '../../types/fa1.types';

@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText } from '../../../shared/PDF-functions';
+import { createLabelText } from '../../../shared/PDF-functions.js';
 import { Adres, FP } from '../../types/fa1.types';
 
 export function generateAdres(adres: Adres): Content[] {

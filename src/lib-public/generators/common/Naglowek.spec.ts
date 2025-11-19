@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa3 } from '../../types/fa3.types';
-import { generateNaglowek } from './Naglowek';
+import { generateNaglowek } from './Naglowek.js';
 
 describe('generateNaglowek', () => {
   it('generates header for collective correction invoice', () => {

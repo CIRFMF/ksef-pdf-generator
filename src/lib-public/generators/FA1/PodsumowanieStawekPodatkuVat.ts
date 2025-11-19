@@ -6,11 +6,11 @@ import {
   getNumberRounded,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Fa, Faktura, FP } from '../../types/fa1.types';
 import { TaxSummaryTypes } from '../../types/tax-summary.types';
-import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/const';
+import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/const.js';
 
 export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[] {
   const AnyP13P14_5Diff0: boolean =

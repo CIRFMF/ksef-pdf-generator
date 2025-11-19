@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateTransport } from './Transport';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateTransport } from './Transport.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Transport } from '../../types/fa2.types';
-import { Kraj } from '../../../shared/consts/const';
-import * as PrzewoznikModule from './Przewoznik';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
+import { Kraj } from '../../../shared/consts/const.js';
+import * as PrzewoznikModule from './Przewoznik.js';
+import * as CommonFunctions from '../../../shared/generators/common/functions.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

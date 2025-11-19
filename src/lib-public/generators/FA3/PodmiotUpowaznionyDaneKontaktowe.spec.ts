@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe';
+import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe.js';
 import type { PodmiotUpowaznionyDaneKontaktowe } from '../../types/fa3.types';
-import FormatTyp from '../../../shared/enums/common.enum';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import {
   createLabelText,
   formatText,
   getTable,
   hasValue,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, type: FormatTyp) => ({ text, type })),

@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmiot3 } from './Podmiot3';
+import { generatePodmiot3 } from './Podmiot3.js';
 import type { Podmiot3 } from '../../types/fa3.types';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import * as AdresModule from './Adres';
-import * as DaneIdModule from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto';
-import * as DaneKontaktoweModule from './PodmiotDaneKontaktowe';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import * as AdresModule from './Adres.js';
+import * as DaneIdModule from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto.js';
+import * as DaneKontaktoweModule from './PodmiotDaneKontaktowe.js';
+import * as CommonFunctions from '../../../shared/generators/common/functions.js';
 
 vi.mock('../../../shared/PDF-functions');
 vi.mock('./Adres');

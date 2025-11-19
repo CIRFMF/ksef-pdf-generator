@@ -1,5 +1,5 @@
 import { Content, ContentTable, ContentText, TableCell } from 'pdfmake/interfaces';
-import { DEFAULT_TABLE_LAYOUT, TableDataType } from '../../../shared/consts/const';
+import { DEFAULT_TABLE_LAYOUT, TableDataType } from '../../../shared/consts/const.js';
 import {
   createHeader,
   createLabelText,
@@ -9,10 +9,10 @@ import {
   getContentTable,
   getTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { BlokDanych, FP, Kol, MetaDane, Tabela, TMetaDane, Wiersz, Zalacznik } from '../../types/fa3.types';
-import FormatTyp from '../../../shared/enums/common.enum';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 
 export function generateZalaczniki(zalacznik?: Zalacznik): Content[] {

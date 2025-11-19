@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateTransport } from './Transport';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import * as PrzewoznikModule from './Przewoznik';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
+import { generateTransport } from './Transport.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import * as PrzewoznikModule from './Przewoznik.js';
+import * as CommonFunctions from '../../../shared/generators/common/functions.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

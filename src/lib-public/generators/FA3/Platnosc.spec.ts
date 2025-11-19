@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
-import { generatePlatnosc } from './Platnosc';
+import { generatePlatnosc } from './Platnosc.js';
 import type { Platnosc, RachunekBankowy, Skonto } from '../../types/fa3.types';
 import type { Content } from 'pdfmake/interfaces';
 import {
@@ -9,9 +9,9 @@ import {
   generateTwoColumns,
   getContentTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
-import { generujRachunekBankowy } from './RachunekBankowy';
+} from '../../../shared/PDF-functions.js';
+import { getFormaPlatnosciString } from '../../../shared/generators/common/functions.js';
+import { generujRachunekBankowy } from './RachunekBankowy.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string): Content[] => [{ text, style: 'header' }]),

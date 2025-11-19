@@ -11,14 +11,14 @@ import {
   getValue,
   hasColumnsValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa, ZaliczkaCzesciowa } from '../../types/fa2.types';
 import { DifferentValues, ObjectKeysOfFP, TypesOfValues } from '../../../shared/types/universal.types';
 import { FP } from '../../types/fa1.types';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TableWithFields } from '../../types/fa1-additional-types';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TableWithFields } from '../../types/fa1-additional-types.js';
 import { FA2FakturaZaliczkowaData } from '../../types/common.types';
 
 export function generateSzczegoly(faVat: Fa): Content[] {

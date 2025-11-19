@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePlatnosc } from './Platnosc';
+import { generatePlatnosc } from './Platnosc.js';
 import { Platnosc } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

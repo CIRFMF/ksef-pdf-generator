@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generatePodsumowanieStawekPodatkuVat, getSummaryTaxRate } from './PodsumowanieStawekPodatkuVat';
+import { generatePodsumowanieStawekPodatkuVat, getSummaryTaxRate } from './PodsumowanieStawekPodatkuVat.js';
 import {
   createHeader,
   createSection,
@@ -7,8 +7,8 @@ import {
   getNumberRounded,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => [{ text }]),

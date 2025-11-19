@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmioty } from './Podmioty';
+import { generatePodmioty } from './Podmioty.js';
 import { Faktura } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

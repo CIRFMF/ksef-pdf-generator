@@ -1,7 +1,7 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText, createLabelTextArray, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types';
+import { createLabelText, createLabelTextArray, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types.js';
 
 export function generateDaneIdentyfikacyjneTPodmiot2Dto(
   daneIdentyfikacyjne: DaneIdentyfikacyjneTPodmiot2Dto

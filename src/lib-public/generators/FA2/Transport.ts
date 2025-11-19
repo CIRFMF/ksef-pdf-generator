@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { Kraj } from '../../../shared/consts/const';
+import { Kraj } from '../../../shared/consts/const.js';
 import {
   createHeader,
   createLabelText,
@@ -9,15 +9,15 @@ import {
   generateTwoColumns,
   getTable,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Adres, Transport } from '../../types/fa2.types';
 import {
   getDateTimeWithoutSeconds,
   getOpisTransportuString,
   getRodzajTransportuString,
-} from '../../../shared/generators/common/functions';
-import { generatePrzewoznik } from './Przewoznik';
+} from '../../../shared/generators/common/functions.js';
+import { generatePrzewoznik } from './Przewoznik.js';
 
 export function generateTransport(transport: Transport, index?: number | null): Content {
   const table: Content[] = [];

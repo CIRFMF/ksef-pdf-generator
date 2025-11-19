@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generatePrzewoznik } from './Przewoznik';
-import * as PDFFunctions from '../../../shared/PDF-functions';
+import { generatePrzewoznik } from './Przewoznik.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
 import { Przewoznik } from '../../types/fa2.types';
-import * as PodmiotAdresModule from './PodmiotAdres';
-import * as PodmiotDaneIdentyfikacyjneModule from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
+import * as PodmiotAdresModule from './PodmiotAdres.js';
+import * as PodmiotDaneIdentyfikacyjneModule from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

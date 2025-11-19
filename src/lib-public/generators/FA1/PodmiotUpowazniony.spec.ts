@@ -24,7 +24,7 @@ vi.mock('./PodmiotDaneKontaktowe', () => ({
 }));
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmiotUpowazniony } from './PodmiotUpowazniony';
+import { generatePodmiotUpowazniony } from './PodmiotUpowazniony.js';
 import { PodmiotUpowazniony } from '../../types/fa1.types';
 
 describe(generatePodmiotUpowazniony.name, () => {

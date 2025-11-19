@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chunkArray } from './Zalaczniki';
+import { chunkArray } from './Zalaczniki.js';
 
 describe('chunkArray', () => {
   it('should return empty array if input is not array', () => {

@@ -5,13 +5,13 @@ import {
   formatText,
   generateLine,
   generateTwoColumns,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot3 } from '../../types/fa3.types';
-import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
-import { getRolaString } from '../../../shared/generators/common/functions';
-import { generateAdres } from '../FA2/Adres';
+import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
+import { getRolaString } from '../../../shared/generators/common/functions.js';
+import { generateAdres } from '../FA2/Adres.js';
 
 export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const result: Content[] = [];

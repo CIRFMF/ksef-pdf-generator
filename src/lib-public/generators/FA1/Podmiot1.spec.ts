@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Podmiot1 } from '../../types/fa1.types';
-import { generatePodmiot1 } from './Podmiot1';
+import { generatePodmiot1 } from './Podmiot1.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((label: string) => [{ text: `HEADER:${label}` }]),

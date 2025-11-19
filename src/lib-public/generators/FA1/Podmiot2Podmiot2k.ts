@@ -7,11 +7,11 @@ import {
   getValue,
   hasValue,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 import { Podmiot2, Podmiot2K } from '../../types/fa1.types';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 
 export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot2K): Content[] {
   const result: Content[] = createHeader('Nabywca');

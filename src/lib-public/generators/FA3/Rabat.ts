@@ -7,10 +7,10 @@ import {
   generateTwoColumns,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { Fa } from '../../types/fa3.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 
 export function generateRabat(invoice: Fa): Content[] {
   const faRows = getTable(invoice!.FaWiersz);

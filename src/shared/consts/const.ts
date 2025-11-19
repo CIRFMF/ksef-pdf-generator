@@ -1,5 +1,5 @@
-import FormatTyp from '../enums/common.enum';
-import { RodzajFaktury } from '../enums/invoice.enums';
+import FormatTyp from '../enums/common.enum.js';
+import { RodzajFaktury } from '../enums/invoice.enums.js';
 
 export const TRodzajFaktury: Record<string, string> = Object.keys(RodzajFaktury).reduce(
   (acc, key) => {

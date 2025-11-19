@@ -1,12 +1,12 @@
 import { Content } from 'pdfmake/interfaces';
-import { TypKorekty } from '../../../shared/consts/const';
+import { TypKorekty } from '../../../shared/consts/const.js';
 import {
   createHeader,
   createLabelText,
   createSection,
   generateTwoColumns,
   getTable,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 import { DaneFaKorygowanej, Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa2 } from '../../types/fa2.types';
 import { Fa as Fa3 } from '../../types/fa3.types';

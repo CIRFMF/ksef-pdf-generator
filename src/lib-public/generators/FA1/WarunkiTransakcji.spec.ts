@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateWarunkiTransakcji } from './WarunkiTransakcji';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateWarunkiTransakcji } from './WarunkiTransakcji.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { WarunkiTransakcji } from '../../types/fa1.types';
-import * as TransportModule from './Transport';
+import * as TransportModule from './Transport.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

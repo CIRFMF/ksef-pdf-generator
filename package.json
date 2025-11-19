@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
-    "build:cli": "tsc --project tsconfig.cli.json && node -e \"require('fs').mkdirSync('dist/app/build', {recursive: true})\" && node -e \"require('fs').copyFileSync('src/app/build/ksef-pdf-generator.es.js', 'dist/app/build/ksef-pdf-generator.es.js')\"",
+    "build:cli": "tsc --project tsconfig.cli.json",
     "build:sea": "node build-sea.mjs",
     "build:sea:windows": "pwsh -ExecutionPolicy Bypass -File build-sea-windows.ps1",
     "cli": "node ./dist/cli/index.js",

@@ -6,8 +6,8 @@ import {
   getTable,
   hasValue,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Adnotacje, NoweSrodkiTransportu } from '../../types/fa3.types';
 
 export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {

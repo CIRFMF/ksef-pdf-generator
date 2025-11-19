@@ -5,11 +5,11 @@ import {
   createSubHeader,
   getTable,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 import { Podmiot1, Podmiot1K } from '../../types/fa1.types';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 
 export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot1K): Content[] {
   const result: Content[] = createHeader('Sprzedawca');

@@ -1,10 +1,10 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, createLabelText, hasValue } from '../../../shared/PDF-functions';
+import { createHeader, createLabelText, hasValue } from '../../../shared/PDF-functions.js';
 import { PodmiotUpowazniony } from '../../types/fa3.types';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
-import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe';
-import { getRolaUpowaznionegoString } from '../../../shared/generators/common/functions';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto.js';
+import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe.js';
+import { getRolaUpowaznionegoString } from '../../../shared/generators/common/functions.js';
 
 export function generatePodmiotUpowazniony(podmiotUpowazniony: PodmiotUpowazniony | undefined): Content[] {
   if (!podmiotUpowazniony) {

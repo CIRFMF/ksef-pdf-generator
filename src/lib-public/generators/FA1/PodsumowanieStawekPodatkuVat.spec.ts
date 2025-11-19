@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Fa, Faktura, FP } from '../../types/fa1.types';
-import { generatePodsumowanieStawekPodatkuVat, getSummaryTaxRate } from './PodsumowanieStawekPodatkuVat';
+import { generatePodsumowanieStawekPodatkuVat, getSummaryTaxRate } from './PodsumowanieStawekPodatkuVat.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((label) => [{ text: `HEADER:${label}` }]),

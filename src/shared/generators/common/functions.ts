@@ -9,7 +9,7 @@ import {
   TRolaPodmiotuUpowaznionegoFA3,
   TypLadunku,
   TypRachunkowWlasnych,
-} from '../../consts/const';
+} from '../../consts/const.js';
 import { FP as FP2 } from '../../../lib-public/types/fa2.types';
 
 export function getRolaString(rola: FP2 | undefined, FA: 1 | 2 | 3): string {

@@ -5,8 +5,8 @@ import {
   getTable,
   hasValue,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { PodmiotUpowaznionyDaneKontaktowe } from '../../types/fa3.types';
 
 export function generatePodmiotUpowaznionyDaneKontaktowe(

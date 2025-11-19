@@ -9,12 +9,12 @@ import {
   getTable,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { Platnosc } from '../../types/fa3.types';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
-import { generujRachunekBankowy } from './RachunekBankowy';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { getFormaPlatnosciString } from '../../../shared/generators/common/functions.js';
+import { generujRachunekBankowy } from './RachunekBankowy.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (!platnosc) {

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe';
+import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe.js';
 import type { PodmiotUpowaznionyDaneKontaktowe } from '../../types/fa2.types';
-import FormatTyp from '../../../shared/enums/common.enum';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, type: FormatTyp) => ({ text, type })),
@@ -17,7 +17,7 @@ import {
   hasValue,
   createLabelText,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 
 describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
   const mockData: PodmiotUpowaznionyDaneKontaktowe[] = [

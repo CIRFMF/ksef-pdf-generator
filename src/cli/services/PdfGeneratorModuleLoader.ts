@@ -1,5 +1,6 @@
 import type { ILogger } from '../interfaces/ILogger.js';
-import type { generateInvoice, generatePDFUPO } from '../../app/build/ksef-pdf-generator.es.js';
+// Używamy tylko typów z deklaracji modułu bundla – w runtime i tak ładowany jest plik .js z dist
+import type { generateInvoice, generatePDFUPO } from '../../lib-public/index';
 
 export class PdfGeneratorModuleLoader {
   private logger: ILogger;
@@ -8,26 +9,22 @@ export class PdfGeneratorModuleLoader {
     this.logger = logger;
   }
 
-  async loadGenerators(): Promise<{ 
-    generateInvoice: typeof generateInvoice; 
-    generatePDFUPO: typeof generatePDFUPO 
+  async loadGenerators(): Promise<{
+    generateInvoice: typeof generateInvoice;
+    generatePDFUPO: typeof generatePDFUPO;
   }> {
     try {
-      // Import statyczny modułu ksef-pdf-generator dla SEA bundling
-      const { generateInvoice, generatePDFUPO } = await import('../../app/build/ksef-pdf-generator.es.js');
-      
+      const { generateInvoice, generatePDFUPO } = await import("../../lib-public/index.js");
+
       if (!generateInvoice || !generatePDFUPO) {
         throw new Error('Moduł nie eksportuje wymaganych funkcji');
       }
 
-      this.logger.info('✓ Moduł ksef-pdf-generator załadowany pomyślnie');
-      
-      return {
-        generateInvoice,
-        generatePDFUPO
-      };
+      this.logger.info('✓ Bundel ksef-pdf-generator załadowany pomyślnie');
+
+      return { generateInvoice, generatePDFUPO };
     } catch (error) {
-      this.logger.error('Błąd podczas ładowania modułu ksef-pdf-generator:', error);
+      this.logger.error('Błąd podczas ładowania bundla ksef-pdf-generator:', error);
       throw error;
     }
   }

@@ -1,11 +1,11 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot2 } from '../../types/fa2.types';
-import { generateAdres } from './Adres';
-import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
-import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types';
+import { generateAdres } from './Adres.js';
+import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
+import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types.js';
 
 export function generatePodmiot2(podmiot2: Podmiot2): Content[] {
   const result: Content[] = createHeader('Nabywca');

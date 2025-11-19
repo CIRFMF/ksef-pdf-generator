@@ -5,12 +5,12 @@ import {
   formatText,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { Procedura, TRodzajFaktury } from '../../../shared/consts/const';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
+import { Procedura, TRodzajFaktury } from '../../../shared/consts/const.js';
 import { FP, Zamowienie } from '../../types/fa1.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
-import { ZamowienieKorekta } from '../../enums/invoice.enums';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
+import { ZamowienieKorekta } from '../../enums/invoice.enums.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 
 export function generateZamowienie(

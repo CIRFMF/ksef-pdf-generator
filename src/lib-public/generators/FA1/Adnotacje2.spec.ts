@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateDostawy } from './Adnotacje';
+import { generateDostawy } from './Adnotacje.js';
 import { Adnotacje } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

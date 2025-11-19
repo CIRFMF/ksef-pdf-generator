@@ -25,9 +25,9 @@ vi.mock('./PodmiotDaneKontaktowe', () => ({
   generateDaneKontaktowe: vi.fn((data: any): Content[] => [{ text: 'mockDaneKontaktowe' }]),
 }));
 
-import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions';
-import { generateAdres } from './Adres';
-import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k';
+import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions.js';
+import { generateAdres } from './Adres.js';
+import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k.js';
 
 describe(generatePodmiot2Podmiot2K.name, () => {
   beforeEach(() => {

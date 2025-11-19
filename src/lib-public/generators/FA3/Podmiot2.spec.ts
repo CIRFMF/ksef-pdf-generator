@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Content } from 'pdfmake/interfaces';
 import type { Podmiot3 } from '../../types/fa3.types';
-import { generatePodmiot2 } from './Podmiot2';
-import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions';
-import { generateAdres } from './Adres';
-import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { generatePodmiot2 } from './Podmiot2.js';
+import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions.js';
+import { generateAdres } from './Adres.js';
+import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string): Content[] => [{ text, style: 'header' } as Content]),

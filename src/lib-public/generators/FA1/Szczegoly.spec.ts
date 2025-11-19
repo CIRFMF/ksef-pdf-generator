@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generateSzczegoly } from './Szczegoly';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { generateSzczegoly } from './Szczegoly.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

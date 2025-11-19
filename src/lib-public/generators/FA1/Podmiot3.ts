@@ -8,13 +8,13 @@ import {
   getTable,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot3 } from '../../types/fa1.types';
-import { getRolaString } from '../../../shared/generators/common/functions';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { getRolaString } from '../../../shared/generators/common/functions.js';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 
 export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const result: Content[] = [];

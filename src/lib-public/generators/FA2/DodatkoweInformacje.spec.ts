@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, test } from 'vitest';
-import { generateDodatkoweInformacje } from './DodatkoweInformacje';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateDodatkoweInformacje } from './DodatkoweInformacje.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => [{ text, style: 'header' }]),
@@ -20,7 +20,7 @@ import {
   getValue,
   getTable,
   getContentTable,
-} from '../../../shared/PDF-functions';
+} from '../../../shared/PDF-functions.js';
 
 describe(generateDodatkoweInformacje.name, () => {
   beforeEach(() => {

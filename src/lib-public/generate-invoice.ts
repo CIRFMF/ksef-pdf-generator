@@ -1,11 +1,11 @@
-import { generateFA1 } from './FA1-generator';
+import { generateFA1 } from './FA1-generator.js';
 import { Faktura as Faktura1 } from './types/fa1.types';
-import { generateFA2 } from './FA2-generator';
+import { generateFA2 } from './FA2-generator.js';
 import { Faktura as Faktura2 } from './types/fa2.types';
-import { generateFA3 } from './FA3-generator';
+import { generateFA3 } from './FA3-generator.js';
 import { Faktura as Faktura3 } from './types/fa3.types';
-import { parseXML } from '../shared/XML-parser';
-import { TCreatedPdf } from 'pdfmake/build/pdfmake';
+import { parseXML } from '../shared/XML-parser.js';
+import { TCreatedPdf } from 'pdfmake/build/pdfmake.js';
 import { AdditionalDataTypes } from './types/common.types';
 
 export async function generateInvoice(

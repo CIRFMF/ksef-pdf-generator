@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generujRachunekBankowy } from './RachunekBankowy';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
+import { generujRachunekBankowy } from './RachunekBankowy.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import * as CommonFunctions from '../../../shared/generators/common/functions.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

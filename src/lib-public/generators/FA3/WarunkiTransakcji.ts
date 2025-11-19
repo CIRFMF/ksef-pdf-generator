@@ -8,11 +8,11 @@ import {
   generateTwoColumns,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { FP, Umowy, WarunkiTransakcji, Zamowienia } from '../../types/fa3.types';
-import { generateTransport } from './Transport';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateTransport } from './Transport.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji | undefined): Content {
   if (!warunkiTransakcji) {

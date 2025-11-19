@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as FA1Generator from './FA1-generator';
-import * as FA2Generator from './FA2-generator';
-import * as FA3Generator from './FA3-generator';
-import { generateInvoice } from './generate-invoice';
-import * as XMLParser from '../shared/XML-parser';
+import * as FA1Generator from './FA1-generator.js';
+import * as FA2Generator from './FA2-generator.js';
+import * as FA3Generator from './FA3-generator.js';
+import { generateInvoice } from './generate-invoice.js';
+import * as XMLParser from '../shared/XML-parser.js';
 import { AdditionalDataTypes } from './types/common.types';
 
 describe('generateInvoice', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { generateRozliczenie } from './Rozliczenie';
+import { generateRozliczenie } from './Rozliczenie.js';
 import { Content } from 'pdfmake/interfaces';
 
 vi.mock('../../../shared/PDF-functions', () => ({

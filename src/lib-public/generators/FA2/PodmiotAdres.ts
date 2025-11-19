@@ -1,7 +1,7 @@
 import { Content, Margins } from 'pdfmake/interfaces';
-import { createHeader, createSubHeader } from '../../../shared/PDF-functions';
+import { createHeader, createSubHeader } from '../../../shared/PDF-functions.js';
 import { Adres } from '../../types/fa2.types';
-import { generateAdres } from './Adres';
+import { generateAdres } from './Adres.js';
 
 export function generatePodmiotAdres(
   podmiotAdres: Adres | undefined,

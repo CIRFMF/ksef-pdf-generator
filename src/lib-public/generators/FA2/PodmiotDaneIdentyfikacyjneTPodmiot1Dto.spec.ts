@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { DaneIdentyfikacyjne } from '../../types/fa2.types';
-import { createLabelText } from '../../../shared/PDF-functions';
-import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
+import { createLabelText } from '../../../shared/PDF-functions.js';
+import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createLabelText: vi.fn((label: string, value: string) => ({ text: `${label}${value}` })),

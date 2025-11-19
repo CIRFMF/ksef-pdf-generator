@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
-import { generateAdres } from './Adres';
-import { createLabelText, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateAdres } from './Adres.js';
+import { createLabelText, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, style: string) => ({ text, style })),

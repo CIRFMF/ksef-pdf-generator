@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Podmiot2, Podmiot2K } from '../../types/fa1.types';
-import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k';
+import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k.js';
 import { Content } from 'pdfmake/interfaces';
 
 vi.mock('../../../shared/PDF-functions', () => ({

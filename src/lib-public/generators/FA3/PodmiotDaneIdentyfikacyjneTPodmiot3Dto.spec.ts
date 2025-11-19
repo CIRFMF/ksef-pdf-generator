@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto';
-import { createLabelText, createLabelTextArray, hasValue } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto.js';
+import { createLabelText, createLabelTextArray, hasValue } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot3DaneIdentyfikacyjne } from '../../types/fa3Podmiot3DaneIdentyfikacyjne.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

@@ -1,10 +1,10 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { createHeader, createLabelText, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot1 } from '../../types/fa3.types';
-import { generateAdres } from './Adres';
-import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { generateAdres } from './Adres.js';
+import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
 
 export function generatePodmiot1(podmiot1: Podmiot1): Content[] {
   const result: Content[] = createHeader('Sprzedawca');

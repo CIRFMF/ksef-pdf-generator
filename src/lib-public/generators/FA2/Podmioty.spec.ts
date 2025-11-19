@@ -1,14 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePodmioty } from './Podmioty';
+import { generatePodmioty } from './Podmioty.js';
 import type { Faktura } from '../../types/fa2.types';
-import { createSection } from '../../../shared/PDF-functions';
-import { generatePodmiot1 } from './Podmiot1';
-import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K';
-import { generatePodmiot2 } from './Podmiot2';
-import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k';
-import { generatePodmiot3 } from './Podmiot3';
-import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k';
-import { generatePodmiotUpowazniony } from './PodmiotUpowazniony';
+import { createSection } from '../../../shared/PDF-functions.js';
+import { generatePodmiot1 } from './Podmiot1.js';
+import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K.js';
+import { generatePodmiot2 } from './Podmiot2.js';
+import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k.js';
+import { generatePodmiot3 } from './Podmiot3.js';
+import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k.js';
+import { generatePodmiotUpowazniony } from './PodmiotUpowazniony.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createSection: vi.fn((content: any, flag: boolean) => ({ content, flag })),

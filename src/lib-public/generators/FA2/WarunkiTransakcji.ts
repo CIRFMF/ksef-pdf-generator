@@ -8,12 +8,12 @@ import {
   generateTwoColumns,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { FP, Transport, Umowy, WarunkiTransakcji, Zamowienia } from '../../types/fa2.types';
-import { generateTransport } from './Transport';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TableWithFields } from '../../types/fa1-additional-types';
+import { generateTransport } from './Transport.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TableWithFields } from '../../types/fa1-additional-types.js';
 
 export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji | undefined): Content {
   if (!warunkiTransakcji) {

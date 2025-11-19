@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { generatePodmiotAdres } from './PodmiotAdres';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
 import { Adres } from '../../types/fa1.types';
 import { Margins } from 'pdfmake/interfaces';
 

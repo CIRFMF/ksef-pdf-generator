@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText } from '../../../shared/PDF-functions';
+import { createLabelText } from '../../../shared/PDF-functions.js';
 import { DaneIdentyfikacyjne } from '../../types/fa3.types';
 
 export function generateDaneIdentyfikacyjneTPodmiot1Dto(daneIdentyfikacyjne: DaneIdentyfikacyjne): Content[] {

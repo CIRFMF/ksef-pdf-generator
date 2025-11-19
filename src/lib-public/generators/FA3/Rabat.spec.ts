@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateRabat } from './Rabat';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import { generateRabat } from './Rabat.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 import { Fa } from '../../types/fa3.types';
 import { Content } from 'pdfmake/interfaces';
 

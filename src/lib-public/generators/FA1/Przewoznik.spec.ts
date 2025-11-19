@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePrzewoznik } from './Przewoznik';
+import { generatePrzewoznik } from './Przewoznik.js';
 import { Przewoznik } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({

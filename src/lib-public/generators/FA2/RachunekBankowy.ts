@@ -1,10 +1,10 @@
 import { Content, ContentTable } from 'pdfmake/interfaces';
-import { createHeader, createSection, formatText } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { createHeader, createSection, formatText } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { RachunekBankowy } from '../../types/fa2.types';
-import { getTypRachunkowWlasnych } from '../../../shared/generators/common/functions';
+import { getTypRachunkowWlasnych } from '../../../shared/generators/common/functions.js';
 import { FP } from '../../types/fa1.types';
-import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/const';
+import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/const.js';
 
 export const generujRachunekBankowy: (accounts?: Record<string, FP>[], title?: string) => Content[] = (
   accounts?: RachunekBankowy[],

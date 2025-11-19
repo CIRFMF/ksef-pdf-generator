@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
-import { createHeader, createLabelText, formatText, getTable } from '../../../shared/PDF-functions';
-import { generateAdnotacje, generateDostawy } from './Adnotacje';
+import { createHeader, createLabelText, formatText, getTable } from '../../../shared/PDF-functions.js';
+import { generateAdnotacje, generateDostawy } from './Adnotacje.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => ({ text, style: 'header' })),

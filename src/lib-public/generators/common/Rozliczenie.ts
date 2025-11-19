@@ -8,11 +8,11 @@ import {
   generateTwoColumns,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
 import { Rozliczenie as Rozliczenie1, Zenia } from '../../types/fa1.types';
 import { Rozliczenie as Rozliczenie2, Rozliczenie as Rozliczenie3 } from '../../types/fa2.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 
 export function generateRozliczenie(

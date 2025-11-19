@@ -1,4 +1,4 @@
-import { generateCorrectedContent } from './Podmiot1Podmiot1K';
+import { generateCorrectedContent } from './Podmiot1Podmiot1K.js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Content } from 'pdfmake/interfaces';
 import { FP, Podmiot1K } from '../../types/fa2.types';

@@ -1,15 +1,15 @@
 import { Content } from 'pdfmake/interfaces';
-import { createSection, getTable, getValue } from '../../../shared/PDF-functions';
+import { createSection, getTable, getValue } from '../../../shared/PDF-functions.js';
 import { Faktura, Podmiot2K as Podmiot2Kfa2, Podmiot3 } from '../../types/fa2.types';
 import { Podmiot2K as Podmiot2Kfa1 } from '../../types/fa1.types';
-import { Podmiot3Podmiot2KDto } from '../../types/fa2-additional-types';
-import { generatePodmiot1 } from './Podmiot1';
-import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K';
-import { generatePodmiot2 } from './Podmiot2';
-import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k';
-import { generatePodmiot3 } from './Podmiot3';
-import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k';
-import { generatePodmiotUpowazniony } from './PodmiotUpowazniony';
+import { Podmiot3Podmiot2KDto } from '../../types/fa2-additional-types.js';
+import { generatePodmiot1 } from './Podmiot1.js';
+import { generatePodmiot1Podmiot1K } from './Podmiot1Podmiot1K.js';
+import { generatePodmiot2 } from './Podmiot2.js';
+import { generatePodmiot2Podmiot2K } from './Podmiot2Podmiot2k.js';
+import { generatePodmiot3 } from './Podmiot3.js';
+import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k.js';
+import { generatePodmiotUpowazniony } from './PodmiotUpowazniony.js';
 
 export function generatePodmioty(invoice: Faktura): Content[] {
   const result: Content[] = [];

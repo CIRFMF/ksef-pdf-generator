@@ -6,13 +6,13 @@ import {
   getTable,
   getValue,
   hasValue,
-} from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+} from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot2 } from '../../types/fa1.types';
-import { generatePodmiotAdres } from './PodmiotAdres';
-import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
-import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
-import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types';
+import { generatePodmiotAdres } from './PodmiotAdres.js';
+import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne.js';
+import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe.js';
+import { DaneIdentyfikacyjneTPodmiot2Dto } from '../../types/fa2-additional-types.js';
 
 export function generatePodmiot2(podmiot2: Podmiot2): Content[] {
   const result: Content[] = createHeader('Nabywca');

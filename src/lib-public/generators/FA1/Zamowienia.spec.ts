@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Zamowienie } from '../../types/fa1.types';
-import { generateZamowienie } from './Zamowienie';
-import { ZamowienieKorekta } from '../../enums/invoice.enums';
+import { generateZamowienie } from './Zamowienie.js';
+import { ZamowienieKorekta } from '../../enums/invoice.enums.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

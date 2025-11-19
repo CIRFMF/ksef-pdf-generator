@@ -10,8 +10,8 @@ npm run build:cli
 ### Testowanie CLI
 ```bash
 node dist/cli/index.js --help
-node dist/cli/index.js invoice examples/invoice.xml output/test.pdf
-node dist/cli/index.js upo examples/upo.xml output/test-upo.pdf
+node dist/cli/index.js invoice assets/invoice.xml output/test.pdf
+node dist/cli/index.js upo assets/upo.xml output/test-upo.pdf
 ```
 
 ### Budowanie SEA

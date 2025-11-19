@@ -13,10 +13,9 @@
   },
   "include": [
     "src/cli/**/*",
-    "src/app/build/*.d.ts"
+    "src/lib/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "src/app"
+    "node_modules"
   ]
 }

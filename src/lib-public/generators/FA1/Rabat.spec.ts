@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateRabat } from './Rabat';
-import * as PDFFunctions from '../../../shared/PDF-functions';
+import { generateRabat } from './Rabat.js';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
 import { Fa } from '../../types/fa1.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

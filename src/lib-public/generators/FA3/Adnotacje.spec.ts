@@ -9,8 +9,8 @@ vi.mock('../../../shared/PDF-functions', () => ({
   verticalSpacing: vi.fn((n: number) => ({ text: `space-${n}` })),
 }));
 
-import { createHeader, createLabelText, getTable, formatText } from '../../../shared/PDF-functions';
-import { generateAdnotacje, generateDostawy } from './Adnotacje';
+import { createHeader, createLabelText, getTable, formatText } from '../../../shared/PDF-functions.js';
+import { generateAdnotacje, generateDostawy } from './Adnotacje.js';
 
 describe(generateAdnotacje.name, () => {
   beforeEach(() => {

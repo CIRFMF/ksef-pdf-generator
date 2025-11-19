@@ -1,7 +1,7 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText, formatText, getKraj } from '../../../shared/PDF-functions';
+import { createLabelText, formatText, getKraj } from '../../../shared/PDF-functions.js';
 import { Adres } from '../../types/fa3.types';
-import FormatTyp from '../../../shared/enums/common.enum';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 
 export function generateAdres(adres: Adres): Content[] {
   const result: Content[] = [];

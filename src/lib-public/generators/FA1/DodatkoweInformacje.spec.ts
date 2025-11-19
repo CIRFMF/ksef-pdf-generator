@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DodatkowyOpi, Fa } from '../../types/fa1.types';
-import { generateDodatkoweInformacje } from './DodatkoweInformacje';
+import { generateDodatkoweInformacje } from './DodatkoweInformacje.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: () => [{ text: 'HEADER:Dodatkowe informacje' }],

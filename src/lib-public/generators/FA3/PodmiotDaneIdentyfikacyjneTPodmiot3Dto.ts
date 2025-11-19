@@ -1,6 +1,6 @@
 import { Content } from 'pdfmake/interfaces';
-import { createLabelText, createLabelTextArray, hasValue } from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
+import { createLabelText, createLabelTextArray, hasValue } from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
 import { Podmiot3DaneIdentyfikacyjne } from '../../types/fa3Podmiot3DaneIdentyfikacyjne.types';
 
 export function generateDaneIdentyfikacyjneTPodmiot3Dto(

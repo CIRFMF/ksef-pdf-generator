@@ -5,13 +5,13 @@ import {
   formatText,
   getContentTable,
   getTable,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+} from '../../../shared/PDF-functions.js';
+import { HeaderDefine } from '../../../shared/types/pdf-types.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { FP, Zamowienie } from '../../types/fa2.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
-import { TableWithFields } from '../../types/fa1-additional-types';
-import { ZamowienieKorekta } from '../../enums/invoice.enums';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
+import { TableWithFields } from '../../types/fa1-additional-types.js';
+import { ZamowienieKorekta } from '../../enums/invoice.enums.js';
 
 export function generateZamowienie(
   orderData: Zamowienie | undefined,

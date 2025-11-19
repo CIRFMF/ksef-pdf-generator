@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import pdfMake from 'pdfmake/build/pdfmake';
 import { Faktura } from './types/fa2.types';
-import { generateFA2 } from './FA2-generator';
+import { generateFA2 } from './FA2-generator.js';
 import { AdditionalDataTypes } from './types/common.types';
 
 vi.mock('./generators/FA2/Adnotacje', () => ({ generateAdnotacje: vi.fn(() => ({ example: 'adnotacje' })) }));

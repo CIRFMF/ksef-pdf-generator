@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import FormatTyp from '../../../shared/enums/common.enum.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa } from '../../types/fa2.types';
-import { generateWiersze } from './Wiersze';
+import { generateWiersze } from './Wiersze.js';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

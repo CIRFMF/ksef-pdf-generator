@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import * as PDFFunctions from '../../../shared/PDF-functions';
-import { TypKorekty } from '../../../shared/consts/const';
-import { generateDaneFaKorygowanej } from './DaneFaKorygowanej';
+import * as PDFFunctions from '../../../shared/PDF-functions.js';
+import { TypKorekty } from '../../../shared/consts/const.js';
+import { generateDaneFaKorygowanej } from './DaneFaKorygowanej.js';
 
 describe('generateDaneFaKorygowanej', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import { beforeEach, describe, expect, it, MockInstance, vi } from 'vitest';
-import { generateFA3 } from './FA3-generator';
+import { generateFA3 } from './FA3-generator.js';
 import { Faktura } from './types/fa3.types';
 
 import { AdditionalDataTypes } from './types/common.types';

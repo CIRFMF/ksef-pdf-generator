@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k';
-import { Podmiot3Podmiot2KDto } from '../../types/fa1-additional-types';
+import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k.js';
+import { Podmiot3Podmiot2KDto } from '../../types/fa1-additional-types.js';
 import { Content } from 'pdfmake/interfaces';
 
 vi.mock('../../../shared/PDF-functions', () => ({

@@ -1,10 +1,10 @@
 import { Content, ContentText } from 'pdfmake/interfaces';
-import { formatText, generateLine } from '../../../shared/PDF-functions';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { formatText, generateLine } from '../../../shared/PDF-functions.js';
+import { TRodzajFaktury } from '../../../shared/consts/const.js';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa2 } from '../../types/fa2.types';
 import { Fa as Fa3, Zalacznik } from '../../types/fa3.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import FormatTyp, { Position } from '../../../shared/enums/common.enum.js';
 import { AdditionalDataTypes } from '../../types/common.types';
 
 export function generateNaglowek(
