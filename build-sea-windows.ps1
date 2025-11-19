@@ -31,7 +31,19 @@ Write-Host ""
 
 # Krok 4: Usunięcie sygnatury (opcjonalnie na Windows)
 Write-Host "🔓 Etap 4: Usuwanie sygnatury..." -ForegroundColor Yellow
-Write-Host "ℹ️  Opcjonalne - pomijam (postject zadziała z ostrzeżeniem)" -ForegroundColor Gray
+# Usuń podpis cyfrowy, aby uniknąć ostrzeżenia "signature corrupted"
+# Wymaga signtool.exe z Windows SDK
+try {
+    $signtool = "signtool.exe"
+    & $signtool remove /s ksef-pdf.exe 2>$null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "✅ Podpis usunięty" -ForegroundColor Green
+    } else {
+        Write-Host "ℹ️  Nie można usunąć podpisu (wymaga Windows SDK) - kontynuuję" -ForegroundColor Gray
+    }
+} catch {
+    Write-Host "ℹ️  signtool niedostępny - postject wyświetli ostrzeżenie (nie wpływa na działanie)" -ForegroundColor Gray
+}
 Write-Host ""
 
 # Krok 5: Wstrzyknięcie blob używając postject

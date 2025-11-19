@@ -52,7 +52,7 @@ node dist/cli/index.js invoice <ścieżka-do-xml> <ścieżka-wyjściowa-pdf>
 
 ```bash
 # Generowanie faktury z przykładowego pliku
-node dist/cli/index.js invoice examples/invoice.xml output/moja-faktura.pdf
+node dist/cli/index.js invoice assets/invoice.xml output/moja-faktura.pdf
 
 # Generowanie z bezwzględną ścieżką
 node dist/cli/index.js invoice C:\Users\lukaszw\Documents\faktura.xml C:\Output\faktura.pdf
@@ -72,7 +72,7 @@ node dist/cli/index.js upo <ścieżka-do-xml> <ścieżka-wyjściowa-pdf>
 
 ```bash
 # Generowanie UPO z przykładowego pliku
-node dist/cli/index.js upo examples/upo.xml output/moje-upo.pdf
+node dist/cli/index.js upo assets/upo.xml output/moje-upo.pdf
 
 # Generowanie z bezwzględną ścieżką
 node dist/cli/index.js upo C:\Users\lukaszw\Documents\upo.xml C:\Output\upo.pdf
@@ -128,10 +128,10 @@ Po zbudowaniu pliku `ksef-pdf.exe`, można go używać bez instalacji Node.js:
 .\ksef-pdf.exe --help
 
 # Generowanie faktury
-.\ksef-pdf.exe invoice examples\invoice.xml output\faktura.pdf
+.\ksef-pdf.exe invoice assets\invoice.xml output\faktura.pdf
 
 # Generowanie UPO
-.\ksef-pdf.exe upo examples\upo.xml output\upo.pdf
+.\ksef-pdf.exe upo assets\upo.xml output\upo.pdf
 
 # Użycie z pełnymi ścieżkami
 .\ksef-pdf.exe invoice C:\Faktury\faktura-2024-001.xml C:\PDF\faktura-2024-001.pdf
@@ -254,10 +254,10 @@ Użycie:
 .\ksef-pdf.exe --help
 
 # Test generowania faktury
-.\ksef-pdf.exe invoice examples\invoice.xml output\test.pdf
+.\ksef-pdf.exe invoice assets\invoice.xml output\test.pdf
 
 # Test generowania UPO
-.\ksef-pdf.exe upo examples\upo.xml output\test-upo.pdf
+.\ksef-pdf.exe upo assets\upo.xml output\test-upo.pdf
 ```
 
 ### Co zawiera plik ksef-pdf.exe?
