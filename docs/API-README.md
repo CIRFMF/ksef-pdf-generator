@@ -1,0 +1,110 @@
+# API — uruchamianie, budowanie i testy
+
+Poniższy plik opisuje krok po kroku jak uruchamiać aplikację lokalnie w trybie deweloperskim oraz jak przygotować i uruchomić build produkcyjny z działającym serwerem API.
+
+UWAGI: polecenia podane są dla PowerShell na Windows. Repozytorium znajduje się w `D:\repo\ksef-pdf-generator_new`.
+
+## Wymagania
+- Node.js >= 18
+- npm
+
+## 1. Pierwsza instalacja (raz)
+
+1. Otwórz PowerShell i przejdź do katalogu repo:
+   ```powershell
+   cd D:\repo\ksef-pdf-generator_new
+   npm install
+   ```
+
+## 2. Tryb development (szybkie testy)
+
+- Frontend (jeśli potrzebujesz interfejsu):
+  ```powershell
+  npm run dev
+  ```
+
+- API (uruchamia TypeScript źródło bez budowania):
+  ```powershell
+  npm run dev:api
+  ```
+
+  - Serwer API nasłuchuje domyślnie na `http://localhost:3001`.
+
+## 3. Testowanie endpointu (szybko)
+
+- Przy użyciu natywnego `curl.exe` (zalecane w PowerShell):
+  ```powershell
+  curl.exe -X POST "http://localhost:3001/generate-invoice" `
+    -F "file=@assets\invoice.xml" `
+    -F "additionalData={\"nrKSeF\":\"TEST123\"}" `
+    -o out.pdf
+  ```
+
+- PowerShell (bez curl.exe) — skrypt .NET HttpClient (przykład wcześniej w repo): możesz uruchomić `node scripts/test-generate-invoice.mjs`.
+
+- Postman:
+  - Method: POST
+  - URL: `http://localhost:3001/generate-invoice`
+  - Body → `form-data`:
+    - `file` (File) → wybierz `assets/invoice.xml`
+    - `additionalData` (Text) → `{"nrKSeF":"TEST123"}` (opcjonalne)
+  - Send and Download → zapisze PDF bezpośrednio.
+
+## 4. Budowanie produkcyjne
+
+Pełny build uruchamia budowanie frontendu (vite) oraz bundluje serwer (esbuild):
+
+```powershell
+npm run build
+```
+
+- Po wykonaniu w `dist/api` pojawi się `server.cjs` (CommonJS) i możesz uruchomić serwer zbudowany:
+  ```powershell
+  npm run start:api
+  # lub
+  node dist/api/server.cjs
+  ```
+
+## 5. Szybkie przebudowanie tylko serwera
+
+Jeżeli zmienisz pliki w `src/api` lub w logice serwera, nie musisz budować całego projektu — wystarczy:
+
+```powershell
+npm run build:server
+npm run start:api
+```
+
+`build:server` uruchamia `esbuild` i produkuje `dist/api/server.cjs`.
+
+## 6. Skrypty npm (przydatne)
+
+- `npm run dev` — dev frontend (vite)
+- `npm run dev:api` — uruchamia API z `ts-node` (szybkie do deva)
+- `npm run build` — build frontend + `build:server`
+- `npm run build:server` — build tylko serwera (esbuild -> `dist/api/server.cjs`)
+- `npm run start:api` — uruchamia zbudowany serwer (`node dist/api/server.cjs`)
+- `npm run test:api` — testuje API (skrypt `scripts/test-generate-invoice.mjs`) — wysyła `assets/invoice.xml` i zapisuje `out.pdf`
+
+## 7. Najczęstsze problemy i wskazówki
+
+- `Cannot find module dist/lib-public/generate-invoice.js` — znaczy, że build frontendu nie wygenerował plików JS w `dist/lib-public`. Zadziała `npm run dev:api` (uruchamia serwer z kodu źródłowego) lub uruchom pełny `npm run build` by wygenerować wymagane artefakty.
+- `FileReader is not defined` — oznaczało, że parsowanie XML używało browser API. W kodzie zrobiliśmy poprawkę w `src/shared/XML-parser.ts`, tak żeby serwer przyjmował `Buffer` i parsował XML w Node.
+- Problemy ESM/CJS: widoczne przy uruchamianiu `node dist/api/server.js`. Obecna konfiguracja generuje serwer jako CommonJS `dist/api/server.cjs` i `start:api` uruchamia ten plik, żeby uniknąć problemów z typem modułu.
+- Port 3001 zajęty — sprawdź i zabij proces:
+  ```powershell
+  netstat -ano | Select-String ":3001"
+  Stop-Process -Id <PID> -Force
+  ```
+
+## 8. Dodane pliki pomocnicze
+
+- `scripts/test-generate-invoice.mjs` — prosty klient, który wysyła `assets/invoice.xml` i zapisuje `out.pdf`.
+- `tsconfig.server.json` — uproszczony tsconfig dla `ts-node` w trybie development.
+
+## 9. Automatyzacja (opcjonalnie)
+
+- Możemy dodać `postbuild` script uruchamiający `npm run build:server` po `vite build`.
+- Mogę przygotować kolekcję Postman (.json) do importu.
+
+---
+Plik wygenerowany automatycznie. Jeśli chcesz, żebym dodał eksport kolekcji Postman lub `postbuild` — napisz.

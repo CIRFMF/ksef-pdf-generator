@@ -15,7 +15,7 @@ inputInvoice.addEventListener('change', async (): Promise<void> => {
   const additionalData: AdditionalDataTypes = {
     nrKSeF: '5555555555-20250808-9231003CA67B-BE',
     qrCode:
-      'https://ksef-test.mf.gov.pl/client-app/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
+      'https://ksef-ti.mf.gov.pl/client-app/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
   };
 
   generateInvoice(file, additionalData, 'blob').then((data: Blob): void => {
