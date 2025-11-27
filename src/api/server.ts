@@ -11,6 +11,14 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(cors());
 
+app.get('/health', (req: any, res: any) => {
+  res.status(200).json({
+    status: 'ok',
+    message: 'API is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.post('/generate-invoice', upload.single('file'), async (req: any, res: any) => {
   try {
     if (!req.file) {

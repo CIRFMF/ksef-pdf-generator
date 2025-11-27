@@ -3,9 +3,9 @@
   "version": "0.0.30",
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
-      "start:api": "node dist/api/server.cjs",
-      "dev:api": "ts-node --esm -P tsconfig.server.json src/api/server.ts",
-      "build:server": "esbuild src/api/server.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/api/server.cjs --sourcemap",
+    "start:api": "node dist/api/server.cjs",
+    "dev:api": "ts-node --esm -P tsconfig.server.json src/api/server.ts",
+    "build:server": "esbuild src/api/server.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/api/server.cjs --sourcemap",
     "build": "vite build --mode production",
     "postbuild": "npm run build:server",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
