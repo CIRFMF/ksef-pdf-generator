@@ -195,9 +195,10 @@ const options = {
                         '- qrCode (string, opcjonalne): Gotowy do wydruku tekst QR kodu.',
                         '- qrCode2 (string, opcjonalne): Drugi kod QR wymagany w trybie offline (KOD II – certyfikat) opisany w dokumentacji KSeF.',
                         '- isMobile (boolean, opcjonalne): Flaga wymuszająca layout mobilny.',
-                        'Przykład: {"nrKSeF":"123456789012345678","qrCode":"...","qrCode2":"...","isMobile":true}'
+                        '- companyLogoBase64 (string, opcjonalne): Logo firmy przekazane jako pełny Data URL (np. data:image/png;base64,...) lub sam łańcuch base64 (domyślnie traktowany jako PNG).',
+                        'Przykład: {"nrKSeF":"123456789012345678","qrCode":"...","qrCode2":"...","companyLogoBase64":"data:image/png;base64,BASE64_LOGO","isMobile":true}'
                       ].join('\n'),
-                      example: '{"nrKSeF":"123456789012345678","qrCode":"https://ksef-test.mf.gov.pl/client-app/invoice/...","qrCode2":"https://ksef-test.mf.gov.pl/client-app/certificate/..."}'
+                      example: '{"nrKSeF":"123456789012345678","qrCode":"https://ksef-test.mf.gov.pl/client-app/invoice/...","qrCode2":"https://ksef-test.mf.gov.pl/client-app/certificate/...","companyLogoBase64":"data:image/png;base64,BASE64_LOGO"}'
                     }
                   },
                   required: ['file', 'additionalData']

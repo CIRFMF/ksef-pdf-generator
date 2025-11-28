@@ -40,7 +40,7 @@ http://localhost:3001/docs
 - **Główny endpoint** do generowania faktur PDF
 - Parametry:
   - `file` (required) - Plik XML z danymi faktury
-  - `additionalData` (required) - JSON z dodatkowymi danymi (np. `nrKSeF`, `qrCode`, opcjonalnie `qrCode2` dla trybu offline)
+  - `additionalData` (required) - JSON z dodatkowymi danymi (np. `nrKSeF`, `qrCode`, `companyLogoBase64` dla logotypu oraz opcjonalnie `qrCode2` dla trybu offline)
 - Zwraca plik PDF
 
 ## 🧪 Testowanie z Swagger UI
@@ -64,7 +64,8 @@ http://localhost:3001/docs
    {
      "nrKSeF": "123456789012345678",
      "qrCode": "https://ksef-test.mf.gov.pl/client-app/invoice/...",
-     "qrCode2": "https://ksef-test.mf.gov.pl/client-app/certificate/..."
+     "qrCode2": "https://ksef-test.mf.gov.pl/client-app/certificate/...",
+     "companyLogoBase64": "data:image/png;base64,BASE64_LOGO_DATA"
    }
    ```
 6. Kliknij **"Execute"**

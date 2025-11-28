@@ -36,9 +36,11 @@ UWAGI: polecenia podane są dla PowerShell na Windows. Repozytorium znajduje si�
   ```powershell
   curl.exe -X POST "http://localhost:3001/generate-invoice" `
     -F "file=@assets\invoice.xml" `
-    -F "additionalData={\"nrKSeF\":\"TEST123\"}" `
+    -F "additionalData={\"nrKSeF\":\"TEST123\",\"companyLogoBase64\":\"data:image/png;base64,BASE64_LOGO_DATA\"}" `
     -o out.pdf
   ```
+
+  > Wartość `companyLogoBase64` może być pełnym Data URL (zalecane) lub samym ciągiem base64 – w tym drugim przypadku zostanie automatycznie poprzedzona nagłówkiem `data:image/png;base64,`.
 
 - PowerShell (bez curl.exe) — skrypt .NET HttpClient (przykład wcześniej w repo): możesz uruchomić `node scripts/test-generate-invoice.mjs`.
 
@@ -47,7 +49,8 @@ UWAGI: polecenia podane są dla PowerShell na Windows. Repozytorium znajduje si�
   - URL: `http://localhost:3001/generate-invoice`
   - Body → `form-data`:
     - `file` (File) → wybierz `assets/invoice.xml`
-    - `additionalData` (Text) → `{"nrKSeF":"TEST123"}` (opcjonalne)
+    - `additionalData` (Text) → `{"nrKSeF":"TEST123","companyLogoBase64":"data:image/png;base64,BASE64_LOGO_DATA"}` (wymagane pole `nrKSeF`, pozostałe opcjonalne)
+      - Obsługiwane pola: `nrKSeF` (wymagane), `qrCode`, `qrCode2`, `isMobile`, `companyLogoBase64` (logo na nagłówku PDF)
   - Send and Download → zapisze PDF bezpośrednio.
 
 ## 4. Budowanie produkcyjne

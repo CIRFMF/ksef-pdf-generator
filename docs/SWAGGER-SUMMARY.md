@@ -45,7 +45,7 @@ http://localhost:3001/api-docs
 
 #### `POST /generate-invoice`
 - Główny endpoint
-- Parametry: `file`, `additionalData`
+- Parametry: `file`, `additionalData` (m.in. `nrKSeF`, `qrCode`, `qrCode2`, `companyLogoBase64`, `isMobile`)
 - Zwraca: PDF
 
 ### 5. **Aktualizacje dokumentacji**

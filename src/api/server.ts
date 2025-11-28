@@ -138,8 +138,8 @@ app.get('/logs', (req: any, res: any) => {
  *                 description: Plik XML z danymi faktury
  *               additionalData:
  *                 type: string
- *                 description: Dodatkowe dane w formacie JSON (np. {"nrKSeF":"123456789012345678"})
- *                 example: '{"nrKSeF":"123456789012345678"}'
+ *                 description: Dodatkowe dane w formacie JSON (np. {"nrKSeF":"123456789012345678","companyLogoBase64":"data:image/png;base64,...."})
+ *                 example: '{"nrKSeF":"123456789012345678","companyLogoBase64":"data:image/png;base64,BASE64_LOGO"}'
  *             required:
  *               - file
  *               - additionalData

@@ -27,4 +27,5 @@ export interface AdditionalDataTypes {
   qrCode?: string;
   qrCode2?: string;
   isMobile?: boolean;
+  companyLogoBase64?: string;
 }

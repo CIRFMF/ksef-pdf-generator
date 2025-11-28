@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { TRodzajFaktury } from '../../../shared/consts/const';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa3 } from '../../types/fa3.types';
+import { AdditionalDataTypes } from '../../types/common.types';
 import { generateNaglowek } from './Naglowek';
 
 describe('generateNaglowek', () => {
@@ -51,5 +52,26 @@ describe('generateNaglowek', () => {
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
+  });
+
+  it('renders logo block when companyLogoBase64 is provided', () => {
+    const fa: Fa1 = {
+      RodzajFaktury: { _text: TRodzajFaktury.VAT },
+      P_2: { _text: 'FV/12/2025' },
+    } as any;
+
+    const additionalData: AdditionalDataTypes = {
+      nrKSeF: 'TEST123',
+      companyLogoBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA',
+    };
+
+    const result = generateNaglowek(fa, additionalData);
+
+    const columnsBlock = result.find(
+      (item) => typeof item === 'object' && item !== null && 'columns' in (item as Record<string, unknown>)
+    ) as { columns?: Array<{ stack?: Array<{ image?: string }> }> } | undefined;
+
+    expect(columnsBlock).toBeDefined();
+    expect(columnsBlock?.columns?.[0]?.stack?.[0]?.image).toContain('iVBORw0KGgo');
   });
 });
