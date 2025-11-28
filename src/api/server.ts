@@ -10,9 +10,6 @@ import { logger } from './logger.ts';
 import { requestLogger, errorHandler, notFoundHandler, RequestWithId } from './middleware.ts';
 import { specs } from './swagger.ts';
 
-// DEBUG
-console.log('Specs loaded:', !!specs, 'Keys:', Object.keys(specs || {}).length);
-
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 

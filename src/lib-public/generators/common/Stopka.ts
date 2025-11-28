@@ -1,4 +1,4 @@
-import { Content, ContentQr, ContentStack } from 'pdfmake/interfaces';
+import { Content, ContentQr, ContentStack, Margins } from 'pdfmake/interfaces';
 import {
   createHeader,
   createLabelText,
@@ -31,10 +31,8 @@ export function generateStopka(
   const wzty: Content[] = generateWZ(wz);
   const rejestry: Content[] = generateRejestry(stopka);
   const informacje: Content[] = generateInformacje(stopka);
-  const qrCode: Content[] = generateQRCodeData(additionalData);
   const zalaczniki: Content[] = !additionalData?.isMobile ? generateZalaczniki(zalacznik) : [];
-
-  const result: Content = [
+  const baseContent: Content[] = [
     verticalSpacing(1),
     ...(wzty.length ? [generateLine()] : []),
     ...(wzty.length ? [generateTwoColumns(wzty, [])] : []),
@@ -42,7 +40,16 @@ export function generateStopka(
     ...rejestry,
     ...informacje,
     ...(zalaczniki.length ? zalaczniki : []),
-    { stack: [...qrCode], unbreakable: true },
+  ];
+  const qrCodeSection: Content[] = generateQRCodeData(additionalData);
+
+  if (qrCodeSection.length) {
+    tightenBottomSpacing(baseContent);
+  }
+
+  const result: Content[] = [
+    ...baseContent,
+    ...qrCodeSection,
     createSection(
       [
         {
@@ -117,45 +124,131 @@ function generateInformacje(stopka?: Stopka): Content[] {
 }
 
 function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
-  const result: Content = [];
+  const sections: Content[][] = [];
 
   if (additionalData?.qrCode && additionalData.nrKSeF) {
-    const qrCode: ContentQr | undefined = generateQRCode(additionalData.qrCode);
+    sections.push(
+      buildQrSection({
+        title: additionalData.qrCode2
+          ? 'KOD I – weryfikacja faktury w KSeF'
+          : 'Sprawdź, czy Twoja faktura znajduje się w KSeF!',
+        qrValue: additionalData.qrCode,
+        label: additionalData.nrKSeF,
+        helperText:
+          'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!',
+        link: additionalData.qrCode,
+      })
+    );
+  }
 
-    result.push(createHeader('Sprawdź, czy Twoja faktura znajduje się w KSeF!'));
-    if (qrCode) {
-      result.push({
-        columns: [
-          {
-            stack: [
-              qrCode,
+  if (additionalData?.qrCode2) {
+    sections.push(
+      buildQrSection({
+        title: 'KOD II – weryfikacja certyfikatu wystawcy (tryb offline)',
+        qrValue: additionalData.qrCode2,
+        label: 'CERTYFIKAT',
+        helperText:
+          'KOD II potwierdza autentyczność certyfikatu offline KSeF wystawcy i jest wymagany w scenariuszach offline opisanych w dokumentacji MF.',
+        link: additionalData.qrCode2,
+      })
+    );
+  }
 
-              {
-                stack: [formatText(additionalData.nrKSeF, FormatTyp.Default)],
-                width: 'auto',
-                alignment: 'center',
-                marginLeft: 10,
-                marginRight: 10,
-                marginTop: 10,
-              } as ContentStack,
-            ],
-            width: 150,
-          } as ContentStack,
-          {
-            stack: [
-              formatText(
-                'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!',
-                FormatTyp.Value
-              ),
-              { stack: [formatText(additionalData.qrCode, FormatTyp.Link)], marginTop: 5 },
-            ],
-            link: additionalData.qrCode,
-            margin: [10, (qrCode.fit ?? 120) / 2 - 30, 0, 0],
-            width: 'auto',
-          } as ContentStack,
-        ],
-      });
+  if (!sections.length) {
+    return [];
+  }
+
+  return sections.map(
+    (section: Content[], index: number): Content => ({
+      stack: section,
+      unbreakable: true,
+      margin: [0, index === 0 ? 15 : 6, 0, 0],
+    })
+  );
+}
+
+interface QrSectionConfig {
+  title: string;
+  qrValue: string;
+  label: string;
+  helperText: string;
+  link?: string;
+}
+
+function buildQrSection(config: QrSectionConfig): Content[] {
+  const qrCode: ContentQr | undefined = generateQRCode(config.qrValue);
+
+  if (!qrCode) {
+    return [];
+  }
+
+  const header: Content = {
+    stack: [formatText(config.title, FormatTyp.HeaderContent)],
+    margin: [0, 0, 0, 4],
+  };
+
+  return [
+    header,
+    {
+      columns: [
+        {
+          stack: [
+            qrCode,
+            {
+              stack: [formatText(config.label, FormatTyp.Default)],
+              width: 'auto',
+              alignment: 'center',
+              marginLeft: 10,
+              marginRight: 10,
+              marginTop: 4,
+            } as ContentStack,
+          ],
+          width: 150,
+        } as ContentStack,
+        {
+          stack: [
+            formatText(config.helperText, FormatTyp.Value),
+            ...(config.link
+              ? ([{ stack: [formatText(config.link, FormatTyp.Link)], marginTop: 5 }] as Content[])
+              : []),
+          ],
+          link: config.link,
+          margin: [10, (qrCode.fit ?? 120) / 2 - 30, 0, 0],
+          width: 'auto',
+        } as ContentStack,
+      ],
+    },
+  ];
+}
+
+function tightenBottomSpacing(content: Content[], marginBottom = 2): void {
+  for (let i = content.length - 1; i >= 0; i--) {
+    const element = content[i];
+
+    if (!element) {
+      continue;
+    }
+
+    if (Array.isArray(element) && element.length) {
+      tightenBottomSpacing(element as Content[], marginBottom);
+      return;
+    }
+
+    if (typeof element === 'object') {
+      const contentWithMargin = element as Content & { margin?: Margins };
+      const marginValue = contentWithMargin.margin;
+
+      if (marginValue !== undefined) {
+        if (Array.isArray(marginValue)) {
+          const [left = 0, top = 0, right = 0] = marginValue;
+          contentWithMargin.margin = [left, top, right, marginBottom];
+        } else if (typeof marginValue === 'number') {
+          contentWithMargin.margin = [marginValue, marginValue, marginValue, marginBottom];
+        } else {
+          contentWithMargin.margin = [0, 0, 0, marginBottom];
+        }
+        return;
+      }
     }
   }
-  return createSection(result, true);
 }

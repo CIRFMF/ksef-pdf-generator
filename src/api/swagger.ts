@@ -188,8 +188,16 @@ const options = {
                     },
                     additionalData: {
                       type: 'string',
-                      description: 'Dodatkowe dane w formacie JSON (np. {"nrKSeF":"123456789012345678"})',
-                      example: '{"nrKSeF":"123456789012345678"}'
+                      description: [
+                        'Dodatkowe dane w formacie JSON przekazywane jako string.',
+                        'Struktura obiektu:',
+                        '- nrKSeF (string, wymagane): Numer identyfikacyjny dokumentu w KSeF.',
+                        '- qrCode (string, opcjonalne): Gotowy do wydruku tekst QR kodu.',
+                        '- qrCode2 (string, opcjonalne): Drugi kod QR wymagany w trybie offline (KOD II – certyfikat) opisany w dokumentacji KSeF.',
+                        '- isMobile (boolean, opcjonalne): Flaga wymuszająca layout mobilny.',
+                        'Przykład: {"nrKSeF":"123456789012345678","qrCode":"...","qrCode2":"...","isMobile":true}'
+                      ].join('\n'),
+                      example: '{"nrKSeF":"123456789012345678","qrCode":"https://ksef-test.mf.gov.pl/client-app/invoice/...","qrCode2":"https://ksef-test.mf.gov.pl/client-app/certificate/..."}'
                     }
                   },
                   required: ['file', 'additionalData']
