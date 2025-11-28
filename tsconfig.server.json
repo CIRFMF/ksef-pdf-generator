@@ -8,8 +8,17 @@
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "resolveJsonModule": true,
-    "skipDefaultLibCheck": true
+    "skipDefaultLibCheck": true,
+    "allowImportingTsExtensions": true,
+    "preserveConstEnums": true
   },
   "include": ["src/api/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist"],
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "ES2020",
+      "allowImportingTsExtensions": true
+    }
+  }
 }

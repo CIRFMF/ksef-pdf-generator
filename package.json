@@ -12,7 +12,10 @@
     "test": "vitest",
     "test:api": "node scripts/test-generate-invoice.mjs",
     "test:ui": "vitest --ui",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "install:service": "node scripts/install-service.cjs",
+    "uninstall:service": "node scripts/uninstall-service.cjs",
+    "cleanup:logs": "node scripts/cleanup-logs.cjs"
   },
   "main": "./ksef-fe-invoice-converter.umd.js",
   "module": "./ksef-fe-invoice-converter.es.js",
@@ -39,6 +42,8 @@
     "@types/express": "^5.0.5",
     "@types/multer": "^2.0.0",
     "@types/pdfmake": "^0.2.11",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vitest/coverage-v8": "^3.2.4",
@@ -63,7 +68,10 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "multer": "^2.0.2",
+    "node-windows": "^1.0.0-beta.8",
     "pdfmake": "^0.2.20",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "xml-js": "^1.6.11"
   }
 }

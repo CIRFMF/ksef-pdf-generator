@@ -84,8 +84,42 @@ npm run start:api
 - `npm run build:server` — build tylko serwera (esbuild -> `dist/api/server.cjs`)
 - `npm run start:api` — uruchamia zbudowany serwer (`node dist/api/server.cjs`)
 - `npm run test:api` — testuje API (skrypt `scripts/test-generate-invoice.mjs`) — wysyła `assets/invoice.xml` i zapisuje `out.pdf`
+- `npm run install:service` — instaluje aplikację jako Windows Service
+- `npm run uninstall:service` — odinstalowuje Windows Service
 
-## 7. Najczęstsze problemy i wskazówki
+## 7. Logowanie (Logging)
+
+Aplikacja zawiera wbudowany system logowania, który automatycznie rejestruje:
+- Każde żądanie HTTP (metoda, URL, IP, User-Agent, czas odpowiedzi)
+- Szczegóły przetwarzania PDF (czas, rozmiar pliku, nrKSeF)
+- Wszystkie błędy z pełnym stack trace
+
+### Przeglądanie logów
+
+**Development:**
+```powershell
+# Logów są w ./logs/api-YYYY-MM-DD.log
+Get-Content "logs/api-2025-11-27.log" -Tail 50
+```
+
+**Production (Windows Service):**
+```powershell
+# Logów są w C:\logs\ksef-api\api-YYYY-MM-DD.log
+Get-Content "C:\logs\ksef-api\api-2025-11-27.log" -Wait
+```
+
+**REST API endpoint (nowy):**
+```powershell
+# Ostatnie 50 logów
+Invoke-WebRequest "http://localhost:3001/logs" | Select-Object -ExpandProperty Content | ConvertFrom-Json
+
+# Ostatnie 100 logów
+Invoke-WebRequest "http://localhost:3001/logs?lines=100" | Select-Object -ExpandProperty Content | ConvertFrom-Json
+```
+
+Szczegóły w: `docs/API-LOGGING.md`
+
+## 8. Najczęstsze problemy i wskazówki
 
 - `Cannot find module dist/lib-public/generate-invoice.js` — znaczy, że build frontendu nie wygenerował plików JS w `dist/lib-public`. Zadziała `npm run dev:api` (uruchamia serwer z kodu źródłowego) lub uruchom pełny `npm run build` by wygenerować wymagane artefakty.
 - `FileReader is not defined` — oznaczało, że parsowanie XML używało browser API. W kodzie zrobiliśmy poprawkę w `src/shared/XML-parser.ts`, tak żeby serwer przyjmował `Buffer` i parsował XML w Node.
@@ -96,15 +130,49 @@ npm run start:api
   Stop-Process -Id <PID> -Force
   ```
 
-## 8. Dodane pliki pomocnicze
+## 9. Dokumentacja API - Swagger
+
+Aplikacja zawiera interaktywną dokumentację API z Swagger UI.
+
+### Dostęp do dokumentacji
+
+```powershell
+# Development
+npm run dev:api
+# Otwórz: http://localhost:3001/docs
+
+# Production
+npm run start:api
+# Otwórz: http://localhost:3001/docs
+```
+
+**Funkcjonalności:**
+- ✅ Przeglądanie wszystkich endpoint'ów
+- ✅ Testowanie endpoint'ów bezpośrednio
+- ✅ Wdrażanie kodu klienta
+- ✅ Pobieranie specyfikacji OpenAPI
+
+Szczegóły w: `docs/API-SWAGGER.md`
+
+## 10. Dodane pliki pomocnicze
 
 - `scripts/test-generate-invoice.mjs` — prosty klient, który wysyła `assets/invoice.xml` i zapisuje `out.pdf`.
 - `tsconfig.server.json` — uproszczony tsconfig dla `ts-node` w trybie development.
+- `scripts/install-service.cjs` — instalacja Windows Service
+- `scripts/uninstall-service.cjs` — odinstalowanie Windows Service
+- `scripts/cleanup-logs.cjs` — czyszczenie starych logów
+- `src/api/logger.ts` — moduł logowania
+- `src/api/middleware.ts` — middleware do logowania żądań i obsługi błędów
+- `src/api/swagger.ts` — konfiguracja Swagger/OpenAPI
+- `docs/API-LOGGING.md` — dokumentacja systemu logowania
+- `docs/API-SWAGGER.md` — dokumentacja Swagger UI
+- `docs/SETUP-WINDOWS-SERVICE.md` — instrukcja instalacji jako Windows Service
+- `docs/CLEANUP-LOGS.md` — instrukcja czyszczenia logów
 
-## 9. Automatyzacja (opcjonalnie)
+## 11. Automatyzacja (opcjonalnie)
 
 - Możemy dodać `postbuild` script uruchamiający `npm run build:server` po `vite build`.
 - Mogę przygotować kolekcję Postman (.json) do importu.
 
 ---
-Plik wygenerowany automatycznie. Jeśli chcesz, żebym dodał eksport kolekcji Postman lub `postbuild` — napisz.
+Plik zaktualizowany. Dokumentacja API zawiera teraz system logowania, Swagger UI i Windows Service support.
