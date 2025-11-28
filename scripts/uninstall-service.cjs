@@ -5,7 +5,7 @@ console.log('\n⚠️  Odinstalowywanie Windows Service...\n');
 
 // Konfiguracja serwisu do odinstalowania
 const svc = new Service({
-  name: 'KsefPdfGeneratorAPI',
+  name: 'DaletoKsefPdfGeneratorAPI',
   description: 'KSEF PDF Generator API Service',
   script: path.join(__dirname, '../dist/api/server.cjs')
 });

@@ -28,12 +28,12 @@ if (!fs.existsSync(logDir)) {
 
 // Konfiguracja serwisu
 const svc = new Service({
-  name: 'KsefPdfGeneratorAPI',
-  description: 'KSEF PDF Generator API Service',
+  name: 'DaletoKsefPdfGeneratorAPI',
+  description: 'Daleto KSEF PDF Generator API Service',
   script: path.join(__dirname, '../dist/api/server.cjs'),
-  nodeOptions: '--max-old-space-size=2048',
+  nodeOptions: '--max-old-space-size=3072',
   // Zmienne środowiskowe
-  envs: [
+  env: [
     {
       name: 'NODE_ENV',
       value: 'production'

@@ -3,12 +3,17 @@
   "version": "0.0.30",
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
-    "start:api": "node dist/api/server.cjs",
+    "start:api": "node --max-old-space-size=3072 dist/api/server.cjs",
     "dev:api": "ts-node --esm -P tsconfig.server.json src/api/server.ts",
     "build:server": "esbuild src/api/server.ts --bundle --platform=node --target=node18 --format=cjs --outfile=dist/api/server.cjs --sourcemap --external:swagger-ui-express --external:swagger-ui-dist",
     "build": "vite build --mode production",
     "postbuild": "npm run build:server",
     "build:start": "npm run build && npm run start:api",
+    "build:daemon": "node scripts/build-daemon.cjs",
+    "build:deploy": "npm run build && npm run build:daemon",
+    "pm2:start": "node scripts/start-pm2-instances.cjs",
+    "pm2:stop": "pm2 delete daleto-ksef-pdf-generator-api-1 daleto-ksef-pdf-generator-api-2",
+    "pm2:status": "pm2 status",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:api": "node scripts/test-generate-invoice.mjs",
@@ -63,7 +68,9 @@
     "typescript-eslint": "^8.40.0",
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "pkg": "^5.8.1",
+    "pm2": "^5.4.3"
   },
   "dependencies": {
     "cors": "^2.8.5",

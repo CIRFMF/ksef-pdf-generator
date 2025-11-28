@@ -67,9 +67,15 @@ describe('generateNaglowek', () => {
 
     const result = generateNaglowek(fa, additionalData);
 
-    const columnsBlock = result.find(
-      (item) => typeof item === 'object' && item !== null && 'columns' in (item as Record<string, unknown>)
-    ) as { columns?: Array<{ stack?: Array<{ image?: string }> }> } | undefined;
+    const columnsBlock = result.find((item) => {
+      if (typeof item !== 'object' || item === null) {
+        return false;
+      }
+
+      const candidate = item as { columns?: unknown };
+
+      return Object.prototype.hasOwnProperty.call(candidate, 'columns');
+    }) as { columns?: Array<{ stack?: Array<{ image?: string }> }> } | undefined;
 
     expect(columnsBlock).toBeDefined();
     expect(columnsBlock?.columns?.[0]?.stack?.[0]?.image).toContain('iVBORw0KGgo');
