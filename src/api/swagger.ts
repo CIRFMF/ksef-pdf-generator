@@ -235,6 +235,59 @@ const options = {
             }
           }
         }
+      },
+      '/generate-upo': {
+        post: {
+          summary: 'Generuj UPO PDF',
+          description: 'Tworzy plik PDF z wizualizacją UPO v4_2 na podstawie przekazanego pliku XML',
+          tags: ['UPO'],
+          requestBody: {
+            required: true,
+            content: {
+              'multipart/form-data': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    file: {
+                      type: 'string',
+                      format: 'binary',
+                      description: 'Plik XML zawierający element Potwierdzenie UPO'
+                    }
+                  },
+                  required: ['file']
+                }
+              }
+            }
+          },
+          responses: {
+            '200': {
+              description: 'Plik PDF UPO',
+              content: {
+                'application/pdf': {}
+              }
+            },
+            '400': {
+              description: 'Brak wymaganego pliku',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/ErrorResponse'
+                  }
+                }
+              }
+            },
+            '500': {
+              description: 'Błąd podczas generowania UPO',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/ErrorResponse'
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },

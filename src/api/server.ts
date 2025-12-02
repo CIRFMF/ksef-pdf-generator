@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { generateInvoice } from '../lib-public/generate-invoice.ts';
+import { generatePDFUPO } from '../lib-public/UPO-4_2-generators.ts';
 import { AdditionalDataTypes } from '../lib-public/types/common.types.ts';
 import { logger } from './logger.ts';
 import { requestLogger, errorHandler, notFoundHandler, RequestWithId } from './middleware.ts';
@@ -215,6 +216,92 @@ app.post('/generate-invoice', upload.single('file'), async (req: any, res: any) 
     res.send(pdfBuffer);
   } catch (err) {
     logger.error('Error in /generate-invoice', {
+      requestId,
+      error: String(err),
+      stack: err instanceof Error ? err.stack : undefined
+    });
+    res.status(500).json({
+      error: String(err),
+      requestId,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /generate-upo:
+ *   post:
+ *     summary: Generuj UPO PDF
+ *     description: Generuje wizualizację PDF UPO v4_2 na podstawie pliku XML
+ *     tags:
+ *       - UPO
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Plik XML zawierający strukturę UPO Potwierdzenie
+ *             required:
+ *               - file
+ *     responses:
+ *       200:
+ *         description: Plik PDF UPO
+ *         content:
+ *           application/pdf: {}
+ *       400:
+ *         description: Brak wymaganego pliku XML
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *       500:
+ *         description: Błąd podczas generowania UPO
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ */
+app.post('/generate-upo', upload.single('file'), async (req: any, res: any) => {
+  const requestId = req.id;
+
+  try {
+    if (!req.file) {
+      logger.warn('Request missing file for UPO', { requestId });
+      return res.status(400).json({ error: 'file is required' });
+    }
+
+    logger.debug('Processing UPO generation', {
+      requestId,
+      fileName: req.file.originalname,
+      fileSize: req.file.size
+    });
+
+    const startTime = Date.now();
+    const blob = await generatePDFUPO(req.file.buffer as any);
+    const arrayBuffer = await blob.arrayBuffer();
+    const pdfBuffer = Buffer.from(arrayBuffer);
+    const duration = Date.now() - startTime;
+
+    logger.info('UPO generated successfully', {
+      requestId,
+      duration: `${duration}ms`,
+      fileName: req.file.originalname
+    });
+
+    res.setHeader('Content-Type', 'application/pdf');
+    const rawName = req.file.originalname?.replace(/\.xml$/i, '') || 'upo';
+    const safeName = rawName.replace(/[^0-9A-Za-z._-]/g, '_').slice(0, 120) || 'upo';
+    res.setHeader('Content-Disposition', `attachment; filename=${safeName}.pdf`);
+    res.setHeader('Content-Length', String(pdfBuffer.length));
+    res.send(pdfBuffer);
+  } catch (err) {
+    logger.error('Error in /generate-upo', {
       requestId,
       error: String(err),
       stack: err instanceof Error ? err.stack : undefined
