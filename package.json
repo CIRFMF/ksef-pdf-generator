@@ -7,7 +7,8 @@
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "start:server": "jiti src/server/index.ts"
   },
   "main": "./ksef-fe-invoice-converter.umd.cjs",
   "module": "./ksef-fe-invoice-converter.js",
@@ -50,6 +51,10 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
+    "express": "^5.2.1",
+    "multer": "^2.0.2",
     "pdfmake": "^0.2.20",
     "xml-js": "^1.6.11"
   }
