@@ -13,6 +13,7 @@ export const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const uploadDir = path.resolve(__dirname, '../../tmp/uploads');
+
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
@@ -21,7 +22,7 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
-  }
+  },
 });
 
 const upload = multer({ storage });
@@ -40,7 +41,7 @@ const upload = multer({ storage });
  *             properties:
  *               metadata:
  *                 type: string
- *                 format: binary
+ *                 description: JSON string
  *               file:
  *                 type: string
  *                 format: binary
@@ -57,37 +58,42 @@ const upload = multer({ storage });
  *       500:
  *         description: Something went wrong
  */
-app.post('/api/generate-invoice', upload.fields([
-  { name: 'metadata', maxCount: 1 },
-  { name: 'file', maxCount: 1 }
-]), async (req: Request, res: Response, next: NextFunction) => {
-  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-  const metadataFile = files['metadata']?.[0];
-  const xmlFile = files['file']?.[0];
-  try {
-    if (!metadataFile || !xmlFile) {
-      return res.status(400).json({ error: 'Missing metadata or file' });
-    }
+app.post(
+  '/api/generate-invoice',
+  upload.single('file'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    const xmlFile = req.file;
+    const metadataStr = req.body.metadata;
 
-    let additionalData: AdditionalDataTypes;
     try {
-      additionalData = JSON.parse(fs.readFileSync(metadataFile.path, 'utf-8'));
+      if (!metadataStr || !xmlFile) {
+        return res.status(400).json({ error: 'Missing metadata or file' });
+      }
+
+      let additionalData: AdditionalDataTypes;
+
+      try {
+        additionalData = JSON.parse(metadataStr);
+      } catch (error) {
+        return res.status(400).json({ error: 'Json format error: ' + error });
+      }
+      const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
+
+      const result = await generateInvoice(xmlContent, additionalData, 'buffer');
+      const finalPdfBuffer = Buffer.isBuffer(result) ? result : Buffer.from((result as any).data || result);
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
+      res.send(finalPdfBuffer);
     } catch (error) {
-      return res.status(400).send();
+      next(error);
+    } finally {
+      if (xmlFile) {
+        fs.unlinkSync(xmlFile.path);
+      }
     }
-    const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
-
-    const pdfBuffer = await generateInvoice(xmlContent, additionalData, 'buffer');
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.send(pdfBuffer);
-  } catch (error) {
-    next(error);
-  } finally {
-    if (metadataFile) fs.unlinkSync(metadataFile.path);
-    if (xmlFile) fs.unlinkSync(xmlFile.path);
   }
-});
+);
 
 /**
  * @swagger
@@ -117,24 +123,31 @@ app.post('/api/generate-invoice', upload.fields([
  *       500:
  *         description: Something went wrong
  */
-app.post('/api/generate-upo', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
-  const xmlFile = req.file;
-  try {
-    if (!xmlFile) {
-      return res.status(400).json({ error: 'Missing file' });
+app.post(
+  '/api/generate-upo',
+  upload.single('file'),
+  async (req: Request, res: Response, next: NextFunction) => {
+    const xmlFile = req.file;
+
+    try {
+      if (!xmlFile) {
+        return res.status(400).json({ error: 'Missing file' });
+      }
+
+      const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
+      const pdfBuffer = await generatePDFUPO(xmlContent, 'buffer');
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.send(pdfBuffer);
+    } catch (error) {
+      next(error);
+    } finally {
+      if (xmlFile) {
+        fs.unlinkSync(xmlFile.path);
+      }
     }
-
-    const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
-    const pdfBuffer = await generatePDFUPO(xmlContent, 'buffer');
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.send(pdfBuffer);
-  } catch (error) {
-    next(error);
-  } finally {
-    if (xmlFile) fs.unlinkSync(xmlFile.path);
   }
-});
+);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
@@ -143,7 +156,26 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 if (require.main === module) {
   const port = 3000;
-  app.listen(port, () => {
+
+  const server = app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
+
+  // Graceful shutdown on SIGTERM and SIGINT
+  const shutdown = (signal: string) => {
+    console.log(`\n${signal} received, shutting down gracefully...`);
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+
+    // Force shutdown after 10 seconds
+    setTimeout(() => {
+      console.error('Forced shutdown after timeout');
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'));
+  process.on('SIGINT', () => shutdown('SIGINT'));
 }
