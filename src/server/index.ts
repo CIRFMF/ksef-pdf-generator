@@ -1,9 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
-import { generateInvoice } from '../lib-public/generate-invoice';
-import { generatePDFUPO } from '../lib-public/UPO-4_2-generators';
+import { generateInvoice } from '../lib-public';
+import { generatePDFUPO } from '../lib-public';
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
@@ -12,20 +10,22 @@ export const app = express();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-const uploadDir = path.resolve(__dirname, '../../tmp/uploads');
+const storage = multer.memoryStorage();
 
-fs.mkdirSync(uploadDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024,
   },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+  fileFilter: (_req, file, cb) => {
+    // Basic MIME type check (not bulletproof, but a good first line of defense)
+    if (file.mimetype === 'text/xml' || file.mimetype === 'application/xml') {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only XML is allowed.'));
+    }
   },
 });
-
-const upload = multer({ storage });
 
 /**
  * @swagger
@@ -62,24 +62,26 @@ app.post(
   '/api/generate-invoice',
   upload.single('file'),
   async (req: Request, res: Response, next: NextFunction) => {
-    const xmlFile = req.file;
-    const metadataStr = req.body.metadata;
-
     try {
-      if (!metadataStr || !xmlFile) {
-        return res.status(400).json({ error: 'Missing metadata or file' });
+      if (!req.file) {
+        return res.status(400).json({ error: 'Missing XML file' });
+      }
+      if (!req.body.metadata) {
+        return res.status(400).json({ error: 'Missing metadata' });
       }
 
       let additionalData: AdditionalDataTypes;
 
       try {
-        additionalData = JSON.parse(metadataStr);
+        additionalData = JSON.parse(req.body.metadata);
       } catch (error) {
-        return res.status(400).json({ error: 'Json format error: ' + error });
+        return res.status(400).json({ error: 'Invalid JSON format in metadata ' + error });
       }
-      const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
+
+      const xmlContent = req.file.buffer.toString('utf-8');
 
       const result = await generateInvoice(xmlContent, additionalData, 'buffer');
+
       const finalPdfBuffer = Buffer.isBuffer(result) ? result : Buffer.from((result as any).data || result);
 
       res.setHeader('Content-Type', 'application/pdf');
@@ -87,10 +89,6 @@ app.post(
       res.send(finalPdfBuffer);
     } catch (error) {
       next(error);
-    } finally {
-      if (xmlFile) {
-        fs.unlinkSync(xmlFile.path);
-      }
     }
   }
 );
@@ -127,49 +125,51 @@ app.post(
   '/api/generate-upo',
   upload.single('file'),
   async (req: Request, res: Response, next: NextFunction) => {
-    const xmlFile = req.file;
-
     try {
-      if (!xmlFile) {
-        return res.status(400).json({ error: 'Missing file' });
+      if (!req.file) {
+        return res.status(400).json({ error: 'Missing XML file' });
       }
 
-      const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
+      const xmlContent = req.file.buffer.toString('utf-8');
       const pdfBuffer = await generatePDFUPO(xmlContent, 'buffer');
 
       res.setHeader('Content-Type', 'application/pdf');
+      // Added missing filename header
+      res.setHeader('Content-Disposition', 'attachment; filename=upo.pdf');
       res.send(pdfBuffer);
     } catch (error) {
       next(error);
-    } finally {
-      if (xmlFile) {
-        fs.unlinkSync(xmlFile.path);
-      }
     }
   }
 );
 
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ error: `Upload error: ${err.message}` });
+  }
   console.error(err.stack);
-  res.status(500).json({ error: 'Something went wrong!' });
+
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 if (require.main === module) {
-  const port = 3000;
+  const port = process.env.PORT || 3000; // Use env var for port
 
   const server = app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
   });
 
-  // Graceful shutdown on SIGTERM and SIGINT
-  const shutdown = (signal: string) => {
+  const shutdown = (signal: string): void => {
     console.log(`\n${signal} received, shutting down gracefully...`);
     server.close(() => {
       console.log('Server closed');
       process.exit(0);
     });
 
-    // Force shutdown after 10 seconds
     setTimeout(() => {
       console.error('Forced shutdown after timeout');
       process.exit(1);
