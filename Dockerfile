@@ -9,7 +9,7 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-RUN npx tsc -p tsconfig.json --outDir dist
+RUN npx tsc -p tsconfig.server.json --outDir dist
 
 
 # Stage 2: Runner
