@@ -8,7 +8,7 @@ import { AdditionalDataTypes } from '../lib-public/types/common.types';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 
-const app = express();
+export const app = express();
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -69,7 +69,12 @@ app.post('/api/generate-invoice', upload.fields([
       return res.status(400).json({ error: 'Missing metadata or file' });
     }
 
-    const additionalData: AdditionalDataTypes = JSON.parse(fs.readFileSync(metadataFile.path, 'utf-8'));
+    let additionalData: AdditionalDataTypes;
+    try {
+      additionalData = JSON.parse(fs.readFileSync(metadataFile.path, 'utf-8'));
+    } catch (error) {
+      return res.status(400).send();
+    }
     const xmlContent = fs.readFileSync(xmlFile.path, 'utf-8');
 
     const pdfBuffer = await generateInvoice(xmlContent, additionalData, 'buffer');
@@ -136,7 +141,9 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+if (require.main === module) {
+  const port = 3000;
+  app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+  });
+}
