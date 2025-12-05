@@ -9,7 +9,8 @@ const options = {
       description: 'API to generate PDF visualizations of invoices and UPO from XML files',
     },
   },
-  apis: ['./src/server/index.ts'],
+
+  apis: ['./src/**/*.ts', './dist/**/*.js'],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);

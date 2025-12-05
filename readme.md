@@ -9,6 +9,8 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
     Biblioteka zawiera następujące funkcjonalności:
     - Generowanie wizualizacji PDF faktur
     - Generowanie wizualizacji PDF UPO
+    - REST API do zdalnego generowania faktur i UPO
+    - Wsparcie dla konteneryzacji Docker
 
 ---
 
@@ -35,7 +37,63 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
 Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://localhost:5173/)
 
-## 2.1 Budowanie bibliotki
+## 2.1 Uruchomienie REST API
+
+Biblioteka zawiera serwer REST API do generowania faktur i UPO przez HTTP.
+
+### Uruchomienie lokalne:
+
+1. Uruchom serwer:
+   ```bash
+   npm run dev:server
+   ```
+
+Serwer uruchomi się domyślnie pod adresem: [http://localhost:3000](http://localhost:3000)
+
+Dokumentacja API (Swagger) dostępna pod: [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+
+### Dostępne endpointy:
+
+#### POST /api/generate-invoice
+Generuje PDF faktury z pliku XML i metadanych.
+
+**Request:**
+- `Content-Type: multipart/form-data`
+- `file`: Plik XML faktury (FA(1), FA(2) lub FA(3))
+- `metadata`: JSON string z dodatkowymi danymi (AdditionalDataTypes)
+
+**Response:**
+- `200 OK`: PDF faktury (application/pdf)
+- `400 Bad Request`: Brak pliku lub metadanych
+- `500 Internal Server Error`: Błąd podczas generowania
+
+#### POST /api/generate-upo
+Generuje PDF UPO z pliku XML.
+
+**Request:**
+- `Content-Type: multipart/form-data`
+- `file`: Plik XML UPO (schemat UPO v4_2)
+
+**Response:**
+- `200 OK`: PDF UPO (application/pdf)
+- `400 Bad Request`: Brak pliku
+- `500 Internal Server Error`: Błąd podczas generowania
+
+### Uruchomienie z Docker:
+
+1. Zbuduj obraz Docker:
+   ```bash
+   docker build -t ksef-pdf-generator .
+   ```
+
+2. Uruchom kontener:
+   ```bash
+   docker run -p 3000:3000 ksef-pdf-generator
+   ```
+
+Serwer będzie dostępny pod adresem: [http://localhost:3000](http://localhost:3000)
+
+## 2.2 Budowanie bibliotki
 
 1. Jak zbudować bibliotekę produkcyjnie:
    ```bash

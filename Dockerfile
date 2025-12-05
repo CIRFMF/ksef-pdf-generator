@@ -28,4 +28,6 @@ EXPOSE 3000
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
+# Use exec form to ensure proper signal handling
 ENTRYPOINT ["./entrypoint.sh"]
+CMD []
