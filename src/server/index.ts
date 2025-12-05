@@ -5,8 +5,12 @@ import path from 'path';
 import { generateInvoice } from '../lib-public/generate-invoice';
 import { generatePDFUPO } from '../lib-public/UPO-4_2-generators';
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './swagger';
 
 const app = express();
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const uploadDir = path.resolve(__dirname, '../../tmp/uploads');
 fs.mkdirSync(uploadDir, { recursive: true });
@@ -22,6 +26,37 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+/**
+ * @swagger
+ * /api/generate-invoice:
+ *   post:
+ *     summary: Generate an invoice PDF from an XML file and metadata
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               metadata:
+ *                 type: string
+ *                 format: binary
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: The generated PDF invoice
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Missing metadata or file
+ *       500:
+ *         description: Something went wrong
+ */
 app.post('/api/generate-invoice', upload.fields([
   { name: 'metadata', maxCount: 1 },
   { name: 'file', maxCount: 1 }
@@ -49,6 +84,34 @@ app.post('/api/generate-invoice', upload.fields([
   }
 });
 
+/**
+ * @swagger
+ * /api/generate-upo:
+ *   post:
+ *     summary: Generate a UPO PDF from an XML file
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: The generated PDF UPO
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       400:
+ *         description: Missing file
+ *       500:
+ *         description: Something went wrong
+ */
 app.post('/api/generate-upo', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
   const xmlFile = req.file;
   try {
