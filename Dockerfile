@@ -20,9 +20,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install --production
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/ksef-fe-invoice-converter.js ./
-COPY --from=builder /app/ksef-fe-invoice-converter.umd.cjs ./
+COPY --from=builder /app/dist ./
 
 EXPOSE 3000
 
