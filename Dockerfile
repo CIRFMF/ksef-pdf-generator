@@ -10,6 +10,7 @@ COPY . .
 
 RUN npm run build
 RUN npx tsc -p tsconfig.server.json --outDir dist
+RUN echo '{"type": "commonjs"}' > dist/package.json
 
 
 # Stage 2: Runner
