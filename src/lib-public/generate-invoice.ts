@@ -29,6 +29,7 @@ export async function generateInvoice(
   formatType: FormatType = 'blob'
 ): Promise<FormatTypeResult> {
   let xml: unknown;
+
   if (typeof xmlFile === 'string') {
     xml = parseXMLFromString(xmlFile);
   } else {

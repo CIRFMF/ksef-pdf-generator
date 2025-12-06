@@ -25,7 +25,7 @@ describe('POST /api/generate-invoice', () => {
 
     expect(response.status).toBe(200);
     expect(response.type).toBe('application/pdf');
-    expect(response.headers['content-disposition']).toContain('attachment; filename=invoice.pdf');
+    expect(response.headers['content-disposition']).toContain('attachment; filename="1234567890.pdf"');
   });
 
   it('should return 400 if metadata is missing', async () => {

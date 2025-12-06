@@ -89,11 +89,10 @@ app.post(
       }
 
       const xmlContent = req.file.buffer.toString('utf-8');
-
       const result = await generateInvoice(xmlContent, additionalData, 'buffer');
 
       res.setHeader('Content-Type', 'application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename="' + additionalData.nrKSeF + '.pdf"');
       res.send(Buffer.from(result));
     } catch (error) {
       next(error);
@@ -139,11 +138,11 @@ app.post(
       }
 
       const xmlContent = req.file.buffer.toString('utf-8');
-      const pdfBuffer = await generatePDFUPO(xmlContent, 'buffer');
+      const pdfBuffer = await generatePDFUPO(xmlContent);
 
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=upo.pdf');
-      res.send(Buffer.from(pdfBuffer));
+      res.send(pdfBuffer);
     } catch (error) {
       next(error);
     }
