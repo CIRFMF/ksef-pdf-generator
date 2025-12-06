@@ -1,12 +1,28 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
 import multer from 'multer';
-import { generateInvoice } from '../lib-public';
-import { generatePDFUPO } from '../lib-public';
+import { cpus } from 'os';
+import path from 'path';
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
 import { AdditionalDataSchema } from './validation';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
+import { WorkerPool } from './worker-pool';
+import type { PdfTaskData } from './pdf-worker';
+
+// Initialize worker pool for PDF generation
+// Uses bootstrap wrapper to enable TypeScript in worker threads via jiti
+const pdfWorkerPool = new WorkerPool<PdfTaskData, Buffer>(path.resolve(__dirname, 'worker-bootstrap.cjs'), {
+  maxWorkers: Math.max(1, cpus().length - 1),
+});
+
+pdfWorkerPool.on('workerError', (error) => {
+  console.error('Worker pool error:', error);
+});
+
+pdfWorkerPool.on('workerExit', (code) => {
+  console.log(`Worker exited with code ${code}`);
+});
 
 export const app = express();
 
@@ -89,11 +105,16 @@ app.post(
       }
 
       const xmlContent = req.file.buffer.toString('utf-8');
-      const result = await generateInvoice(xmlContent, additionalData, 'buffer');
+      const result = await pdfWorkerPool.runTask({
+        type: 'invoice',
+        xmlContent,
+        additionalData,
+      });
+      const pdfBuffer = Buffer.from(result);
 
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename="' + additionalData.nrKSeF + '.pdf"');
-      res.send(Buffer.from(result));
+      res.send(pdfBuffer);
     } catch (error) {
       next(error);
     }
@@ -138,7 +159,12 @@ app.post(
       }
 
       const xmlContent = req.file.buffer.toString('utf-8');
-      const pdfBuffer = await generatePDFUPO(xmlContent);
+      const result = await pdfWorkerPool.runTask({
+        type: 'upo',
+        xmlContent,
+      });
+
+      const pdfBuffer = Buffer.from(result);
 
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=upo.pdf');
@@ -151,6 +177,9 @@ app.post(
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof multer.MulterError) {
+    return res.status(400).json({ error: `Upload error: ${err.message}` });
+  }
+  if (err.message === 'Invalid file type. Only XML is allowed.') {
     return res.status(400).json({ error: `Upload error: ${err.message}` });
   }
   console.error(err.stack);
@@ -169,8 +198,17 @@ if (require.main === module || process.env.npm_lifecycle_event === 'start:server
     console.log(`Server listening at http://localhost:${port}`);
   });
 
-  const shutdown = (signal: string): void => {
+  const shutdown = async (signal: string): Promise<void> => {
     console.log(`\n${signal} received, shutting down gracefully...`);
+
+    // Shutdown worker pool first
+    try {
+      await pdfWorkerPool.shutdown();
+      console.log('Worker pool shut down');
+    } catch (error) {
+      console.error('Error shutting down worker pool:', error);
+    }
+
     server.close(() => {
       console.log('Server closed');
       process.exit(0);

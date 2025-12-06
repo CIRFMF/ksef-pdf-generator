@@ -8,6 +8,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:ci": "vitest run --coverage",
+    "benchmark": "jiti scripts/benchmark-pdf.ts",
     "start:server": "jiti src/server/index.ts"
   },
   "main": "./ksef-fe-invoice-converter.umd.cjs",
