@@ -50,6 +50,20 @@ export class WorkerPool<TData = unknown, TResult = unknown> extends EventEmitter
   }
 
   /**
+   * Get the number of active workers.
+   */
+  private get activeWorkerCount(): number {
+    return this.workers.length;
+  }
+
+  /**
+   * Get the number of tasks in the queue.
+   */
+  private get queuedTaskCount(): number {
+    return this.taskQueue.length;
+  }
+
+  /**
    * Run a task in a worker thread.
    * Returns a promise that resolves with the result or rejects with an error.
    */
