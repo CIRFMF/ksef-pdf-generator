@@ -10,18 +10,8 @@ import { swaggerSpec } from './swagger';
 import { WorkerPool } from './worker-pool';
 import type { PdfTaskData } from './pdf-worker';
 
-// Initialize worker pool for PDF generation
-// Uses bootstrap wrapper to enable TypeScript in worker threads via jiti
 const pdfWorkerPool = new WorkerPool<PdfTaskData, Buffer>(path.resolve(__dirname, 'worker-bootstrap.cjs'), {
   maxWorkers: Math.max(1, cpus().length - 1),
-});
-
-pdfWorkerPool.on('workerError', (error) => {
-  console.error('Worker pool error:', error);
-});
-
-pdfWorkerPool.on('workerExit', (code) => {
-  console.log(`Worker exited with code ${code}`);
 });
 
 export const app = express();

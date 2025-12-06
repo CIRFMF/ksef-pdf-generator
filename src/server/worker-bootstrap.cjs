@@ -12,4 +12,4 @@ const jiti = createJiti(__filename, {
 
 // Load the actual worker script using jiti
 const workerPath = workerData?.workerScript || require('path').join(__dirname, 'pdf-worker.ts');
-jiti(workerPath);
+module.exports = jiti(workerPath);
