@@ -45,7 +45,7 @@ Biblioteka zawiera serwer REST API do generowania faktur i UPO przez HTTP.
 
 1. Uruchom serwer:
    ```bash
-   npm run dev:server
+   npm run start:server
    ```
 
 Serwer uruchomi się domyślnie pod adresem: [http://localhost:3000](http://localhost:3000)

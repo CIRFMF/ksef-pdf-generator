@@ -1,8 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
+import { z } from 'zod';
 import multer from 'multer';
 import { generateInvoice } from '../lib-public';
 import { generatePDFUPO } from '../lib-public';
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
+import { AdditionalDataSchema } from './validation';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
 
@@ -73,8 +75,16 @@ app.post(
       let additionalData: AdditionalDataTypes;
 
       try {
-        additionalData = JSON.parse(req.body.metadata);
+        const parsed = JSON.parse(req.body.metadata);
+
+        additionalData = AdditionalDataSchema.parse(parsed);
       } catch (error) {
+        if (error instanceof z.ZodError) {
+          return res.status(400).json({
+            error:
+              'Validation error: ' + error.issues.map((e) => `${e.path.join('.')}: ${e.message}`).join(', '),
+          });
+        }
         return res.status(400).json({ error: 'Invalid JSON format in metadata ' + error });
       }
 
@@ -82,11 +92,9 @@ app.post(
 
       const result = await generateInvoice(xmlContent, additionalData, 'buffer');
 
-      const finalPdfBuffer = Buffer.isBuffer(result) ? result : Buffer.from((result as any).data || result);
-
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', 'attachment; filename=invoice.pdf');
-      res.send(finalPdfBuffer);
+      res.send(Buffer.from(result));
     } catch (error) {
       next(error);
     }
@@ -134,9 +142,8 @@ app.post(
       const pdfBuffer = await generatePDFUPO(xmlContent, 'buffer');
 
       res.setHeader('Content-Type', 'application/pdf');
-      // Added missing filename header
       res.setHeader('Content-Disposition', 'attachment; filename=upo.pdf');
-      res.send(pdfBuffer);
+      res.send(Buffer.from(pdfBuffer));
     } catch (error) {
       next(error);
     }
@@ -156,7 +163,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-if (require.main === module) {
+if (require.main === module || process.env.npm_lifecycle_event === 'start:server') {
   const port = process.env.PORT || 3000; // Use env var for port
 
   const server = app.listen(port, () => {
