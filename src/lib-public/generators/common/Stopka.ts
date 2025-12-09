@@ -126,14 +126,15 @@ function generateInformacje(stopka?: Stopka): Content[] {
 function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
   const sections: Content[][] = [];
 
-  if (additionalData?.qrCode && additionalData.nrKSeF) {
+  if (additionalData?.qrCode) {
+    const qrLabel = additionalData.nrKSeF?.trim() ? additionalData.nrKSeF : 'OFFLINE';
     sections.push(
       buildQrSection({
         title: additionalData.qrCode2
           ? 'KOD I – weryfikacja faktury w KSeF'
           : 'Sprawdź, czy Twoja faktura znajduje się w KSeF!',
         qrValue: additionalData.qrCode,
-        label: additionalData.nrKSeF,
+        label: qrLabel,
         helperText:
           'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!',
         link: additionalData.qrCode,

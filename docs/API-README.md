@@ -49,8 +49,8 @@ UWAGI: polecenia podane są dla PowerShell na Windows. Repozytorium znajduje si�
   - URL: `http://localhost:3001/generate-invoice`
   - Body → `form-data`:
     - `file` (File) → wybierz `assets/invoice.xml`
-    - `additionalData` (Text) → `{"nrKSeF":"TEST123","companyLogoBase64":"data:image/png;base64,BASE64_LOGO_DATA"}` (wymagane pole `nrKSeF`, pozostałe opcjonalne)
-      - Obsługiwane pola: `nrKSeF` (wymagane), `qrCode`, `qrCode2`, `isMobile`, `companyLogoBase64` (logo na nagłówku PDF)
+    - `additionalData` (Text) → `{"nrKSeF":"TEST123","companyLogoBase64":"data:image/png;base64,BASE64_LOGO_DATA"}` (`nrKSeF` jest opcjonalne, pozostałe pola również)
+      - Obsługiwane pola: `nrKSeF`, `qrCode`, `qrCode2`, `isMobile`, `companyLogoBase64` (logo na nagłówku PDF)
   - Send and Download → zapisze PDF bezpośrednio.
 
 ## 4. Budowanie produkcyjne
@@ -94,7 +94,7 @@ npm run start:api
 
 Aplikacja zawiera wbudowany system logowania, który automatycznie rejestruje:
 - Każde żądanie HTTP (metoda, URL, IP, User-Agent, czas odpowiedzi)
-- Szczegóły przetwarzania PDF (czas, rozmiar pliku, nrKSeF)
+- Szczegóły przetwarzania PDF (czas, rozmiar pliku, nrKSeF jeśli dostarczone)
 - Wszystkie błędy z pełnym stack trace
 
 ### Przeglądanie logów

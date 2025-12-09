@@ -191,7 +191,7 @@ const options = {
                       description: [
                         'Dodatkowe dane w formacie JSON przekazywane jako string.',
                         'Struktura obiektu:',
-                        '- nrKSeF (string, wymagane): Numer identyfikacyjny dokumentu w KSeF.',
+                        '- nrKSeF (string, opcjonalne): Numer identyfikacyjny dokumentu w KSeF (wykorzystywany m.in. w QR kodzie i nagłówku).',
                         '- qrCode (string, opcjonalne): Gotowy do wydruku tekst QR kodu.',
                         '- qrCode2 (string, opcjonalne): Drugi kod QR wymagany w trybie offline (KOD II – certyfikat) opisany w dokumentacji KSeF.',
                         '- isMobile (boolean, opcjonalne): Flaga wymuszająca layout mobilny.',

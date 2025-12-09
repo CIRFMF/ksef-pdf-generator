@@ -139,7 +139,7 @@ app.get('/logs', (req: any, res: any) => {
  *                 description: Plik XML z danymi faktury
  *               additionalData:
  *                 type: string
- *                 description: Dodatkowe dane w formacie JSON (np. {"nrKSeF":"123456789012345678","companyLogoBase64":"data:image/png;base64,...."})
+ *                 description: Dodatkowe dane w formacie JSON (np. {"nrKSeF":"123456789012345678","companyLogoBase64":"data:image/png;base64,...."}). Pole nrKSeF jest opcjonalne.
  *                 example: '{"nrKSeF":"123456789012345678","companyLogoBase64":"data:image/png;base64,BASE64_LOGO"}'
  *             required:
  *               - file
@@ -177,7 +177,7 @@ app.post('/generate-invoice', upload.single('file'), async (req: any, res: any) 
       fileSize: req.file.size
     });
 
-    let additionalData: AdditionalDataTypes = { nrKSeF: '' };
+    let additionalData: AdditionalDataTypes = {};
     if (req.body.additionalData) {
       try {
         const parsed = JSON.parse(req.body.additionalData);
@@ -188,13 +188,8 @@ app.post('/generate-invoice', upload.single('file'), async (req: any, res: any) 
       }
     }
 
-    if (!additionalData.nrKSeF || additionalData.nrKSeF.trim() === '') {
-      logger.warn('Missing nrKSeF in additionalData', { requestId });
-      return res.status(400).json({ error: 'additionalData.nrKSeF is required and cannot be empty' });
-    }
-
     const buffer: Buffer = req.file.buffer;
-    logger.debug('Calling generateInvoice', { requestId, nrKSeF: additionalData.nrKSeF });
+    logger.debug('Calling generateInvoice', { requestId, nrKSeF: additionalData.nrKSeF ?? null });
 
     const startTime = Date.now();
     const resultBase64 = (await generateInvoice(buffer as any, additionalData, 'base64')) as string;
@@ -204,7 +199,7 @@ app.post('/generate-invoice', upload.single('file'), async (req: any, res: any) 
       requestId,
       duration: `${duration}ms`,
       fileName: req.file.originalname,
-      nrKSeF: additionalData.nrKSeF
+      nrKSeF: additionalData.nrKSeF ?? null
     });
 
     const pdfBuffer = Buffer.from(resultBase64, 'base64');
