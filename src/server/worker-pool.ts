@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import Piscina from 'piscina';
+import path from 'node:path';
 
 export interface WorkerPoolOptions {
   maxWorkers?: number;
@@ -15,11 +16,14 @@ export class WorkerPool<TData = unknown, TResult = unknown> extends EventEmitter
 
   constructor(workerPath: string, options: WorkerPoolOptions = {}) {
     super();
+
+    const bootstrapPath = path.resolve(__dirname, 'worker-bootstrap.cjs');
+
     this.pool = new Piscina({
-      filename: workerPath,
+      filename: bootstrapPath,
       maxThreads: options.maxWorkers,
       workerData: {
-        workerScript: workerPath.endsWith('.cjs') ? undefined : workerPath,
+        workerScript: workerPath,
       },
       ...options.workerOptions,
     });
