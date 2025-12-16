@@ -3,6 +3,7 @@ import { z } from 'zod';
 import multer from 'multer';
 import { cpus } from 'os';
 import path from 'path';
+import fs from 'node:fs';
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
 import { AdditionalDataSchema } from './validation';
 import swaggerUi from 'swagger-ui-express';
@@ -10,7 +11,11 @@ import { swaggerSpec } from './swagger';
 import { WorkerPool } from './worker-pool';
 import type { PdfTaskData } from './pdf-worker';
 
-const pdfWorkerPool = new WorkerPool<PdfTaskData, Buffer>(path.resolve(__dirname, 'worker-bootstrap.cjs'), {
+const pdfWorkerJsPath = path.resolve(__dirname, 'pdf-worker.js');
+const pdfWorkerTsPath = path.resolve(__dirname, 'pdf-worker.ts');
+const pdfWorkerPath = fs.existsSync(pdfWorkerJsPath) ? pdfWorkerJsPath : pdfWorkerTsPath;
+
+const pdfWorkerPool = new WorkerPool<PdfTaskData, Buffer>(pdfWorkerPath, {
   maxWorkers: Math.max(1, cpus().length - 1),
 });
 
