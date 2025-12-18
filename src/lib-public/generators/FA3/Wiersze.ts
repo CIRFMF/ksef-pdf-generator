@@ -48,6 +48,7 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'P_11Vat', title: 'Wartość sprzedaży vat', format: FormatTyp.Currency, width: 'auto' },
     { name: 'KursWaluty', title: 'Kurs waluty', format: FormatTyp.Currency6, width: 'auto' },
     { name: 'StanPrzed', title: 'Stan przed', format: FormatTyp.Boolean, width: 'auto' },
+    { name: 'Indeks', title: 'Indeks', format: FormatTyp.Default, width: 'auto' }
   ];
   const definedHeader2: HeaderDefine[] = [
     { name: 'GTIN', title: 'GTIN', format: FormatTyp.Default, width: 'auto' },
@@ -57,8 +58,7 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'KwotaAkcyzy', title: 'KwotaAkcyzy', format: FormatTyp.Default, width: 'auto' },
     { name: 'GTU', title: 'GTU', format: FormatTyp.Default, width: 'auto' },
     { name: 'Procedura', title: 'Procedura', format: FormatTyp.Default, width: '*' },
-    { name: 'P_6A', title: 'Data dostawy / wykonania', format: FormatTyp.Default, width: 'auto' },
-    { name: 'Indeks', title: 'Indeks', format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_6A', title: 'Data dostawy / wykonania', format: FormatTyp.Default, width: 'auto' }    
   ];
   let content = getContentTable<(typeof faWiersze)[0]>(
     [...definedHeaderLp, ...definedHeader1, ...definedHeader2],
@@ -106,7 +106,7 @@ export function generateWiersze(faVat: Fa): Content {
       margin: [0, 8, 0, 0],
     };
   }
-  if (content.fieldsWithValue.length <= 8 && content.content) {
+  if (content.fieldsWithValue.length <= 9 && content.content) {
     table.push(content.content);
   } else {
     content = getContentTable<(typeof faWiersze)[0]>([...definedHeaderLp, ...definedHeader1], faWiersze, '*');
