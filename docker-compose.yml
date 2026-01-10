@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  ksef-pdf-generator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ksef-pdf-generator
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      # Opcjonalne: montowanie plików XML
+      - ./assets:/app/assets:ro
