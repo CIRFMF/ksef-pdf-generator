@@ -15,7 +15,7 @@ import { generatePlatnosc } from './generators/FA_RR/Platnosc';
 import { generateStopka } from './generators/common/Stopka';
 import { Position } from '../shared/enums/common.enum';
 
-pdfMake.vfs = pdfFonts.vfs;
+(pdfMake as any).vfs = pdfFonts.vfs;
 
 export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes): TCreatedPdf {
   const docDefinition: TDocumentDefinitions = {
