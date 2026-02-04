@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+exec node --import tsx/esm "$(dirname "$0")/../src/cli/cli.ts" "$@"
