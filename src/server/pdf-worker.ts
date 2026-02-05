@@ -19,7 +19,8 @@ export default async function (task: PdfTaskData): Promise<Buffer> {
     if (task.type === 'invoice') {
       return await generateInvoice(task.xmlContent, task.additionalData, 'buffer');
     } else if (task.type === 'upo') {
-      const pdfBlob = await generatePDFUPO(task.xmlContent);
+      const file = new File([task.xmlContent], 'upo.xml', { type: 'text/xml' });
+      const pdfBlob = await generatePDFUPO(file);
       // Convert Blob to Buffer for serialization
       const arrayBuffer = await pdfBlob.arrayBuffer();
 
