@@ -82,10 +82,14 @@ export function generateSzczegoly(faVat: Fa): Content[] {
 
   const forColumns: Content[][] = [
     createLabelText('Numer faktury: ', faVat.P_2),
-    createLabelText('Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ', faVat.P_1),
+    createLabelText(
+      'Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ',
+      faVat.P_1,
+      FormatTyp.Date
+    ),
     createLabelText('Miejsce wystawienia: ', faVat.P_1M),
     createLabelText('Okres, którego dotyczy rabat: ', faVat.OkresFaKorygowanej),
-    createLabelText(LabelP_6, faVat.P_6),
+    createLabelText(LabelP_6, faVat.P_6, FormatTyp.Date),
     P_6Scope,
     cenyLabel1,
     cenyLabel2,

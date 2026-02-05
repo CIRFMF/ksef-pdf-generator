@@ -1,7 +1,7 @@
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { generateStyle, hasValue } from '../shared/PDF-functions';
+import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/const';
 import { generateAdnotacje } from './generators/FA3/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA3/DodatkoweInformacje';
@@ -39,7 +39,8 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
         ZamowienieKorekta.Order,
         invoice.Fa?.P_15?._text ?? '',
         invoice.Fa?.RodzajFaktury?._text ?? '',
-        invoice.Fa?.KodWaluty?._text ?? ''
+        invoice.Fa?.KodWaluty?._text ?? '',
+        getValue(invoice.Fa?.Adnotacje?.PMarzy?.P_PMarzy) as string | undefined
       ),
       generatePodsumowanieStawekPodatkuVat(invoice),
       generateAdnotacje(invoice.Fa?.Adnotacje),

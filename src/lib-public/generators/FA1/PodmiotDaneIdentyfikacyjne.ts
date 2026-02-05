@@ -9,7 +9,7 @@ export function generateDaneIdentyfikacyjne(daneIdentyfikacyjne: DaneIdentyfikac
   if (hasValue(daneIdentyfikacyjne.ImiePierwsze) || hasValue(daneIdentyfikacyjne.Nazwisko)) {
     result.push(
       createLabelText(
-        '',
+        'Imię i nazwisko: ',
         `${getValue(daneIdentyfikacyjne.ImiePierwsze)} ${getValue(daneIdentyfikacyjne.Nazwisko)}`
       )
     );

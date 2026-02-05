@@ -4,24 +4,28 @@ import {
   createLabelText,
   formatText,
   generateColumns,
+  generateLine,
   getTable,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Podmiot2, Podmiot2K } from '../../types/fa3.types';
-import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { generateCorrectedContent } from '../FA2/Podmiot2Podmiot2k';
 import { generateAdres } from '../FA2/Adres';
+import { generateDaneIdentyfikacyjneTPodmiot2Dto } from '../FA2/PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
 
 export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot2K): Content[] {
-  const result: Content[] = createHeader('Nabywca');
+  const result: Content[] = [];
+
+  result.push(generateLine());
+  result.push(createHeader('Nabywca'));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
   firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText('Numer EORI: ', podmiot2.NrEORI));
   if (podmiot2.DaneIdentyfikacyjne) {
-    firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot1Dto(podmiot2.DaneIdentyfikacyjne));
+    firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot2Dto(podmiot2.DaneIdentyfikacyjne));
   }
 
   if (podmiot2.DaneKontaktowe) {
@@ -38,8 +42,11 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
       columnGap: 20,
     });
   }
-  firstColumn = generateCorrectedContent(podmiot2K, 'Treść korygowana');
-  secondColumn = generateCorrectedContent(podmiot2, 'Treść korygująca');
+
+  if (podmiot2K.DaneIdentyfikacyjne) {
+    firstColumn = generateCorrectedContent(podmiot2K, 'Treść korygowana');
+    secondColumn = generateCorrectedContent(podmiot2, 'Treść korygująca');
+  }
 
   if (podmiot2.AdresKoresp) {
     secondColumn.push(

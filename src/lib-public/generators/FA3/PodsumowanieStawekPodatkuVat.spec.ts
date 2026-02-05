@@ -139,14 +139,15 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
     expect(summary[0].taxRateString).toBe('23% lub 22%');
     expect(summary[1].taxRateString).toBe('8% lub 7%');
     expect(summary[2].taxRateString).toBe('5%');
-    expect(summary[3].taxRateString).toBe('4% lub 3% lub oo');
+    expect(summary[3].taxRateString).toBe('4% lub 3%');
     expect(summary[4].taxRateString).toBe('');
-    expect(summary[5].taxRateString).toBe('0% - krajowe');
-    expect(summary[6].taxRateString).toBe('0% - wdt');
-    expect(summary[7].taxRateString).toBe('0% - eksport');
-    expect(summary[8].taxRateString).toBe('zwolnione z opodatkowania');
+    expect(summary[5].taxRateString).toBe('0% w przypadku sprzedaży towarów i świadczenia usług na terytorium kraju (z wyłączeniem WDT i eksportu)');
+    expect(summary[6].taxRateString).toBe('0% w przypadku wewnątrzwspólnotowej dostawy towarów (WDT)');
+    expect(summary[7].taxRateString).toBe('0% w przypadku eksportu towarów');
+    expect(summary[8].taxRateString).toBe('zwolnione od podatku');
     expect(summary[9].taxRateString).toBe('np z wyłączeniem art. 100 ust 1 pkt 4 ustawy');
     expect(summary[10].taxRateString).toBe('np na podstawie art. 100 ust. 1 pkt 4 ustawy');
+    expect(summary[11].taxRateString).toBe('odwrotne obciążenie');
   });
 
   it('handles reverse charge and margin', () => {

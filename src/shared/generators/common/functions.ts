@@ -18,11 +18,11 @@ export function getRolaString(rola: FP2 | undefined, FA: 1 | 2 | 3): string {
   }
   switch (FA) {
     case 1:
-      return FA1RolaPodmiotu3[rola._text as keyof typeof FA1RolaPodmiotu3].split('-')[0] ?? '';
+      return FA1RolaPodmiotu3[rola._text as keyof typeof FA1RolaPodmiotu3];
     case 2:
-      return FA2RolaPodmiotu3[rola._text as keyof typeof FA2RolaPodmiotu3].split('-')[0] ?? '';
+      return FA2RolaPodmiotu3[rola._text as keyof typeof FA2RolaPodmiotu3];
     case 3:
-      return FA3RolaPodmiotu3[rola._text as keyof typeof FA3RolaPodmiotu3].split('-')[0] ?? '';
+      return FA3RolaPodmiotu3[rola._text as keyof typeof FA3RolaPodmiotu3];
   }
 }
 
@@ -86,11 +86,11 @@ export function formatDateTime(data?: string, withoutSeconds?: boolean, withoutT
   const seconds: string = dateTime.getSeconds().toString().padStart(2, '0');
 
   if (withoutTime) {
-    return `${year}-${month}-${day}`;
+    return `${day}.${month}.${year}`;
   } else if (withoutSeconds) {
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+    return `${day}.${month}.${year} ${hours}:${minutes}`;
   }
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
 }
 
 export function getDateTimeWithoutSeconds(isoDate?: FP2): string {
@@ -98,4 +98,23 @@ export function getDateTimeWithoutSeconds(isoDate?: FP2): string {
     return '';
   }
   return formatDateTime(isoDate._text, true);
+}
+export function formatTime(data?: string, withoutSeconds?: boolean): string {
+    if (!data) {
+        return '';
+    }
+    const dateTime: Date = new Date(data);
+
+    if (isNaN(dateTime.getTime())) {
+        return data;
+    }
+
+    const hours: string = dateTime.getHours().toString().padStart(2, '0');
+    const minutes: string = dateTime.getMinutes().toString().padStart(2, '0');
+    const seconds: string = dateTime.getSeconds().toString().padStart(2, '0');
+
+    if (withoutSeconds) {
+        return `${hours}:${minutes}`;
+    }
+    return `${hours}:${minutes}:${seconds}`;
 }

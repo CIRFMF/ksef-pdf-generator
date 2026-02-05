@@ -69,15 +69,14 @@ describe(generatePodmioty.name, () => {
 
     expect(generatePodmiot1Podmiot1K).toHaveBeenCalledWith(baseInvoice.Podmiot1, baseInvoice.Fa.Podmiot1K);
     expect(generatePodmiot2Podmiot2K).toHaveBeenCalledWith(baseInvoice.Podmiot2, baseInvoice.Fa.Podmiot2K[0]);
-    expect(generatePodmiot3).toHaveBeenCalled();
-    expect(generateDaneIdentyfikacyjneTPodmiot3Dto).not.toHaveBeenCalled();
+    expect(generateDaneIdentyfikacyjneTPodmiot3Dto).toHaveBeenCalled();
     expect(generatePodmiotUpowazniony).toHaveBeenCalledWith(baseInvoice.PodmiotUpowazniony);
     expect(createSection).toHaveBeenCalled();
     expect(result.flag).toBe(true);
     expect(content).toHaveLength(4);
     expect(content[0]).toEqual({ text: 'Podmiot1K content' });
     expect(content[1]).toEqual({ text: 'Podmiot2K content' });
-    expect(content[2]).toEqual({ text: 'Podmiot3 content 0' });
+    expect(content[2]).toEqual({ text: 'DaneIdentyfikacyjne Podmiot3 0' });
     expect(content[3]).toEqual({ text: 'PodmiotUpowazniony content' });
   });
 
@@ -104,13 +103,12 @@ describe(generatePodmioty.name, () => {
     expect(generateDaneIdentyfikacyjneTPodmiot3Dto).toHaveBeenCalled();
     expect(generatePodmiot3).toHaveBeenCalled();
     expect(result.flag).toBe(true);
-    expect(content).toHaveLength(6);
+    expect(content).toHaveLength(5);
     expect(content[0]).toEqual({ text: 'Podmiot2K content' });
-    expect(content[1]).toEqual({ text: 'Podmiot2K content' });
-    expect(content[2]).toEqual({ text: 'DaneIdentyfikacyjne Podmiot3 0' });
-    expect(content[3]).toEqual({ text: '', margin: [0, 8, 0, 0] });
-    expect(content[4]).toEqual({ text: 'Podmiot3 content 1' });
-    expect(content[5]).toEqual({ text: 'PodmiotUpowazniony content' });
+    expect(content[1]).toEqual({ text: 'DaneIdentyfikacyjne Podmiot3 0' });
+    expect(content[2]).toEqual({ text: '', margin: [0, 8, 0, 0] });
+    expect(content[3]).toEqual({ text: 'Podmiot3 content 1' });
+    expect(content[4]).toEqual({ text: 'PodmiotUpowazniony content' });
   });
 
   it('handles empty Podmiot3 gracefully', () => {

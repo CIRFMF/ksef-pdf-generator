@@ -79,6 +79,7 @@ describe('getSummaryTaxRate', () => {
       gross: '123.00',
     });
     expect(summary[1].taxRateString).toBe('8% lub 7%');
+    expect(summary[3].taxRateString).toBe('4% lub 3%');
     expect(summary[4].taxRateString).toBe('');
     expect(summary[5].taxRateString).toBe('zwolnione z opodatkowania');
   });

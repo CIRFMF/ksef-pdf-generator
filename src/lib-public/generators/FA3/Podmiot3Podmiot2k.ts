@@ -2,6 +2,7 @@ import { Content } from 'pdfmake/interfaces';
 import {
   createHeader,
   createLabelText,
+  generateLine,
   generateTwoColumns,
   getTable,
   hasValue,
@@ -26,7 +27,10 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   const podmiot1: Podmiot3 = podmiot2KDto.fakturaPodmiotNDto;
   const podmiot1DaneKontaktowe: Podmiot1DaneKontaktowe[] = getTable(podmiot1.DaneKontaktowe);
   const podmiot1K: (Podmiot2K & { Adres?: Adres }) | undefined = podmiot2KDto.podmiot2KDto;
-  const result: Content[] = createHeader(`Podmiot inny ${index + 1}`);
+  const result: Content[] = [];
+
+  result.push(generateLine());
+  result.push(createHeader(`Podmiot inny ${index + 1}`));
 
   if (
     hasValue(podmiot1.NrEORI) ||
@@ -39,7 +43,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
       createLabelText('Numer EORI: ', podmiot1.NrEORI),
       createLabelText('Rola: ', getRolaString(podmiot1.Rola, 3)),
       createLabelText('Rola inna: ', podmiot1.OpisRoli),
-      createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Currency6)
+      createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Percentage)
     );
   }
 

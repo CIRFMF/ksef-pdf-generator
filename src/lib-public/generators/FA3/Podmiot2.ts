@@ -41,13 +41,17 @@ export function generatePodmiot2(podmiot2: Podmiot2): Content[] {
     const daneKontaktowe = getTable(podmiot2.DaneKontaktowe);
 
     if (daneKontaktowe.length) {
-      createLabelText(
-        'Faktura dotyczy jednostki podrzędnej JST: ',
-        daneKontaktowe[0].JST?._text === '1' ? 'TAK' : 'NIE'
+      result.push(
+        createLabelText(
+          'Faktura dotyczy jednostki podrzędnej JST: ',
+          daneKontaktowe[0].JST?._text === '1' ? 'TAK' : 'NIE'
+        )
       );
-      createLabelText(
-        'Faktura dotyczy członka grupy GV: ',
-        daneKontaktowe[0].GV?._text === '1' ? 'TAK' : 'NIE'
+      result.push(
+        createLabelText(
+          'Faktura dotyczy członka grupy GV: ',
+          daneKontaktowe[0].GV?._text === '1' ? 'TAK' : 'NIE'
+        )
       );
     }
   }

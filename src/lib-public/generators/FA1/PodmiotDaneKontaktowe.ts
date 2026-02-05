@@ -10,7 +10,7 @@ export function generateDaneKontaktowe(email?: FP, telefon?: FP[]): Content[] {
   }
   if (telefon) {
     telefon.forEach((item) => {
-      result.push(createLabelText('Tel.: ', `${item}\n`));
+      result.push(createLabelText('Tel.: ', `${item._text}\n`));
     });
   }
   return result;

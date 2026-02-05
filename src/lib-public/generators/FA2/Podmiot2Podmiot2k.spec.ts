@@ -12,6 +12,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   hasValue: vi.fn((value: any) => value !== undefined && value !== null),
   verticalSpacing: vi.fn((margin: number) => ({ margin })),
   generateColumns: vi.fn((left, right) => ({ columns: [left, right] })),
+  generateLine: vi.fn((): Content[] => [{ line: true } as any]),
 }));
 
 vi.mock('./Adres', () => ({
@@ -41,18 +42,25 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     } as any;
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
-    expect(result[0]).toEqual({ text: 'Nabywca', style: 'header' });
+    expect(result[0]).toEqual([{
+      "line": true,
+    }]);
 
-    expect(result[1]).toHaveProperty('columns');
-    expect(Array.isArray(result[1].columns[0])).toBe(true);
-    expect(Array.isArray(result[1].columns[1])).toBe(true);
-    expect(result[1].columns[0].length).toBeGreaterThan(0);
-    expect(result[1].columns[1].length).toBe(0);
+    expect(result[1][0]).toHaveProperty('text');
+    expect(result[1][0]).toHaveProperty('style');
+    expect(result[1][0]).toEqual({ text: 'Nabywca', style: 'header' });
+
+    expect(Array.isArray(result[2].columns[0])).toBe(true);
+    expect(Array.isArray(result[2].columns[1])).toBe(true);
+    expect(result[2].columns[0].length).toBeGreaterThan(0);
+    expect(result[2].columns[1].length).toBe(0);
 
     expect(result[2]).toHaveProperty('columns');
     expect(Array.isArray(result[2].columns[0])).toBe(true);
+    expect(Array.isArray(result[2].columns[1])).toBe(true);
     expect(result[2].columns[0].length).toBeGreaterThan(0);
-    expect(result[3]).toEqual({ margin: 1 });
+
+    expect(result[4]).toEqual({ margin: 1 });
   });
 
   it('calls generateAdres if AdresKoresp exists', () => {
@@ -67,7 +75,7 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
     expect(Array.isArray(result[2].columns[0])).toBe(true);
-    expect(Array.isArray(result[2].columns[1])).toBe(false);
+    expect(Array.isArray(result[2].columns[1])).toBe(true);
     expect(result[2].columns[0].length).toBeGreaterThanOrEqual(0);
   });
 
@@ -90,12 +98,14 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
     expect(result.length).toBeGreaterThan(3);
-    expect(result[0]).toEqual({ text: 'Nabywca', style: 'header' });
+    expect(result[0]).toEqual([{
+      "line": true,
+    }]);
 
     expect(result[2]).toHaveProperty('columns');
     expect(Array.isArray(result[2].columns[0])).toBe(true);
+    expect(Array.isArray(result[2].columns[1])).toBe(true);
     expect(result[2].columns[0].length).toBeGreaterThanOrEqual(0);
-
     expect(result[result.length - 1]).toHaveProperty('margin');
   });
 });

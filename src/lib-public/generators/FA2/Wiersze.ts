@@ -5,7 +5,9 @@ import {
   createSection,
   formatText,
   getContentTable,
+  getDifferentColumnsValue,
   getTable,
+  getTStawkaPodatku,
   getValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
@@ -13,15 +15,19 @@ import { TRodzajFaktury } from '../../../shared/consts/const';
 import { Fa, FP } from '../../types/fa2.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
-import { shouldAddMarza } from '../common/Wiersze';
+import { addMarza } from '../common/Wiersze';
 
 export function generateWiersze(faVat: Fa): Content {
   const table: Content[] = [];
   const rodzajFaktury: string | number | undefined = getValue(faVat.RodzajFaktury);
-  const isP_PMarzy: boolean = Boolean(Number(getValue(faVat.Adnotacje?.PMarzy?.P_PMarzy)));
+  const isP_PMarzy = Boolean(Number(getValue(faVat.Adnotacje?.PMarzy?.P_PMarzy)));
   const faWiersze: Record<string, FP>[] = getTable(faVat.FaWiersz).map((wiersz) => {
-    const marza: Record<string, FP> = shouldAddMarza(rodzajFaktury, isP_PMarzy, wiersz)!;
-    return marza ? { ...wiersz, ...marza } : wiersz;
+    const marza: Record<string, FP> = addMarza(rodzajFaktury, isP_PMarzy, wiersz)!;
+
+    if (getValue(wiersz.P_12)) {
+      wiersz.P_12._text = getTStawkaPodatku(getValue(wiersz.P_12) as string, 2);
+    }
+    return { ...wiersz, ...marza };
   });
 
   const definedHeaderLp: HeaderDefine[] = [
@@ -32,11 +38,11 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'P_7', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default, width: '*' },
     { name: 'P_9A', title: 'Cena jedn. netto', format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_9B', title: 'Cena jedn. brutto', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Right, width: 'auto' },
+    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Number, width: 'auto' },
     { name: 'P_8A', title: 'Miara', format: FormatTyp.Default, width: 'auto' },
     { name: 'P_10', title: 'Rabat', format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_12', title: 'Stawka podatku', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12_XII', title: 'Stawka podatku OSS', format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_12_XII', title: 'Stawka podatku OSS', format: FormatTyp.Percentage, width: 'auto' },
     {
       name: 'P_12_Zal_15',
       title: 'Znacznik dla towaru lub usługi z zał. nr 15 do ustawy',
@@ -46,9 +52,17 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'P_11', title: 'Wartość sprzedaży netto', format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_11A', title: 'Wartość sprzedaży brutto', format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_11Vat', title: 'Wartość sprzedaży vat', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'KursWaluty', title: 'Kurs waluty', format: FormatTyp.Currency6, width: 'auto' },
-    { name: 'StanPrzed', title: 'Stan przed', format: FormatTyp.Boolean, width: 'auto' },
   ];
+
+  if (getDifferentColumnsValue('KursWaluty', faWiersze).length !== 1) {
+    definedHeader1.push({
+      name: 'KursWaluty',
+      title: 'Kurs waluty',
+      format: FormatTyp.Currency6,
+      width: 'auto',
+    });
+  }
+  definedHeader1.push({ name: 'StanPrzed', title: 'Stan przed', format: FormatTyp.Boolean, width: 'auto' });
   const definedHeader2: HeaderDefine[] = [
     { name: 'GTIN', title: 'GTIN', format: FormatTyp.Default, width: 'auto' },
     { name: 'PKWiU', title: 'PKWiU', format: FormatTyp.Default, width: 'auto' },

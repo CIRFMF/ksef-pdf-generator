@@ -10,8 +10,14 @@ import {
   TableCell,
   TDocumentDefinitions,
 } from 'pdfmake/interfaces';
-import { DEFAULT_TABLE_LAYOUT, Kraj } from './consts/const';
-import { formatDateTime, getFormaPlatnosciString } from './generators/common/functions';
+import {
+  DEFAULT_TABLE_LAYOUT,
+  Kraj,
+  TStawkaPodatku_FA1,
+  TStawkaPodatku_FA2,
+  TStawkaPodatku_FA3,
+} from './consts/const';
+import { formatDateTime, formatTime, getFormaPlatnosciString } from './generators/common/functions';
 import { HeaderDefine, PdfFP, PdfOptionField } from './types/pdf-types';
 import { FP } from '../lib-public/types/fa3.types';
 import { DifferentValues, FilteredKeysOfValues, TypesOfValues } from './types/universal.types';
@@ -77,7 +83,7 @@ function formatValue(
     case FormatTyp.Currency:
       result.text = isNaN(Number(value))
         ? (value as string)
-        : `${dotToComma(Number(value).toFixed(2))} ${currency}`;
+        : `${normalizeCurrencySeparator(value)} ${currency}`;
       result.alignment = Position.RIGHT;
       break;
     case FormatTyp.CurrencyAbs:
@@ -104,6 +110,9 @@ function formatValue(
     case FormatTyp.Date:
       result.text = formatDateTime(value as string, false, true);
       break;
+    case FormatTyp.Time:
+      result.text = formatTime(value as string);
+      break;
     case FormatTyp.FormOfPayment:
       result.text = getFormaPlatnosciString({ _text: value as string });
       break;
@@ -113,7 +122,41 @@ function formatValue(
     case FormatTyp.Percentage:
       result.text = `${value}%`;
       break;
+    case FormatTyp.Number:
+      result.text = replaceDotWithCommaIfNeeded(value);
+      result.alignment = Position.RIGHT;
+      break;
   }
+}
+
+export function normalizeCurrencySeparator(value: string | number | undefined): string {
+  if (!value) {
+    return '';
+  }
+
+  const numberWithComma = dotToComma(typeof value === 'string' ? value : value.toString());
+
+  if (numberWithComma.includes(',')) {
+    const parts = numberWithComma.split(',');
+
+    return parts[1].length > 1 ? numberWithComma : numberWithComma + '0';
+  } else {
+    return numberWithComma + ',00';
+  }
+}
+
+export function replaceDotWithCommaIfNeeded(value: string | number | undefined): string {
+  let copyValue = '';
+
+  if (typeof value === 'number') {
+    copyValue = value.toString();
+  }
+
+  if (typeof value === 'string') {
+    copyValue = value;
+  }
+
+  return copyValue.includes('.') ? dotToComma(copyValue) : copyValue;
 }
 
 function dotToComma(value: string): string {
@@ -466,11 +509,35 @@ export function verticalSpacing(height: number): ContentText {
   return { text: '\n', fontSize: height };
 }
 
-export function getKraj(kod: string): string {
-  if (Kraj[kod]) {
-    return Kraj[kod];
+export function getKraj(code: string): string {
+  if (Kraj[code]) {
+    return Kraj[code];
   }
-  return kod;
+  return code;
+}
+
+export function getTStawkaPodatku(code: string, version: 1 | 2 | 3, P_PMarzy?: string): string {
+  let TStawkaPodatkuVersioned: Record<string, string> = {};
+
+  switch (version) {
+    case 1:
+      TStawkaPodatkuVersioned = TStawkaPodatku_FA1;
+      break;
+    case 2:
+      TStawkaPodatkuVersioned = TStawkaPodatku_FA2;
+      break;
+    case 3:
+      TStawkaPodatkuVersioned = TStawkaPodatku_FA3;
+      break;
+  }
+  if (!code && P_PMarzy === '1') {
+    return 'marża';
+  }
+
+  if (TStawkaPodatkuVersioned[code]) {
+    return TStawkaPodatkuVersioned[code];
+  }
+  return code;
 }
 
 export function generateLine(): Content {

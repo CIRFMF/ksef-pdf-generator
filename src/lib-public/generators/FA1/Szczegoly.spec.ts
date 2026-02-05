@@ -67,14 +67,19 @@ describe(generateSzczegoly.name, () => {
   describe('P_6 label', () => {
     it('uses "Data otrzymania zapłaty" for ZAL', () => {
       generateSzczegoly({ ...mockFaVat, RodzajFaktury: TRodzajFaktury.ZAL } as any);
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Data otrzymania zapłaty: ', mockFaVat.P_6);
+      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
+        'Data otrzymania zapłaty: ',
+        mockFaVat.P_6,
+        FormatTyp.Date
+      );
     });
 
     it('uses "Data dokonania lub zakończenia dostawy" for VAT', () => {
       generateSzczegoly(mockFaVat);
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
         'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: ',
-        mockFaVat.P_6
+        mockFaVat.P_6,
+        FormatTyp.Date
       );
     });
   });

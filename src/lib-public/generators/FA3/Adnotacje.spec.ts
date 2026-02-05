@@ -8,6 +8,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string) => ({ text })),
   getTable: vi.fn(() => []),
   hasValue: vi.fn((v) => !!v?._text),
+  getValue: vi.fn((v) => v?._text || v),
   verticalSpacing: vi.fn((n: number) => ({ text: `space-${n}` })),
   generateColumns: vi.fn((left, right) => ({ columns: [left, right] })),
 }));
