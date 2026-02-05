@@ -343,7 +343,7 @@ export interface Tabela {
   TMetaDane?: TMetaDane[];
   Opis?: FP;
   TNaglowek?: TNaglowek;
-  Wiersz?: Wiersz[];
+  Wiersz?: Wiersz | Wiersz[];
   Suma?: Suma;
 }
 

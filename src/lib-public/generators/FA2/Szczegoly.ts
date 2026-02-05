@@ -74,10 +74,14 @@ export function generateSzczegoly(faVat: Fa): Content[] {
   const tpLabel2: Content[] = [];
 
   const forColumns: Content[][] = [
-    createLabelText('Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ', faVat.P_1),
+    createLabelText(
+      'Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ',
+      faVat.P_1,
+      FormatTyp.Date
+    ),
     createLabelText('Miejsce wystawienia: ', faVat.P_1M),
     createLabelText('Okres, którego dotyczy rabat: ', faVat.OkresFaKorygowanej),
-    createLabelText(LabelP_6, faVat.P_6),
+    createLabelText(LabelP_6, faVat.P_6, FormatTyp.Date),
     P_6Scope,
     cenyLabel1,
     cenyLabel2,
@@ -163,11 +167,22 @@ function generateFakturaZaliczkowa(fakturaZaliczkowaData: ObjectKeysOfFP[] | und
     return [];
   }
   const fakturaZaliczkowa = getTable(fakturaZaliczkowaData) as unknown as FA2FakturaZaliczkowaData[];
+    const fakturaZaliczkowaMapped = fakturaZaliczkowa.map(item => {
+        const fp =
+            (
+                'NrFaZaliczkowej' in item && item.NrFaZaliczkowej
+            ) ? item.NrFaZaliczkowej : ('NrKSeFFaZaliczkowej' in item ? item.NrKSeFFaZaliczkowej : undefined );
+
+        return{
+            ...item,
+            NrFaZaliczkowej : fp ?? { _text: ''},
+        };
+    })
   const table: Content[] = [];
 
   const fakturaZaliczkowaHeader: HeaderDefine[] = [
     {
-      name: 'NrKSeFFaZaliczkowej',
+      name: 'NrFaZaliczkowej',
       title: 'Numery wcześniejszych faktur zaliczkowych',
       format: FormatTyp.Default,
     },
@@ -175,7 +190,7 @@ function generateFakturaZaliczkowa(fakturaZaliczkowaData: ObjectKeysOfFP[] | und
 
   const tableFakturaZaliczkowa: TableWithFields = getContentTable<(typeof fakturaZaliczkowa)[0]>(
     fakturaZaliczkowaHeader,
-    fakturaZaliczkowa,
+      fakturaZaliczkowaMapped,
     'auto',
     [0, 4, 0, 0]
   );

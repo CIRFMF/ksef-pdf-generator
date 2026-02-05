@@ -38,12 +38,14 @@ export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
       ...generateAdres(podmiot.AdresKoresp)
     );
   }
-  if (podmiot.DaneKontaktowe) {
-    column2.push(
-      formatText('Dane kontaktowe', [FormatTyp.Label, FormatTyp.LabelMargin]),
-      ...generateDaneKontaktowe(podmiot.DaneKontaktowe),
-      createLabelText('Numer klienta: ', podmiot.NrKlienta)
-    );
+  if (podmiot.DaneKontaktowe || podmiot.NrKlienta) {
+    column2.push(formatText('Dane kontaktowe', [FormatTyp.Label, FormatTyp.LabelMargin]));
+    if (podmiot.DaneKontaktowe) {
+      column2.push(...generateDaneKontaktowe(podmiot.DaneKontaktowe));
+    }
+    if (podmiot.NrKlienta) {
+      column2.push(createLabelText('Numer klienta: ', podmiot.NrKlienta));
+    }
   }
   result.push(generateTwoColumns(column1, column2));
   return result;

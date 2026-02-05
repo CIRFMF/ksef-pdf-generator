@@ -49,7 +49,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   //  TODO: Add to FA2 and FA1? (KSEF20-15289)
   if (getValue(platnosc.Zaplacono) === '1') {
     table.push(createLabelText('Informacja o płatności: ', 'Zapłacono'));
-    table.push(createLabelText('Data zapłaty: ', platnosc.DataZaplaty));
+    table.push(createLabelText('Data zapłaty: ', platnosc.DataZaplaty, FormatTyp.Date));
   } else if (
     getValue(platnosc.ZnacznikZaplatyCzesciowej) === '1' ||
     getValue(platnosc.ZnacznikZaplatyCzesciowej) === '2'
@@ -132,12 +132,21 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     table.push(createLabelText('Identyfikator płatności Krajowego Systemu e-Faktur: ', platnosc.IPKSeF));
   }
 
-  table.push(
-    generateTwoColumns(
-      generujRachunekBankowy(getTable(platnosc.RachunekBankowy), 'Numer rachunku bankowego'),
-      generujRachunekBankowy(getTable(platnosc.RachunekBankowyFaktora), 'Numer rachunku bankowego faktora')
-    )
+  const rachunekBankowy: Content[][] = getTable(platnosc.RachunekBankowy).map((rachunek) =>
+    generujRachunekBankowy([rachunek], 'Numer rachunku bankowego')
   );
+  const rachunekBankowyFaktora: Content[][] = getTable(platnosc.RachunekBankowyFaktora).map((rachunek) =>
+    generujRachunekBankowy([rachunek], 'Numer rachunku bankowego faktora')
+  );
+  const rachunkiBankowe: Content[][] = [...rachunekBankowy, ...rachunekBankowyFaktora];
+
+  if (rachunkiBankowe.length > 0) {
+    rachunkiBankowe.forEach((rachunek, index) => {
+      if (index % 2 === 0) {
+        table.push(generateTwoColumns(rachunek, rachunkiBankowe[index + 1] ?? []));
+      }
+    });
+  }
 
   if (platnosc.Skonto) {
     table.push(createHeader('Skonto', [0, 0]));

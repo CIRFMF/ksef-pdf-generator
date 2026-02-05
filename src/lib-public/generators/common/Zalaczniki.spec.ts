@@ -21,7 +21,7 @@ describe('chunkArray', () => {
 
     expect(result.length).toBe(2);
     expect(result[0].length).toBe(4);
-    expect(result[1].length).toBe(4);
+    expect(result[1].length).toBe(5);
   });
 
   it('should split into two parts with first bigger by 1 when odd columns between 8 and 14', () => {
@@ -30,7 +30,7 @@ describe('chunkArray', () => {
 
     expect(result.length).toBe(2);
     expect(result[0].length).toBe(5);
-    expect(result[1].length).toBe(4);
+    expect(result[1].length).toBe(5);
   });
 
   it('should split into three parts with roughly equal parts for columns > 14', () => {
@@ -39,8 +39,8 @@ describe('chunkArray', () => {
 
     expect(result.length).toBe(3);
     expect(result[0].length).toBe(6);
-    expect(result[1].length).toBe(6);
-    expect(result[2].length).toBe(6);
+    expect(result[1].length).toBe(7);
+    expect(result[2].length).toBe(7);
   });
 
   it('should split 20 columns into 7,7,and 6', () => {
@@ -49,8 +49,8 @@ describe('chunkArray', () => {
 
     expect(result.length).toBe(3);
     expect(result[0].length).toBe(7);
-    expect(result[1].length).toBe(7);
-    expect(result[2].length).toBe(6);
+    expect(result[1].length).toBe(8);
+    expect(result[2].length).toBe(7);
   });
 
   it('should split 15 columns into 5,5,5', () => {
@@ -59,7 +59,7 @@ describe('chunkArray', () => {
 
     expect(result.length).toBe(3);
     expect(result[0].length).toBe(5);
-    expect(result[1].length).toBe(5);
-    expect(result[2].length).toBe(5);
+    expect(result[1].length).toBe(6);
+    expect(result[2].length).toBe(6);
   });
 });

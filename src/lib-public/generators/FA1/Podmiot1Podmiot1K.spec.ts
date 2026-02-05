@@ -12,6 +12,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   verticalSpacing: vi.fn((v: number) => ({ text: `SPACING:${v}` })),
   getTable: vi.fn((data) => data || []),
   generateColumns: vi.fn((left, right) => ({ columns: [left, right] })),
+  getValue: vi.fn(() => '1'),
 }));
 vi.mock('./PodmiotAdres', () => ({
   generatePodmiotAdres: vi.fn((adres: any, label: string) => ({ adr: label })),
@@ -30,20 +31,18 @@ describe('generatePodmiot1Podmiot1K', () => {
     const podmiot1: Podmiot1 = {
       NrEORI: { _text: 'EORI' },
       DaneIdentyfikacyjne: { NIP: { _text: '777' } },
-      StatusInfoPodatnika: { _text: 'AKTYWNY' },
+      StatusInfoPodatnika: { _text: '1' },
     };
     const podmiot1K: Podmiot1K = {};
     const result: any = generatePodmiot1Podmiot1K(podmiot1, podmiot1K);
-    const firstCol: Content = result.find((r: any) => r.columns)?.columns[0];
+    const firstRow: Content = result[1];
 
-    expect(firstCol).toEqual(
-      expect.arrayContaining([
-        { text: 'SUBHEADER:Dane identyfikacyjne' },
-        { text: 'LABEL:Numer EORI: EORI' },
-        { id: 'ID' },
-        { text: 'LABEL:Status podatnika: AKTYWNY' },
-      ])
-    );
+    expect(firstRow).toEqual([
+      { text: 'SUBHEADER:Dane identyfikacyjne' },
+      { text: 'LABEL:Numer EORI: EORI' },
+      { id: 'ID' },
+      { text: `LABEL:Status podatnika: Stan likwidacji` },
+    ]);
   });
 
   it('adds contact if Email present', () => {
@@ -53,9 +52,9 @@ describe('generatePodmiot1Podmiot1K', () => {
     };
     const podmiot1K: Podmiot1K = {};
     const result: any = generatePodmiot1Podmiot1K(podmiot1, podmiot1K);
-    const firstCol: Content = result.find((r: any) => r.columns)?.columns[0];
+    const firstRow: Content = result[1];
 
-    expect(firstCol).toEqual(expect.arrayContaining([{ contact: 'KONTAKT' }]));
+    expect(firstRow).toEqual(expect.arrayContaining([{ contact: 'KONTAKT' }]));
   });
 
   it('adds verticalSpacing at the end', () => {

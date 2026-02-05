@@ -46,7 +46,7 @@ export function generateStopka(
     createSection(
       [
         {
-          stack: createLabelText('Wytworzona w:', naglowek?.SystemInfo),
+          stack: createLabelText('Wytworzona w: ', naglowek?.SystemInfo),
           margin: [0, 8, 0, 0],
         },
       ],
@@ -147,9 +147,13 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
                 'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!',
                 FormatTyp.Value
               ),
-              { stack: [formatText(additionalData.qrCode, FormatTyp.Link)], marginTop: 5 },
+              {
+                stack: [formatText(additionalData.qrCode, FormatTyp.Link)],
+                marginTop: 5,
+                link: additionalData.qrCode,
+              },
             ],
-            link: additionalData.qrCode,
+
             margin: [10, (qrCode.fit ?? 120) / 2 - 30, 0, 0],
             width: 'auto',
           } as ContentStack,

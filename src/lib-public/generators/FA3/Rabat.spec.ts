@@ -83,7 +83,7 @@ describe(generateRabat.name, () => {
 
     expect(PDFFunctions.getContentTable).toHaveBeenCalledWith(
       expect.arrayContaining([
-        expect.objectContaining({ name: 'NrWierszaFay', title: 'Lp.' }),
+        expect.objectContaining({ name: 'NrWierszaFa', title: 'Lp.' }),
         expect.objectContaining({ name: 'P_7', title: 'Nazwa towaru lub usługi' }),
         expect.objectContaining({ name: 'P_8B', title: 'Ilość' }),
         expect.objectContaining({ name: 'P_8A', title: 'Miara' }),

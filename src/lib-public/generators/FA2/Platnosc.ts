@@ -49,7 +49,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
 
   if (platnosc.Zaplacono?._text === '1') {
     table.push(createLabelText('Informacja o płatności: ', 'Zapłacono'));
-    table.push(createLabelText('Data zapłaty: ', platnosc.DataZaplaty));
+    table.push(createLabelText('Data zapłaty: ', platnosc.DataZaplaty, FormatTyp.Date));
   } else if (platnosc.ZnacznikZaplatyCzesciowej?._text === '1') {
     table.push(createLabelText('Informacja o płatności: ', 'Zapłata częściowa'));
   } else {
@@ -109,18 +109,21 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     table.push(tableZaplataCzesciowa.content);
   }
 
-  table.push(
-    generateTwoColumns(
-      generujRachunekBankowy(
-        getTable(platnosc.RachunekBankowy as Record<string, FP>[]),
-        'Numer rachunku bankowego'
-      ),
-      generujRachunekBankowy(
-        getTable(platnosc.RachunekBankowyFaktora as Record<string, FP>[]),
-        'Numer rachunku bankowego faktora'
-      )
-    )
+  const rachunekBankowy: Content[][] = getTable(platnosc.RachunekBankowy as Record<string, FP>[]).map(
+    (rachunek) => generujRachunekBankowy([rachunek], 'Numer rachunku bankowego')
   );
+  const rachunekBankowyFaktora: Content[][] = getTable(
+    platnosc.RachunekBankowyFaktora as Record<string, FP>[]
+  ).map((rachunek) => generujRachunekBankowy([rachunek], 'Numer rachunku bankowego faktora'));
+  const rachunkiBankowe: Content[][] = [...rachunekBankowy, ...rachunekBankowyFaktora];
+
+  if (rachunkiBankowe.length > 0) {
+    rachunkiBankowe.forEach((rachunek, index) => {
+      if (index % 2 === 0) {
+        table.push(generateTwoColumns(rachunek, rachunkiBankowe[index + 1] ?? []));
+      }
+    });
+  }
 
   if (platnosc.Skonto) {
     table.push(createHeader('Skonto', [0, 0]));

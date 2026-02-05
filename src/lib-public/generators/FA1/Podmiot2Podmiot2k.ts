@@ -4,6 +4,7 @@ import {
   createLabelText,
   createSubHeader,
   generateColumns,
+  generateLine,
   getTable,
   getValue,
   hasValue,
@@ -15,7 +16,10 @@ import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 
 export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot2K): Content[] {
-  const result: Content[] = createHeader('Nabywca');
+  const result: Content[] = [];
+
+  result.push(generateLine());
+  result.push(createHeader('Nabywca'));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
@@ -36,8 +40,11 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
       columnGap: 20,
     });
   }
-  firstColumn = generateCorrectedContent(podmiot2K, 'Treść korygowana');
-  secondColumn = generateCorrectedContent(podmiot2, 'Treść korygująca');
+  if (podmiot2K.DaneIdentyfikacyjne) {
+    firstColumn = generateCorrectedContent(podmiot2K, 'Treść korygowana');
+    secondColumn = generateCorrectedContent(podmiot2, 'Treść korygująca');
+  }
+
   if (podmiot2.AdresKoresp) {
     secondColumn.push(
       generatePodmiotAdres(podmiot2.AdresKoresp, 'Adres do korespondencji', true, [0, 12, 0, 1.3])

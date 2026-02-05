@@ -14,6 +14,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getValue: vi.fn((val) => (val && val._text ? val._text : '')),
   hasValue: vi.fn((val) => Boolean(val && val._text)),
   generateColumns: vi.fn((left, right) => ({ columns: [left, right] })),
+  generateLine: vi.fn((): Content[] => [{ line: true } as any]),
 }));
 vi.mock('./PodmiotAdres', () => ({
   generatePodmiotAdres: vi.fn((adres, label) => ({ adr: label })),
@@ -37,12 +38,14 @@ describe('generatePodmiot2Podmiot2K', () => {
     );
   }
 
-  it('renders HEADER and at least one columns object', () => {
+  it('renders new line and at least one columns object', () => {
     const podmiot2: Podmiot2 = { NrEORI: { _text: 'A' } };
     const podmiot2K: Podmiot2K = {};
     const result: Content[] = generatePodmiot2Podmiot2K(podmiot2, podmiot2K);
 
-    expect(result[0]).toEqual({ text: 'HEADER:Nabywca' });
+    expect(result[0]).toEqual([{
+      "line": true,
+    }]);
     expect(
       result.some((r: Content) => {
         if (hasColumns(r)) {

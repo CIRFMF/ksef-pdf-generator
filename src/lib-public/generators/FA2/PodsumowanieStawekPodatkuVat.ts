@@ -1,4 +1,4 @@
-import { Content, ContentTable, ContentText, TableCell } from 'pdfmake/interfaces';
+import { Content, ContentTable, TableCell } from 'pdfmake/interfaces';
 import {
   createHeader,
   createSection,
@@ -59,18 +59,32 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
 
   const definedHeader: Content[] = [
     ...[{ text: 'Lp.', style: FormatTyp.GrayBoldTitle }],
-    ...(AnyP13P14_5Diff0 ? [{ text: 'Stawka podatku', style: FormatTyp.GrayBoldTitle }] : []),
+    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)
+      ? [
+          {
+            text: 'Stawka podatku',
+            style: FormatTyp.GrayBoldTitle,
+          },
+        ]
+      : []),
     ...(AnyP13 ? [{ text: 'Kwota netto', style: FormatTyp.GrayBoldTitle }] : []),
-    ...(AnyP13P14_5Diff0 ? [{ text: 'Kwota podatku', style: FormatTyp.GrayBoldTitle }] : []),
+    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)
+      ? [
+          {
+            text: 'Kwota podatku',
+            style: FormatTyp.GrayBoldTitle,
+          },
+        ]
+      : []),
     ...(AnyP13 ? [{ text: 'Kwota brutto', style: FormatTyp.GrayBoldTitle }] : []),
     ...(AnyP_14xW ? [{ text: 'Kwota podatku PLN', style: FormatTyp.GrayBoldTitle }] : []),
   ];
 
   const widths: Content[] = [
     ...['auto'],
-    ...(AnyP13P14_5Diff0 ? ['*'] : []),
+    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5) ? ['*'] : []),
     ...(AnyP13 ? ['*'] : []),
-    ...(AnyP13P14_5Diff0 ? ['*'] : []),
+    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5) ? ['*'] : []),
     ...(AnyP13 ? ['*'] : []),
     ...(AnyP_14xW ? ['*'] : []),
   ];
@@ -78,18 +92,28 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
   if (faktura?.Fa) {
     const summary: TaxSummaryTypes[] = getSummaryTaxRate(faktura.Fa);
 
-    tableBody = summary.map((item: TaxSummaryTypes): (string | number | ContentText)[] => {
+    tableBody = summary.map((item: TaxSummaryTypes) => {
       const data = [];
 
       data.push(item.no);
       if (AnyP13P14_5Diff0) {
-        data.push(item.taxRateString);
+        if (item.taxRateString) {
+          data.push(item.taxRateString);
+        } else if (getValue(faktura.Fa?.P_13_5)) {
+          data.push('OSS');
+        } else {
+          data.push('');
+        }
+      } else if (hasValue(faktura.Fa?.P_14_5)) {
+        data.push('OSS');
       }
       if (AnyP13) {
         data.push(formatText(item.net, FormatTyp.Currency));
       }
       if (AnyP13P14_5Diff0) {
         data.push(formatText(item.tax, FormatTyp.Currency));
+      } else if (hasValue(faktura.Fa?.P_14_5)) {
+        data.push(getValue(faktura.Fa?.P_14_5));
       }
       if (AnyP13) {
         data.push(formatText(item.gross, FormatTyp.Currency));
@@ -128,7 +152,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   const AnyP13_9Diff0: boolean = hasValueAndDiff0(fa?.P_13_9);
   const AnyP13_10Diff0: boolean = hasValueAndDiff0(fa?.P_13_10);
   const AnyP13_11Diff0: boolean = hasValueAndDiff0(fa?.P_13_11);
-  let no: number = 1;
+  let no = 1;
 
   if (AnyP13_1P14_1P14_1WDiff0) {
     summary.push({
@@ -173,7 +197,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
       gross: (getNumberRounded(fa.P_13_4) + getNumberRounded(fa.P_14_4)).toFixed(2),
       tax: getNumberRounded(fa.P_14_4).toFixed(2),
       taxPLN: getNumberRounded(fa.P_14_4W).toFixed(2),
-      taxRateString: '4% lub 3% lub oo',
+      taxRateString: '4% lub 3%',
     });
     no++;
   }
@@ -182,10 +206,10 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_5).toFixed(2),
-      gross: getNumberRounded(fa.P_13_5).toFixed(2),
+      gross: (getNumberRounded(fa.P_13_5) + getNumberRounded(fa.P_14_5)).toFixed(2),
       tax: getNumberRounded(fa.P_14_5).toFixed(2),
       taxPLN: '',
-      taxRateString: getValue(fa.P_14_5) != 0 ? 'niepodlegające opodatkowaniu' : '',
+      taxRateString: getValue(fa.P_14_5) != 0 ? 'OSS' : '',
     });
     no++;
   }

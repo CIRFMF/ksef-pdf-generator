@@ -1,6 +1,6 @@
 {
   "name": "@akmf/ksef-fe-invoice-converter",
-  "version": "0.0.32",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",

@@ -38,7 +38,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
       createLabelText('Numer EORI: ', podmiot1.NrEORI),
       createLabelText('Rola: ', getRolaString(podmiot1.Rola, 1)),
       createLabelText('Rola inna: ', podmiot1.OpisRoli),
-      createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Currency6)
+      createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Percentage)
     );
   }
 

@@ -10,6 +10,8 @@ import {
   getNumberRounded,
   getValue,
   hasValue,
+  normalizeCurrencySeparator,
+  replaceDotWithCommaIfNeeded,
   verticalSpacing,
 } from './PDF-functions';
 import FormatTyp, { Position } from './enums/common.enum';
@@ -124,5 +126,39 @@ describe('generateLine', () => {
 
     expect(lineContent).toHaveProperty('table');
     expect(lineContent).toHaveProperty('layout');
+  });
+});
+
+describe('normalized currency separator', () => {
+  it('should correctly add zeros ', () => {
+    const normalized = normalizeCurrencySeparator(43);
+
+    expect(normalized).toBe('43,00');
+  });
+
+  it('should correctyl add zero', () => {
+    const normalized = normalizeCurrencySeparator(43.7);
+
+    expect(normalized).toBe('43,70');
+  });
+
+  it('should correctly displa value', () => {
+    const normalized = normalizeCurrencySeparator('444,9999');
+
+    expect(normalized).toBe('444,9999');
+  });
+});
+
+describe('replaceDotWithCommaIfNeeded', () => {
+  it('shuold change comma to dot if needed', () => {
+    const dotToComma = replaceDotWithCommaIfNeeded(44.5);
+
+    expect(dotToComma).toBe('44,5');
+  });
+
+  it('do nothing if do not find comma', () => {
+    const dotToComma = replaceDotWithCommaIfNeeded(3);
+
+    expect(dotToComma).toBe('3');
   });
 });

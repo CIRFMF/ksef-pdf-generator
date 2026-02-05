@@ -96,7 +96,11 @@ describe(generateSzczegoly.name, () => {
 
       generateSzczegoly(data);
 
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Data otrzymania zapłaty: ', data.P_6);
+      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
+        'Data otrzymania zapłaty: ',
+        data.P_6,
+        FormatTyp.Date
+      );
     });
 
     it('should use "Data otrzymania zapłaty" label for KOR_ZAL invoice', () => {
@@ -107,7 +111,11 @@ describe(generateSzczegoly.name, () => {
 
       generateSzczegoly(data);
 
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Data otrzymania zapłaty: ', data.P_6);
+      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
+        'Data otrzymania zapłaty: ',
+        data.P_6,
+        FormatTyp.Date
+      );
     });
 
     it('should use "Data dokonania lub zakończenia dostawy" label for other invoice types', () => {
@@ -120,7 +128,8 @@ describe(generateSzczegoly.name, () => {
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
         'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: ',
-        data.P_6
+        data.P_6,
+        FormatTyp.Date
       );
     });
   });
@@ -386,7 +395,8 @@ describe(generateSzczegoly.name, () => {
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
         'Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ',
-        mockFaVat.P_1
+        mockFaVat.P_1,
+        FormatTyp.Date
       );
     });
 
@@ -546,7 +556,7 @@ describe(generateSzczegoly.name, () => {
       expect(PDFFunctions.getContentTable).toHaveBeenCalledWith(
         expect.arrayContaining([
           expect.objectContaining({
-            name: 'NrKSeFFaZaliczkowej',
+            name: 'NrFaZaliczkowej',
             title: 'Numery wcześniejszych faktur zaliczkowych',
           }),
         ]),

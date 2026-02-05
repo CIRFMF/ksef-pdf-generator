@@ -12,6 +12,8 @@ vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn(),
   getContentTable: vi.fn(),
   getTable: vi.fn(),
+  getValue: vi.fn(),
+  getTStawkaPodatku: vi.fn()
 }));
 
 describe(generateZamowienie.name, () => {

@@ -16,6 +16,59 @@ export const TypKorekty: Record<string, string> = {
   '2': 'Korekta skutkująca w dacie wystawienia faktury korygującej',
   '3': 'Korekta skutkująca w dacie innej, w tym gdy dla różnych pozycji faktury korygującej daty te są różne',
 };
+export const TStawkaPodatku_FA1: Record<string, string> = {
+  '23': '23%',
+  '22': '22%',
+  '8': '8%',
+  '7': '7%',
+  '5': '5%',
+  '4': '4% lub 3% lub oo',
+  '3': '4% lub 3% lub oo',
+  '0': '0%',
+
+  zw: 'zwolnione z opodatkowania',
+  oo: '4% lub 3% lub oo\n' +
+      'UWAGA: oo jest wykazywane łącznie z 4% lub 3%',
+  np: 'niepodlegające opodatkowaniu-transakcje dostawy towarów oraz świadczenia usług poza terytorium kraju',
+};
+
+export const TStawkaPodatku_FA2: Record<string, string> = {
+  '23': '23%',
+  '22': '22%',
+  '8': '8%',
+  '7': '7%',
+  '5': '5%',
+  '4': '4%',
+  '3': '3%',
+  '0': '0%',
+
+  zw: 'zwolnione od podatku',
+  oo: 'odwrotne obciążenie',
+  np: 'niepodlegające opodatkowaniu-transakcje dostawy towarów oraz świadczenia usług poza terytorium kraju',
+};
+
+export const TStawkaPodatku_FA3: Record<string, string> = {
+  '23': '23%',
+  '22': '22%',
+  '8': '8%',
+  '7': '7%',
+  '5': '5%',
+  '4': '4%',
+  '3': '3%',
+
+  '0 KR':
+    '0% - KR',
+  '0 WDT': '0% - WDT',
+  '0 EX': '0% - EX',
+
+  zw: 'zw',
+  oo: 'oo',
+
+  'np I':
+    'np I',
+  'np II':
+    'np II',
+};
 
 export const Kraj: Record<string, string> = {
   AF: 'Afganistan',
@@ -362,11 +415,11 @@ export const Procedura: Record<string, string> = {
 };
 
 export const TableDataType: Record<string, FormatTyp> = {
-  date: FormatTyp.DateTime,
+  date: FormatTyp.Date,
   datetime: FormatTyp.DateTime,
   dec: FormatTyp.Currency,
   int: FormatTyp.Currency,
-  time: FormatTyp.DateTime,
+  time: FormatTyp.Time,
   txt: FormatTyp.Value,
 };
 

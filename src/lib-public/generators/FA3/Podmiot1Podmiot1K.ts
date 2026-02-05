@@ -5,6 +5,7 @@ import {
   formatText,
   generateColumns,
   getTable,
+  getValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
@@ -12,6 +13,7 @@ import { Podmiot1, Podmiot1K } from '../../types/fa2.types';
 import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { generateAdres } from './Adres';
+import { TAXPAYER_STATUS } from '../../../shared/consts/const';
 
 export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot1K): Content[] {
   const result: Content[] = createHeader('Sprzedawca');
@@ -32,13 +34,12 @@ export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot
     }
   }
   if (podmiot1.StatusInfoPodatnika) {
-    firstColumn.push(createLabelText('Status podatnika: ', podmiot1.StatusInfoPodatnika));
+    const statusInfo: string = TAXPAYER_STATUS[getValue(podmiot1.StatusInfoPodatnika)!];
+
+    firstColumn.push(createLabelText('Status podatnika: ', statusInfo));
   }
   if (firstColumn.length) {
-    result.push({
-      columns: [firstColumn, []],
-      columnGap: 20,
-    });
+    result.push(firstColumn);
   }
   firstColumn = generateCorrectedContent(podmiot1K, 'Treść korygowana');
   secondColumn = generateCorrectedContent(podmiot1, 'Treść korygująca');

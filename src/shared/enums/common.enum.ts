@@ -38,8 +38,10 @@ export enum FormatTyp {
   Right = 'Right',
   DateTime = 'DateTime',
   Date = 'Date',
+  Time = 'Time',
   FormOfPayment = 'FormOfPayment',
   Percentage = 'Percentage',
+  Number = 'Number',
 }
 
 export default FormatTyp;

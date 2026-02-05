@@ -128,13 +128,18 @@ function generateTable(tabela: Tabela): Content[] {
   return result;
 }
 
-function createTable(cols: Kol[], rows: Wiersz[], subTableIndex: number, totalLength: number): ContentTable {
+function createTable(
+  cols: Kol[],
+  rows: Wiersz | Wiersz[],
+  subTableIndex: number,
+  totalLength: number
+): ContentTable {
   const definedHeader: Content[] = cols.map((item: Kol): string | ContentText =>
     formatText(item.NKom?._text, FormatTyp.GrayBoldTitle)
   );
   const tableBody: TableCell[] = [];
 
-  rows.forEach((item: Wiersz): void => {
+  getTable(rows).forEach((item: Wiersz): void => {
     const WKom: FP[] = getTable(item.WKom);
 
     while (WKom.length < totalLength) {
@@ -205,9 +210,9 @@ export function chunkArray<T>(columns: T[]): T[][] {
     const half: number = Math.floor(n / 2);
 
     if (n % 2 === 0) {
-      return [columns.slice(0, half), columns.slice(half)];
+      return [columns.slice(0, half), [columns[0], ...columns.slice(half)]];
     } else {
-      return [columns.slice(0, half + 1), columns.slice(half + 1)];
+      return [columns.slice(0, half + 1), [columns[0], ...columns.slice(half + 1)]];
     }
   } else {
     const base: number = Math.floor(n / 3);
@@ -226,6 +231,8 @@ export function chunkArray<T>(columns: T[]): T[][] {
       result.push(columns.slice(idx, idx + size));
       idx += size;
     }
+    result[1].unshift(columns[0]);
+    result[2].unshift(columns[0]);
     return result;
   }
 }
