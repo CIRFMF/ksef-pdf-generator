@@ -12,6 +12,7 @@ import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfika
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { getRolaString } from '../../../shared/generators/common/functions';
 import FormatTyp from '../../../shared/enums/common.enum';
+import { t } from '../../../i18n';
 
 export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const result: Content[] = [];
@@ -20,7 +21,7 @@ export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const column1: Content[] = [
     ...createHeader(`Podmiot inny ${index + 1}`),
     createLabelText('Identyfikator nabywcy: ', podmiot.IDNabywcy),
-    createLabelText('Numer EORI: ', podmiot.NrEORI),
+    createLabelText(t('podmioty.numerEORI'), podmiot.NrEORI),
     ...generateDaneIdentyfikacyjneTPodmiot3Dto(podmiot.DaneIdentyfikacyjne),
     createLabelText('Rola: ', getRolaString(podmiot.Rola, 2)),
     createLabelText('Rola inna: ', podmiot.OpisRoli),
@@ -30,21 +31,21 @@ export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const column2: Content[] = [];
 
   if (podmiot.Adres) {
-    column2.push(formatText('Adres', [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
+    column2.push(formatText(t('podmioty.adres'), [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
   }
   if (podmiot.AdresKoresp) {
     column2.push(
-      formatText('Adres do korespondencji', [FormatTyp.Label, FormatTyp.LabelMargin]),
+      formatText(t('podmioty.adresKorespondencyjny'), [FormatTyp.Label, FormatTyp.LabelMargin]),
       ...generateAdres(podmiot.AdresKoresp)
     );
   }
   if (podmiot.DaneKontaktowe || podmiot.NrKlienta) {
-    column2.push(formatText('Dane kontaktowe', [FormatTyp.Label, FormatTyp.LabelMargin]));
+    column2.push(formatText(t('podmioty.daneKontaktowe'), [FormatTyp.Label, FormatTyp.LabelMargin]));
     if (podmiot.DaneKontaktowe) {
       column2.push(...generateDaneKontaktowe(podmiot.DaneKontaktowe));
     }
     if (podmiot.NrKlienta) {
-      column2.push(createLabelText('Numer klienta: ', podmiot.NrKlienta));
+      column2.push(createLabelText(t('podmioty.numerKlienta'), podmiot.NrKlienta));
     }
   }
   result.push(generateTwoColumns(column1, column2));

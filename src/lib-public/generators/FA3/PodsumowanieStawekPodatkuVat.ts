@@ -10,6 +10,7 @@ import {
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Fa, Faktura, FP } from '../../types/fa3.types';
 import { TaxSummaryTypes } from '../../types/tax-summary.types';
+import { t } from '../../../i18n';
 
 export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[] {
   const AnyP13P14_5Diff0 =
@@ -66,7 +67,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
     ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)
       ? [
           {
-            text: 'Stawka podatku',
+            text: t('podsumowanie.stawkaPodatku'),
             style: FormatTyp.GrayBoldTitle,
           },
         ]
@@ -132,7 +133,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
   table.table.widths = [...widths] as never[];
 
   return tableBody.length
-    ? createSection([...createHeader('Podsumowanie stawek podatku', [0, 0, 0, 8]), table], false)
+    ? createSection([...createHeader(t('podsumowanie.sectionTitle'), [0, 0, 0, 8]), table], false)
     : [];
 }
 

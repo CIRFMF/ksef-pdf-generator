@@ -14,6 +14,7 @@ import { FP, Zamowienie } from '../../types/fa2.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
 import { ZamowienieKorekta } from '../../enums/invoice.enums';
+import { t } from '../../../i18n';
 
 export function generateZamowienie(
   orderData: Zamowienie | undefined,
@@ -40,24 +41,24 @@ export function generateZamowienie(
   ];
   const definedHeader1: HeaderDefine[] = [
     { name: 'UU_ID', title: 'Unikalny numer wiersza', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_7Z', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default, width: '*' },
+    { name: 'P_7Z', title: t('wiersze.nazwaTowaruLubUslugi'), format: FormatTyp.Default, width: '*' },
     {
       name: 'P_9AZ',
-      title: 'Cena jedn. netto',
+      title: t('wiersze.cenaJednNetto'),
       format: formatAbs,
       width: 'auto',
     },
-    { name: 'P_8BZ', title: 'Ilość', format: FormatTyp.Right, width: 'auto' },
-    { name: 'P_8AZ', title: 'Miara', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12Z', title: 'Stawka podatku', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12Z_XII', title: 'Stawka podatku OSS', format: FormatTyp.Percentage, width: 'auto' },
+    { name: 'P_8BZ', title: t('wiersze.ilosc'), format: FormatTyp.Right, width: 'auto' },
+    { name: 'P_8AZ', title: t('wiersze.miara'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_12Z', title: t('wiersze.stawkaPodatku'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_12Z_XII', title: t('wiersze.stawkaPodatkuOSS'), format: FormatTyp.Percentage, width: 'auto' },
     {
       name: 'P_12Z_Zal_15',
       title: 'Znacznik dla towaru lub usługi z zał. nr 15 do ustawy',
       format: FormatTyp.Default,
       width: 'auto',
     },
-    { name: 'P_11NettoZ', title: 'Wartość sprzedaży netto', format: formatAbs, width: 'auto' },
+    { name: 'P_11NettoZ', title: t('wiersze.wartoscSprzedazyNetto'), format: formatAbs, width: 'auto' },
     { name: 'P_11VatZ', title: 'Kwota podatku', format: formatAbs, width: 'auto' },
   ];
 
@@ -103,7 +104,7 @@ export function generateZamowienie(
       table.push(content.content);
     }
   }
-  const ceny = `Faktura wystawiona w cenach ${content.fieldsWithValue.includes('P_11') ? 'netto' : 'brutto'} w walucie ${KodWaluty}`;
+  const ceny = (content.fieldsWithValue.includes('P_11') ? t('wiersze.fakturaWCenachNettoWalucie') : t('wiersze.fakturaWCenachBruttoWalucie')) + KodWaluty;
   let opis: Content = '';
 
   if (Number(p_15) > 0 && rodzajFaktury == TRodzajFaktury.ZAL) {
@@ -122,7 +123,7 @@ export function generateZamowienie(
   ) {
     opis = {
       stack: createLabelTextArray([
-        { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
+        { value: t('wiersze.kwotaNaleznosciOgolem'), formatTyp: FormatTyp.LabelGreater },
         { value: p_15, formatTyp: FormatTyp.CurrencyGreater },
       ]),
       alignment: Position.RIGHT,

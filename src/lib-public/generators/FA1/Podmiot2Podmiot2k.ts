@@ -14,16 +14,17 @@ import { Podmiot2, Podmiot2K } from '../../types/fa1.types';
 import { generatePodmiotAdres } from './PodmiotAdres';
 import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { t } from '../../../i18n';
 
 export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot2K): Content[] {
   const result: Content[] = [];
 
   result.push(generateLine());
-  result.push(createHeader('Nabywca'));
+  result.push(createHeader(t('podmioty.nabywca')));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
-  firstColumn.push(createSubHeader('Dane identyfikacyjne'), createLabelText('Numer EORI: ', podmiot2.NrEORI));
+  firstColumn.push(createSubHeader('Dane identyfikacyjne'), createLabelText(t('podmioty.numerEORI'), podmiot2.NrEORI));
   if (podmiot2.DaneIdentyfikacyjne) {
     firstColumn.push(...generateDaneIdentyfikacyjne(podmiot2.DaneIdentyfikacyjne));
   }
@@ -32,7 +33,7 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
     firstColumn.push(generateDaneKontaktowe(podmiot2.Email, getTable(podmiot2.Telefon)));
   }
   if (podmiot2.NrKlienta) {
-    firstColumn.push(createLabelText('Numer klienta: ', podmiot2.NrKlienta));
+    firstColumn.push(createLabelText(t('podmioty.numerKlienta'), podmiot2.NrKlienta));
   }
   if (firstColumn.length) {
     result.push({
@@ -47,7 +48,7 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
 
   if (podmiot2.AdresKoresp) {
     secondColumn.push(
-      generatePodmiotAdres(podmiot2.AdresKoresp, 'Adres do korespondencji', true, [0, 12, 0, 1.3])
+      generatePodmiotAdres(podmiot2.AdresKoresp, t('podmioty.adresKorespondencyjny'), true, [0, 12, 0, 1.3])
     );
   }
 
@@ -66,7 +67,7 @@ export function generateCorrectedContent(podmiot: Podmiot2 | Podmiot2K, headerTe
   result.push(createSubHeader(headerText));
 
   if (hasValue(podmiot.PrefiksNabywcy)) {
-    result.push(createLabelText('Prefiks VAT: ', podmiot.PrefiksNabywcy));
+    result.push(createLabelText(t('podmioty.prefiksVAT'), podmiot.PrefiksNabywcy));
   }
   if (podmiot.DaneIdentyfikacyjne) {
     if (hasValue(podmiot.DaneIdentyfikacyjne.NrID)) {
@@ -78,7 +79,7 @@ export function generateCorrectedContent(podmiot: Podmiot2 | Podmiot2K, headerTe
     result.push(...generateDaneIdentyfikacyjne(podmiot.DaneIdentyfikacyjne));
   }
   if (podmiot.Adres) {
-    result.push(generatePodmiotAdres(podmiot.Adres, 'Adres', true, [0, 12, 0, 1.3]));
+    result.push(generatePodmiotAdres(podmiot.Adres, t('podmioty.adres'), true, [0, 12, 0, 1.3]));
   }
   return result;
 }

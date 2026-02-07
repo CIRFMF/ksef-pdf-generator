@@ -16,6 +16,7 @@ import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { Podmiot1DaneKontaktowe, Podmiot3 } from '../../types/fa3.types';
 import { Podmiot2K } from '../../types/fa2.types';
 import { Adres } from '../../types/fa1.types';
+import { t } from '../../../i18n';
 
 export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   podmiot2KDto: Podmiot3Podmiot2KDto | undefined,
@@ -40,7 +41,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   ) {
     result.push(
       ...createHeader('Dane identyfikacyjne'),
-      createLabelText('Numer EORI: ', podmiot1.NrEORI),
+      createLabelText(t('podmioty.numerEORI'), podmiot1.NrEORI),
       createLabelText('Rola: ', getRolaString(podmiot1.Rola, 3)),
       createLabelText('Rola inna: ', podmiot1.OpisRoli),
       createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Percentage)
@@ -49,7 +50,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
 
   if (podmiot1DaneKontaktowe.length > 0 || hasValue(podmiot1.NrKlienta)) {
     result.push(generateDaneKontaktowe(podmiot1.DaneKontaktowe ?? []));
-    result.push(createLabelText('Numer klienta: ', podmiot1.NrKlienta));
+    result.push(createLabelText(t('podmioty.numerKlienta'), podmiot1.NrKlienta));
   }
   const columns1: Content[] = [
     ...createHeader('Treść korygowana'),
@@ -75,7 +76,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   }
 
   if (podmiot1.AdresKoresp != null) {
-    columns2.push(generatePodmiotAdres(podmiot1.AdresKoresp, 'Adres korespondencyjny'));
+    columns2.push(generatePodmiotAdres(podmiot1.AdresKoresp, t('podmioty.adresKorespondencyjny')));
   }
   result.push(generateTwoColumns(columns1, columns2));
   return result;

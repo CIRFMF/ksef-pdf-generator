@@ -8,6 +8,7 @@ import {
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { PodmiotUpowaznionyDaneKontaktowe } from '../../types/fa3.types';
+import { t } from '../../../i18n';
 
 export function generatePodmiotUpowaznionyDaneKontaktowe(
   daneKontaktoweSource: PodmiotUpowaznionyDaneKontaktowe[] | undefined
@@ -15,7 +16,7 @@ export function generatePodmiotUpowaznionyDaneKontaktowe(
   if (!daneKontaktoweSource) {
     return [];
   }
-  const result: Content[] = [formatText('Dane kontaktowe', FormatTyp.Description)];
+  const result: Content[] = [formatText(t('podmioty.daneKontaktowe'), FormatTyp.Description)];
   const daneKontaktowe = getTable(daneKontaktoweSource);
 
   if (daneKontaktowe.length === 0) {

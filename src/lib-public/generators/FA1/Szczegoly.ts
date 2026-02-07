@@ -18,14 +18,15 @@ import { Fa, FP } from '../../types/fa1.types';
 import { DifferentValues, TypesOfValues } from '../../../shared/types/universal.types';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
+import { t } from '../../../i18n';
 
 export function generateSzczegoly(faVat: Fa): Content[] {
   const faWiersze: Record<string, FP>[] = getTable(faVat.FaWiersze?.FaWiersz);
   const zamowieniaWiersze: Record<string, FP>[] = getTable(faVat.Zamowienie?.ZamowienieWiersz);
   const LabelP_6: string =
     faVat.RodzajFaktury == TRodzajFaktury.ZAL || faVat.RodzajFaktury == TRodzajFaktury.KOR_ZAL
-      ? 'Data otrzymania zapłaty: '
-      : 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: ';
+      ? t('szczegoly.dataOtrzymaniaZaplaty')
+      : t('szczegoly.dataDokonaniaDostawy');
 
   const P_6Scope: Content[] = generateP_6Scope(faVat.OkresFa?.P_6_Od, faVat.OkresFa?.P_6_Do);
 
@@ -37,17 +38,17 @@ export function generateSzczegoly(faVat: Fa): Content[] {
       hasColumnsValue('P_11', faWiersze) || hasColumnsValue('P_11', zamowieniaWiersze);
 
     if (Any_P_11) {
-      cenyLabel1.push(createLabelText('Faktura wystawiona w cenach: ', 'netto'));
+      cenyLabel1.push(createLabelText(t('szczegoly.fakturaWCenach'), t('szczegoly.netto')));
     } else {
-      cenyLabel1.push(createLabelText('Faktura wystawiona w cenach: ', 'brutto'));
+      cenyLabel1.push(createLabelText(t('szczegoly.fakturaWCenach'), t('szczegoly.brutto')));
     }
-    cenyLabel2.push(createLabelText('Kod waluty: ', faVat.KodWaluty));
+    cenyLabel2.push(createLabelText(t('szczegoly.kodWaluty'), faVat.KodWaluty));
   }
 
   const P_12_XIILabel: Content[] = [];
 
   if (hasColumnsValue('P_12_XII', faWiersze) || hasColumnsValue('P_12_XII', zamowieniaWiersze)) {
-    P_12_XIILabel.push(createLabelText('Procedura One Stop Shop', ' '));
+    P_12_XIILabel.push(createLabelText(t('szczegoly.proceduraOSS'), ' '));
   }
 
   const kodWalutyLabel1: Content[] = [];
@@ -61,18 +62,18 @@ export function generateSzczegoly(faVat: Fa): Content[] {
       );
 
       if (Common_KursWaluty.length === 1) {
-        kodWalutyLabel1.push(createLabelText('Kurs waluty wspólny dla wszystkich wierszy faktury', ' '));
+        kodWalutyLabel1.push(createLabelText(t('szczegoly.kursWalutyWspolny'), ' '));
         kodWalutyLabel2.push(
-          createLabelText('Kurs waluty: ', Common_KursWaluty[0].value, FormatTyp.Currency6)
+          createLabelText(t('szczegoly.kursWaluty'), Common_KursWaluty[0].value, FormatTyp.Currency6)
         );
       }
     } else {
       const Common_KursWaluty: DifferentValues[] = getDifferentColumnsValue('KursWaluty', faWiersze);
 
       if (Common_KursWaluty.length === 1) {
-        kodWalutyLabel1.push(createLabelText('Kurs waluty wspólny dla wszystkich wierszy faktury', ' '));
+        kodWalutyLabel1.push(createLabelText(t('szczegoly.kursWalutyWspolny'), ' '));
         kodWalutyLabel2.push(
-          createLabelText('Kurs waluty: ', Common_KursWaluty[0].value, FormatTyp.Currency6)
+          createLabelText(t('szczegoly.kursWaluty'), Common_KursWaluty[0].value, FormatTyp.Currency6)
         );
       }
     }
@@ -81,14 +82,10 @@ export function generateSzczegoly(faVat: Fa): Content[] {
   const tpLabel2: Content[] = [];
 
   const forColumns: Content[][] = [
-    createLabelText('Numer faktury: ', faVat.P_2),
-    createLabelText(
-      'Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ',
-      faVat.P_1,
-      FormatTyp.Date
-    ),
-    createLabelText('Miejsce wystawienia: ', faVat.P_1M),
-    createLabelText('Okres, którego dotyczy rabat: ', faVat.OkresFaKorygowanej),
+    createLabelText(t('szczegoly.numerFaktury'), faVat.P_2),
+    createLabelText(t('szczegoly.dataWystawienia'), faVat.P_1, FormatTyp.Date),
+    createLabelText(t('szczegoly.miejsceWystawienia'), faVat.P_1M),
+    createLabelText(t('szczegoly.okresRabat'), faVat.OkresFaKorygowanej),
     createLabelText(LabelP_6, faVat.P_6, FormatTyp.Date),
     P_6Scope,
     cenyLabel1,
@@ -110,7 +107,7 @@ export function generateSzczegoly(faVat: Fa): Content[] {
     }
   });
   const table: Content[] = [
-    ...createHeader('Szczegóły'),
+    ...createHeader(t('szczegoly.sectionTitle')),
     generateTwoColumns(columns1, columns2),
     ...generateFakturaZaliczkowa(getTable(faVat.NrFaZaliczkowej)),
   ];
@@ -124,21 +121,19 @@ function generateP_6Scope(P_6_Od: TypesOfValues, P_6_Do: TypesOfValues): Content
   if (hasValue(P_6_Od) && hasValue(P_6_Do)) {
     table.push(
       createLabelTextArray([
-        {
-          value: 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
-        },
+        { value: t('szczegoly.dataDokonaniaOd') },
         { value: P_6_Od, formatTyp: FormatTyp.Value },
-        { value: ' do ' },
+        { value: t('szczegoly.dataDokonaniaDo') },
         { value: P_6_Do, formatTyp: FormatTyp.Value },
       ])
     );
   } else if (hasValue(P_6_Od)) {
     table.push(
-      createLabelText('Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ', P_6_Od)
+      createLabelText(t('szczegoly.dataDokonaniaOd'), P_6_Od)
     );
   } else if (hasValue(P_6_Do)) {
     table.push(
-      createLabelText('Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ', P_6_Do)
+      createLabelText(t('szczegoly.dataDokonaniaDoLabel'), P_6_Do)
     );
   }
   return table;
@@ -153,7 +148,7 @@ function generateFakturaZaliczkowa(fakturaZaliczkowa: FP[] | undefined): Content
   const fakturaZaliczkowaHeader: HeaderDefine[] = [
     {
       name: '',
-      title: 'Numery wcześniejszych faktur zaliczkowych',
+      title: t('szczegoly.numeryFakturZaliczkowych'),
       format: FormatTyp.Default,
     },
   ];

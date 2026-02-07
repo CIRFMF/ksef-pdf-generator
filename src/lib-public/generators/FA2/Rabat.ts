@@ -13,15 +13,19 @@ import { Fa } from '../../types/fa2.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
 import { FP } from '../../types/fa1.types';
+import { t } from '../../../i18n';
 
 export function generateRabat(invoice: Fa): Content[] {
-  const faRows: Record<string, FP>[] = getTable(invoice!.FaWiersz);
+  const faRows: Record<string, FP>[] = getTable(invoice!.FaWiersz).map((row) => {
+    const p8a: Record<string, FP> = row.P_8A?._text === 'szt' ? { P_8A: { _text: t('units.szt') } } : {};
+    return { ...row, ...p8a };
+  });
   const result: Content[] = [];
   const definedHeader: HeaderDefine[] = [
     { name: 'NrWierszaFa', title: 'Lp.', format: FormatTyp.Default },
-    { name: 'P_7', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default },
-    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Default },
-    { name: 'P_8A', title: 'Miara', format: FormatTyp.Default },
+    { name: 'P_7', title: t('wiersze.nazwaTowaruLubUslugi'), format: FormatTyp.Default },
+    { name: 'P_8B', title: t('wiersze.ilosc'), format: FormatTyp.Default },
+    { name: 'P_8A', title: t('wiersze.miara'), format: FormatTyp.Default },
   ];
   const tabRabat: TableWithFields = getContentTable<(typeof faRows)[0]>(definedHeader, faRows, '*');
   const isNrWierszaFa: boolean = tabRabat.fieldsWithValue.includes('NrWierszaFa');

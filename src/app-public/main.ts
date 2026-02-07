@@ -1,9 +1,13 @@
+import { Locale } from 'i18n/types';
 import { generateInvoice, generatePDFUPO } from '../lib-public';
 
 import { AdditionalDataTypes } from '../lib-public/types/common.types';
+import { setLocale } from '../i18n';
 
 const inputInvoice: HTMLInputElement = document.getElementById('xmlInput') as HTMLInputElement;
 const inputUPO: HTMLInputElement = document.getElementById('xmlInputUPO') as HTMLInputElement;
+const localePicker: HTMLSelectElement = document.getElementById('localePicker') as HTMLSelectElement;
+const SUPPORTED_LOCALES: Locale[] = ['pl', 'en'];
 
 inputInvoice.addEventListener('change', async (): Promise<void> => {
   const file: File | undefined = inputInvoice.files?.[0];
@@ -11,12 +15,15 @@ inputInvoice.addEventListener('change', async (): Promise<void> => {
   if (!file) {
     return;
   }
-
   const additionalData: AdditionalDataTypes = {
     nrKSeF: '5555555555-20250808-9231003CA67B-BE',
     qrCode:
       'https://ksef-test.mf.gov.pl/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
   };
+
+  if (SUPPORTED_LOCALES.includes(localePicker.value as Locale)) {
+    setLocale(localePicker.value as Locale);
+  }
 
   generateInvoice(file, additionalData, 'blob').then((data: Blob): void => {
     const url: string = URL.createObjectURL(data);

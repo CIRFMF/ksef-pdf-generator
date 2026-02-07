@@ -14,6 +14,7 @@ import { generatePodmiotAdres } from './PodmiotAdres';
 import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { getRolaUpowaznionegoString } from '../../../shared/generators/common/functions';
+import { t } from '../../../i18n';
 
 export function generatePodmiotUpowazniony(podmiot: PodmiotUpowazniony | undefined): Content[] {
   if (!podmiot) {
@@ -27,7 +28,7 @@ export function generatePodmiotUpowazniony(podmiot: PodmiotUpowazniony | undefin
     columnLeft.push(createLabelText('Rola: ', getRolaUpowaznionegoString(podmiot.RolaPU, 1)));
   }
   if (hasValue(podmiot.NrEORI)) {
-    columnLeft.push(createLabelText('Numer EORI: ', podmiot.NrEORI));
+    columnLeft.push(createLabelText(t('podmioty.numerEORI'), podmiot.NrEORI));
   }
   if (podmiot.DaneIdentyfikacyjne) {
     if (hasValue(podmiot.DaneIdentyfikacyjne.NrID)) {
@@ -40,14 +41,14 @@ export function generatePodmiotUpowazniony(podmiot: PodmiotUpowazniony | undefin
   }
 
   if (podmiot.Adres) {
-    columnRight.push(generatePodmiotAdres(podmiot.Adres, 'Adres', true));
+    columnRight.push(generatePodmiotAdres(podmiot.Adres, t('podmioty.adres'), true));
   }
   if (podmiot.AdresKoresp) {
-    columnRight.push(generatePodmiotAdres(podmiot.AdresKoresp, 'Adres do korespondencji', true));
+    columnRight.push(generatePodmiotAdres(podmiot.AdresKoresp, t('podmioty.adresKorespondencyjny'), true));
   }
   if (podmiot.EmailPU || podmiot.TelefonPU) {
     columnRight.push(
-      formatText('Dane kontaktowe', [FormatTyp.Label]),
+      formatText(t('podmioty.daneKontaktowe'), [FormatTyp.Label]),
       ...generateDaneKontaktowe(podmiot.EmailPU, getTable(podmiot.TelefonPU))
     );
   }
