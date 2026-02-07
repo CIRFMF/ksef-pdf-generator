@@ -14,13 +14,14 @@ import { generateAdres } from './Adres';
 import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { TAXPAYER_STATUS } from '../../../shared/consts/const';
+import { t } from '../../../i18n';
 
 export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot1K): Content[] {
-  const result: Content[] = createHeader('Sprzedawca');
+  const result: Content[] = createHeader(t('podmioty.sprzedawca'));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
-  firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText('Numer EORI: ', podmiot1.NrEORI));
+  firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText(t('podmioty.numerEORI'), podmiot1.NrEORI));
   if (podmiot1.DaneIdentyfikacyjne) {
     firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot1Dto(podmiot1.DaneIdentyfikacyjne));
   }
@@ -31,7 +32,7 @@ export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot
   if (podmiot1.StatusInfoPodatnika) {
     const statusInfo: string = TAXPAYER_STATUS[getValue(podmiot1.StatusInfoPodatnika)!];
 
-    firstColumn.push(createLabelText('Status podatnika: ', statusInfo));
+    firstColumn.push(createLabelText(t('podmioty.statusPodatnika'), statusInfo));
   }
   if (firstColumn.length) {
     result.push(firstColumn);
@@ -41,7 +42,7 @@ export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot
 
   if (podmiot1.AdresKoresp) {
     secondColumn.push(
-      formatText('Adres do korespondencji', [FormatTyp.Label, FormatTyp.LabelMargin]),
+      formatText(t('podmioty.adresKorespondencyjny'), [FormatTyp.Label, FormatTyp.LabelMargin]),
       generateAdres(podmiot1.AdresKoresp)
     );
   }
@@ -60,13 +61,13 @@ export function generateCorrectedContent(podmiot: Podmiot1 | Podmiot1K, header: 
   result.push(createHeader(header));
 
   if (podmiot.PrefiksPodatnika?._text) {
-    result.push(createLabelText('Prefiks VAT: ', podmiot.PrefiksPodatnika));
+    result.push(createLabelText(t('podmioty.prefiksVAT'), podmiot.PrefiksPodatnika));
   }
   if (podmiot.DaneIdentyfikacyjne) {
     result.push(...generateDaneIdentyfikacyjneTPodmiot1Dto(podmiot.DaneIdentyfikacyjne));
   }
   if (podmiot.Adres) {
-    result.push(formatText('Adres', [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
+    result.push(formatText(t('podmioty.adres'), [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
   }
   return result;
 }

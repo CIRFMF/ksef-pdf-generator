@@ -1,5 +1,6 @@
 import { FP as FP3 } from './fa3.types';
 import { FP as FP2 } from './fa2.types';
+import { Locale } from '../../i18n';
 
 interface FA2FakturaZaliczkowaDataSpozaKSeF {
   NrKSeFZN: FP2;
@@ -26,4 +27,6 @@ export interface AdditionalDataTypes {
   nrKSeF: string;
   qrCode?: string;
   isMobile?: boolean;
+  /** PDF language (e.g. 'pl' | 'en'). Default: 'pl'. */
+  locale?: Locale;
 }

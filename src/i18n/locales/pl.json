@@ -1,0 +1,89 @@
+{
+  "naglowek": {
+    "systemNamePart1": "Krajowy System ",
+    "systemNamePart2": "e",
+    "systemNamePart3": "-Faktur",
+    "invoiceNumber": "Numer Faktury:",
+    "nrKSeF": "Numer KSEF:",
+    "invoiceTypeVat": "Faktura podstawowa",
+    "invoiceTypeZal": "Faktura zaliczkowa",
+    "invoiceTypeRoz": "Faktura rozliczeniowa",
+    "invoiceTypeKorRoz": "Faktura korygująca rozliczeniową",
+    "invoiceTypeKorZal": "Faktura korygująca zaliczkową",
+    "invoiceTypeKor": "Faktura korygująca",
+    "invoiceTypeKorRabat": "Faktura korygująca zbiorcza (rabat)",
+    "invoiceTypeUpr": "Faktura uproszczona",
+    "invoiceTypeUnknown": "???",
+    "mobileAttachmentNote": "Uwaga, faktura zawiera załącznik, jednak ze względu na ograniczenia wizualizacji, nie został on uwzględniony w pliku PDF"
+  },
+  "stopka": {
+    "numerWz": "Numer WZ",
+    "numeryDokumentowWz": "Numery dokumentów magazynowych WZ",
+    "rejestry": "Rejestry",
+    "pelnaNazwa": "Pełna nazwa",
+    "krs": "KRS",
+    "regon": "REGON",
+    "bdo": "BDO",
+    "stopkaFaktury": "Stopka faktury",
+    "pozostaleInformacje": "Pozostałe informacje",
+    "wytworzonaW": "Wytworzona w: ",
+    "qrCheckKSeF": "Sprawdź, czy Twoja faktura znajduje się w KSeF!",
+    "qrCantScanHint": "Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!"
+  },
+  "podmioty": {
+    "sprzedawca": "Sprzedawca",
+    "nabywca": "Nabywca",
+    "adres": "Adres",
+    "adresKorespondencyjny": "Adres do korespondencji",
+    "daneKontaktowe": "Dane kontaktowe",
+    "numerKlienta": "Numer klienta: ",
+    "numerEORI": "Numer EORI: ",
+    "prefiksVAT": "Prefiks VAT: ",
+    "statusPodatnika": "Status podatnika: ",
+    "fakturaDotyczyJst": "Faktura dotyczy jednostki podrzędnej JST: ",
+    "fakturaDotyczyGv": "Faktura dotyczy członka grupy GV: "
+  },
+  "szczegoly": {
+    "sectionTitle": "Szczegóły",
+    "miejsceWystawienia": "Miejsce wystawienia: ",
+    "numerFaktury": "Numer faktury: ",
+    "dataWystawienia": "Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ",
+    "okresRabat": "Okres, którego dotyczy rabat: ",
+    "dataOtrzymaniaZaplaty": "Data otrzymania zapłaty: ",
+    "dataDokonaniaDostawy": "Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: ",
+    "dataDokonaniaOd": "Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ",
+    "dataDokonaniaDo": " do ",
+    "dataDokonaniaDoLabel": "Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ",
+    "fakturaWCenach": "Faktura wystawiona w cenach: ",
+    "netto": "netto",
+    "brutto": "brutto",
+    "kodWaluty": "Kod waluty: ",
+    "proceduraOSS": "Procedura One Stop Shop",
+    "kursWalutyWspolny": "Kurs waluty wspólny dla wszystkich wierszy faktury",
+    "kursWaluty": "Kurs waluty: ",
+    "numeryFakturZaliczkowych": "Numery wcześniejszych faktur zaliczkowych"
+  },
+  "wiersze": {
+    "nazwaTowaruLubUslugi": "Nazwa towaru lub usługi",
+    "cenaJednNetto": "Cena jedn. netto",
+    "cenaJednBrutto": "Cena jedn. brutto",
+    "stawkaPodatku": "Stawka podatku",
+    "stawkaPodatkuOSS": "Stawka podatku OSS",
+    "wartoscSprzedazyNetto": "Wartość sprzedaży netto",
+    "wartoscSprzedazyBrutto": "Wartość sprzedaży brutto",
+    "wartoscSprzedazyVat": "Wartość sprzedaży vat",
+    "pozycje": "Pozycje",
+    "fakturaWCenachNettoWalucie": "Faktura wystawiona w cenach netto w walucie ",
+    "fakturaWCenachBruttoWalucie": "Faktura wystawiona w cenach brutto w walucie ",
+    "kwotaNaleznosciOgolem": "Kwota należności ogółem: ",
+    "ilosc": "Ilość",
+    "miara": "Miara"
+  },
+  "podsumowanie": {
+    "sectionTitle": "Podsumowanie stawek podatku",
+    "stawkaPodatku": "Stawka podatku"
+  },
+  "units": {
+    "szt": "szt"
+  }
+}

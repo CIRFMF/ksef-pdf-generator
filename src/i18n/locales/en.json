@@ -1,0 +1,89 @@
+{
+  "naglowek": {
+    "systemNamePart1": "National ",
+    "systemNamePart2": "e",
+    "systemNamePart3": "-Invoice System",
+    "invoiceNumber": "Invoice number:",
+    "nrKSeF": "KSeF number:",
+    "invoiceTypeVat": "VAT invoice",
+    "invoiceTypeZal": "Advance invoice",
+    "invoiceTypeRoz": "Settlement invoice",
+    "invoiceTypeKorRoz": "Corrective to settlement invoice",
+    "invoiceTypeKorZal": "Corrective to advance invoice",
+    "invoiceTypeKor": "Corrective invoice",
+    "invoiceTypeKorRabat": "Corrective invoice (batch/rebate)",
+    "invoiceTypeUpr": "Simplified invoice",
+    "invoiceTypeUnknown": "???",
+    "mobileAttachmentNote": "Note: this invoice has an attachment which was not included in the PDF due to visualization limitations."
+  },
+  "stopka": {
+    "numerWz": "Goods issue no.",
+    "numeryDokumentowWz": "Warehouse document numbers (WZ)",
+    "rejestry": "Registers",
+    "pelnaNazwa": "Full name",
+    "krs": "KRS",
+    "regon": "REGON",
+    "bdo": "BDO",
+    "stopkaFaktury": "Invoice footer",
+    "pozostaleInformacje": "Other information",
+    "wytworzonaW": "Generated in: ",
+    "qrCheckKSeF": "Check if your invoice is in KSeF!",
+    "qrCantScanHint": "Can't scan the code? Click the verification link to verify the invoice!"
+  },
+  "podmioty": {
+    "sprzedawca": "Seller",
+    "nabywca": "Buyer",
+    "adres": "Address",
+    "adresKorespondencyjny": "Correspondence address",
+    "daneKontaktowe": "Contact details",
+    "numerKlienta": "Customer number: ",
+    "numerEORI": "EORI number: ",
+    "prefiksVAT": "VAT prefix: ",
+    "statusPodatnika": "Taxpayer status: ",
+    "fakturaDotyczyJst": "Invoice relates to JST subordinate unit: ",
+    "fakturaDotyczyGv": "Invoice relates to GV group member: "
+  },
+  "szczegoly": {
+    "sectionTitle": "Details",
+    "miejsceWystawienia": "Place of issue: ",
+    "numerFaktury": "Invoice number: ",
+    "dataWystawienia": "Issue date (subject to Art. 106na(1)): ",
+    "okresRabat": "Rebate period: ",
+    "dataOtrzymaniaZaplaty": "Date of payment received: ",
+    "dataDokonaniaDostawy": "Date of supply or service completion: ",
+    "dataDokonaniaOd": "Date of supply or service completion: from ",
+    "dataDokonaniaDo": " to ",
+    "dataDokonaniaDoLabel": "Date of supply or service completion: to ",
+    "fakturaWCenach": "Invoice issued in prices: ",
+    "netto": "net",
+    "brutto": "gross",
+    "kodWaluty": "Currency code: ",
+    "proceduraOSS": "One Stop Shop procedure",
+    "kursWalutyWspolny": "Exchange rate common to all invoice lines",
+    "kursWaluty": "Exchange rate: ",
+    "numeryFakturZaliczkowych": "Previous advance invoice numbers"
+  },
+  "wiersze": {
+    "nazwaTowaruLubUslugi": "Name of good or service",
+    "cenaJednNetto": "Unit price (net)",
+    "cenaJednBrutto": "Unit price (gross)",
+    "stawkaPodatku": "Tax rate",
+    "stawkaPodatkuOSS": "Tax rate OSS",
+    "wartoscSprzedazyNetto": "Net sales value",
+    "wartoscSprzedazyBrutto": "Gross sales value",
+    "wartoscSprzedazyVat": "VAT amount",
+    "pozycje": "Line items",
+    "fakturaWCenachNettoWalucie": "Invoice issued in net prices in currency ",
+    "fakturaWCenachBruttoWalucie": "Invoice issued in gross prices in currency ",
+    "kwotaNaleznosciOgolem": "Total amount due: ",
+    "ilosc": "Quantity",
+    "miara": "Unit"
+  },
+  "podsumowanie": {
+    "sectionTitle": "Tax rate summary",
+    "stawkaPodatku": "Tax rate"
+  },
+  "units": {
+    "szt": "pcs"
+  }
+}

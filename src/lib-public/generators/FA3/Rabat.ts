@@ -11,15 +11,19 @@ import {
 import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { Fa } from '../../types/fa3.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import { t } from '../../../i18n';
 
 export function generateRabat(invoice: Fa): Content[] {
-  const faRows = getTable(invoice!.FaWiersz);
+  const faRows = getTable(invoice!.FaWiersz).map((row: Record<string, any>) => {
+    const p8a: Record<string, any> = row.P_8A?._text === 'szt' ? { P_8A: { _text: t('units.szt') } } : {};
+    return { ...row, ...p8a };
+  });
   const result: Content[] = [];
   const definedHeader: HeaderDefine[] = [
     { name: 'NrWierszaFa', title: 'Lp.', format: FormatTyp.Default },
-    { name: 'P_7', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default },
-    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Default },
-    { name: 'P_8A', title: 'Miara', format: FormatTyp.Default },
+    { name: 'P_7', title: t('wiersze.nazwaTowaruLubUslugi'), format: FormatTyp.Default },
+    { name: 'P_8B', title: t('wiersze.ilosc'), format: FormatTyp.Default },
+    { name: 'P_8A', title: t('wiersze.miara'), format: FormatTyp.Default },
   ];
   const tabRabat = getContentTable<(typeof faRows)[0]>(definedHeader, faRows, '*');
 

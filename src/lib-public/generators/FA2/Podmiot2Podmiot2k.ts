@@ -14,16 +14,17 @@ import { Podmiot2, Podmiot2K } from '../../types/fa3.types';
 import { generateAdres } from './Adres';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
+import { t } from '../../../i18n';
 
 export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot2K): Content[] {
   const result: Content[] = [];
 
   result.push(generateLine());
-  result.push(createHeader('Nabywca'));
+  result.push(createHeader(t('podmioty.nabywca')));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
-  firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText('Numer EORI: ', podmiot2.NrEORI));
+  firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText(t('podmioty.numerEORI'), podmiot2.NrEORI));
   if (podmiot2.DaneIdentyfikacyjne) {
     firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot2Dto(podmiot2.DaneIdentyfikacyjne));
   }
@@ -32,7 +33,7 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
     firstColumn.push(generateDaneKontaktowe(getTable(podmiot2.DaneKontaktowe)));
   }
   if (podmiot2.NrKlienta) {
-    firstColumn.push(createLabelText('Numer klienta: ', podmiot2.NrKlienta));
+    firstColumn.push(createLabelText(t('podmioty.numerKlienta'), podmiot2.NrKlienta));
   }
   if (firstColumn.length) {
     result.push({
@@ -48,7 +49,7 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
 
   if (podmiot2.AdresKoresp) {
     secondColumn.push(
-      formatText('Adres do korespondencji', [FormatTyp.Label, FormatTyp.LabelMargin]),
+      formatText(t('podmioty.adresKorespondencyjny'), [FormatTyp.Label, FormatTyp.LabelMargin]),
       generateAdres(podmiot2.AdresKoresp)
     );
   }
@@ -74,7 +75,7 @@ export function generateCorrectedContent(podmiot: Podmiot2 | Podmiot2K, header: 
     result.push(...generateDaneIdentyfikacyjneTPodmiot2Dto(podmiot.DaneIdentyfikacyjne));
   }
   if (podmiot.Adres) {
-    result.push(formatText('Adres', [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
+    result.push(formatText(t('podmioty.adres'), [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
   }
   return result;
 }

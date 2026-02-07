@@ -15,6 +15,7 @@ import { generatePodmiotAdres } from './PodmiotAdres';
 import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { Podmiot2K, Podmiot3 } from '../../types/fa1.types';
+import { t } from '../../../i18n';
 
 export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   podmiot2KDto: Podmiot3Podmiot2KDto | undefined,
@@ -35,7 +36,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   ) {
     result.push(
       ...createSubHeader('Dane identyfikacyjne'),
-      createLabelText('Numer EORI: ', podmiot1.NrEORI),
+      createLabelText(t('podmioty.numerEORI'), podmiot1.NrEORI),
       createLabelText('Rola: ', getRolaString(podmiot1.Rola, 1)),
       createLabelText('Rola inna: ', podmiot1.OpisRoli),
       createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Percentage)
@@ -46,7 +47,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
     result.push(generateDaneKontaktowe(podmiot1.Email, getTable(podmiot1.Telefon)));
   }
   if (hasValue(podmiot1.NrKlienta)) {
-    result.push(createLabelText('Numer klienta: ', podmiot1.NrKlienta));
+    result.push(createLabelText(t('podmioty.numerKlienta'), podmiot1.NrKlienta));
   }
   const columns1: Content[] = [...createSubHeader('Treść korygowana')];
 
@@ -61,7 +62,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
     columns1.push(generateDaneIdentyfikacyjne(podmiot1K.DaneIdentyfikacyjne));
   }
   if (podmiot1K?.Adres) {
-    columns1.push(generatePodmiotAdres(podmiot1K.Adres, 'Adres', true));
+    columns1.push(generatePodmiotAdres(podmiot1K.Adres, t('podmioty.adres'), true));
   }
   const columns2: Content[] = [...createSubHeader('Treść korygująca')];
 
@@ -76,11 +77,11 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
     columns2.push(generateDaneIdentyfikacyjne(podmiot1.DaneIdentyfikacyjne));
   }
   if (podmiot1?.Adres) {
-    columns2.push(generatePodmiotAdres(podmiot1.Adres, 'Adres', true));
+    columns2.push(generatePodmiotAdres(podmiot1.Adres, t('podmioty.adres'), true));
   }
 
   if (podmiot1.AdresKoresp != null) {
-    columns2.push(generatePodmiotAdres(podmiot1.AdresKoresp, 'Adres korespondencyjny', true));
+    columns2.push(generatePodmiotAdres(podmiot1.AdresKoresp, t('podmioty.adresKorespondencyjny'), true));
   }
   result.push(generateTwoColumns(columns1, columns2));
   return result;
