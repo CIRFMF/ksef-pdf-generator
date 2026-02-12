@@ -23,11 +23,12 @@ import { AdditionalDataTypes } from './types/common.types';
 
 pdfMake.vfs = pdfFonts.vfs;
 
-export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
+export function buildFA3DocDefinition(invoice: Faktura, additionalData: AdditionalDataTypes): TDocumentDefinitions {
   const isKOR_RABAT: boolean =
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
-  const docDefinition: TDocumentDefinitions = {
+
+  return {
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
       generateDaneFaKorygowanej(invoice.Fa),
@@ -52,6 +53,8 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
     ],
     ...generateStyle(),
   };
+}
 
-  return pdfMake.createPdf(docDefinition);
+export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
+  return pdfMake.createPdf(buildFA3DocDefinition(invoice, additionalData));
 }
