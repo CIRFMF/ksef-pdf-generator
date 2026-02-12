@@ -21,12 +21,34 @@ import { generateInvoice, buildInvoiceDocDefinition } from '../dist/ksef-fe-invo
 import { renderDocDefinitionToHtml } from './render-html.js';
 
 const PORT = Number(process.env.PORT) || 3001;
+const MAX_BODY_BYTES = Number(process.env.MAX_BODY_BYTES) || 10 * 1024 * 1024; // 10 MB
 
-function collectBody(req) {
+function collectBody(req, maxBytes = MAX_BODY_BYTES) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    req.on('data', (chunk) => chunks.push(chunk));
-    req.on('end', () => resolve(Buffer.concat(chunks)));
+    let totalBytes = 0;
+    let rejected = false;
+
+    req.on('data', (chunk) => {
+      if (rejected) {
+        return;
+      }
+      totalBytes += chunk.length;
+      if (totalBytes > maxBytes) {
+        rejected = true;
+        req.resume(); // drain remaining data so the socket stays usable
+        const err = new Error('Payload too large');
+        err.status = 413;
+        reject(err);
+        return;
+      }
+      chunks.push(chunk);
+    });
+    req.on('end', () => {
+      if (!rejected) {
+        resolve(Buffer.concat(chunks));
+      }
+    });
     req.on('error', reject);
   });
 }
@@ -85,9 +107,16 @@ const server = createServer(async (req, res) => {
       res.end(JSON.stringify({ error: 'Not found' }));
     }
   } catch (err) {
-    status = 500;
-    res.writeHead(500, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: err.message || 'Internal server error' }));
+    console.error('Request error:', err);
+    if (err.status === 413) {
+      status = 413;
+      res.writeHead(413, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Payload too large' }));
+    } else {
+      status = 500;
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Internal server error' }));
+    }
   }
 
   const duration = Date.now() - start;

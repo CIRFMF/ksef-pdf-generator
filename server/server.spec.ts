@@ -78,8 +78,23 @@ describe('ksef-pdf HTTP server', () => {
     });
   }, 30000);
 
-  afterAll(() => {
-    serverProcess?.kill('SIGTERM');
+  afterAll(async () => {
+    if (!serverProcess) {
+      return;
+    }
+
+    serverProcess.kill('SIGTERM');
+    await new Promise<void>((resolve) => {
+      const timeout = setTimeout(() => {
+        serverProcess.kill('SIGKILL');
+        resolve();
+      }, 5000);
+
+      serverProcess.on('exit', () => {
+        clearTimeout(timeout);
+        resolve();
+      });
+    });
   });
 
   it('GET /health returns 200 with status ok', async () => {
@@ -168,6 +183,19 @@ describe('ksef-pdf HTTP server', () => {
     expect(res.status).toBe(400);
     expect(JSON.parse(res.body.toString())).toEqual({ error: 'Empty request body' });
   });
+
+  it('POST /generate/pdf with oversized body returns 413', async () => {
+    const oversized = Buffer.alloc(11 * 1024 * 1024, 'x');
+
+    const res = await request('/generate/pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/xml' },
+      body: oversized,
+    });
+
+    expect(res.status).toBe(413);
+    expect(JSON.parse(res.body.toString())).toEqual({ error: 'Payload too large' });
+  }, 15000);
 
   it('POST /generate/html with invalid XML returns 500 with JSON error', async () => {
     const res = await request('/generate/html', {
