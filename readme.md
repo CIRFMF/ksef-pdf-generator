@@ -66,7 +66,44 @@ Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://
 
 ---
 
-## 5. Testy jednostkowe
+## 5. Serwer HTTP (mikroserwis)
+
+Biblioteka może działać jako samodzielny serwer HTTP — XML na wejściu, PDF na wyjściu.
+
+### Uruchomienie lokalne
+
+```bash
+npm run build
+node server/index.js
+```
+
+Serwer nasłuchuje na porcie `3001` (zmiana przez zmienną środowiskową `PORT`).
+
+### Endpointy
+
+| Metoda | Ścieżka | Opis |
+|--------|---------|------|
+| `POST` | `/generate` | Wyślij XML, otrzymaj PDF |
+| `GET` | `/health` | Health check (`{"status":"ok"}`) |
+
+### Przykład użycia
+
+```bash
+curl -X POST -H 'Content-Type: application/xml' \
+  --data-binary @assets/invoice.xml \
+  http://localhost:3001/generate -o faktura.pdf
+```
+
+### Docker
+
+```bash
+docker build -t ksef-pdf .
+docker run -p 3001:3001 ksef-pdf
+```
+
+---
+
+## 6. Testy jednostkowe
 
 Aplikacja zawiera zestaw testów napisanych w **TypeScript**, które weryfikują poprawność działania aplikacji.  
 Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy.
@@ -86,6 +123,11 @@ Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy
 3. Uruchom testy w trybie CI z raportem pokrycia:
    ```bash
    npm run test:ci
+   ```
+
+4. Uruchom testy integracyjne serwera HTTP:
+   ```bash
+   npm run test:server
    ```
 
 ---
