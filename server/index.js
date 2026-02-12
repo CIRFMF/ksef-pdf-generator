@@ -46,8 +46,10 @@ const server = createServer(async (req, res) => {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ error: 'Empty request body' }));
       } else {
+        const nrKSeF = req.headers['x-ksef-number'] || '';
+        const qrCode = req.headers['x-ksef-qrcode'] || undefined;
         const file = new File([body], 'invoice.xml', { type: 'text/xml' });
-        const base64 = await generateInvoice(file, { nrKSeF: '' }, 'base64');
+        const base64 = await generateInvoice(file, { nrKSeF, qrCode }, 'base64');
         const buffer = Buffer.from(base64, 'base64');
 
         res.writeHead(200, {
