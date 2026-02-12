@@ -137,4 +137,49 @@ describe('ksef-pdf HTTP server', () => {
     expect(res.status).toBe(400);
     expect(JSON.parse(res.body.toString())).toEqual({ error: 'Empty request body' });
   });
+
+  it('POST /generate/html with valid invoice XML returns HTML', async () => {
+    const xml = readFileSync(join(__dirname, '..', 'assets', 'invoice.xml'));
+
+    const res = await request('/generate/html', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/xml' },
+      body: xml,
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toBe('text/html; charset=utf-8');
+
+    const html = res.body.toString();
+
+    expect(html).toContain('<!DOCTYPE html');
+    expect(html).toContain('<html');
+    expect(html).toContain('</html>');
+    expect(html.length).toBeGreaterThan(1000);
+  }, 15000);
+
+  it('POST /generate/html with empty body returns 400', async () => {
+    const res = await request('/generate/html', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/xml' },
+      body: Buffer.alloc(0),
+    });
+
+    expect(res.status).toBe(400);
+    expect(JSON.parse(res.body.toString())).toEqual({ error: 'Empty request body' });
+  });
+
+  it('POST /generate/html with invalid XML returns 500 with JSON error', async () => {
+    const res = await request('/generate/html', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/xml' },
+      body: Buffer.from('<invalid>not an invoice</invalid>'),
+    });
+
+    expect(res.status).toBe(500);
+    expect(res.headers['content-type']).toBe('application/json');
+    const body = JSON.parse(res.body.toString());
+    expect(body).toHaveProperty('error');
+    expect(typeof body.error).toBe('string');
+  });
 });
