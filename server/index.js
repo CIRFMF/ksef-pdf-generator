@@ -39,7 +39,7 @@ const server = createServer(async (req, res) => {
     if (req.method === 'GET' && req.url === '/health') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ status: 'ok' }));
-    } else if (req.method === 'POST' && req.url === '/generate') {
+    } else if (req.method === 'POST' && req.url === '/generate/pdf') {
       const body = await collectBody(req);
 
       if (!body.length) {

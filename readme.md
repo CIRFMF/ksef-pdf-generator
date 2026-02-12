@@ -84,7 +84,7 @@ Serwer nasłuchuje na porcie `3001` (zmiana przez zmienną środowiskową `PORT`
 
 | Metoda | Ścieżka | Opis |
 |--------|---------|------|
-| `POST` | `/generate` | Wyślij XML, otrzymaj PDF |
+| `POST` | `/generate/pdf` | Wyślij XML, otrzymaj PDF |
 | `POST` | `/generate/html` | Wyślij XML, otrzymaj HTML |
 | `GET` | `/health` | Health check (`{"status":"ok"}`) |
 
@@ -102,7 +102,7 @@ Podstawowe generowanie PDF:
 ```bash
 curl -X POST -H 'Content-Type: application/xml' \
   --data-binary @assets/invoice.xml \
-  http://localhost:3001/generate -o faktura.pdf
+  http://localhost:3001/generate/pdf -o faktura.pdf
 ```
 
 Z numerem KSeF i kodem QR:
@@ -113,7 +113,7 @@ curl -X POST \
   -H 'X-KSeF-Number: 5555555555-20250808-9231003CA67B-BE' \
   -H 'X-KSeF-QRCode: https://ksef-test.mf.gov.pl/invoice/...' \
   --data-binary @assets/invoice.xml \
-  http://localhost:3001/generate -o faktura.pdf
+  http://localhost:3001/generate/pdf -o faktura.pdf
 ```
 
 Generowanie HTML (te same nagłówki co dla PDF):

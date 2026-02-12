@@ -90,10 +90,10 @@ describe('ksef-pdf HTTP server', () => {
     expect(JSON.parse(res.body.toString())).toEqual({ status: 'ok' });
   });
 
-  it('POST /generate with valid invoice XML returns a PDF', async () => {
+  it('POST /generate/pdf with valid invoice XML returns a PDF', async () => {
     const xml = readFileSync(join(__dirname, '..', 'assets', 'invoice.xml'));
 
-    const res = await request('/generate', {
+    const res = await request('/generate/pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/xml' },
       body: xml,
@@ -105,8 +105,8 @@ describe('ksef-pdf HTTP server', () => {
     expect(res.body.length).toBeGreaterThan(1000);
   }, 15000);
 
-  it('POST /generate with invalid XML returns 500 with JSON error', async () => {
-    const res = await request('/generate', {
+  it('POST /generate/pdf with invalid XML returns 500 with JSON error', async () => {
+    const res = await request('/generate/pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/xml' },
       body: Buffer.from('<invalid>not an invoice</invalid>'),
@@ -127,8 +127,8 @@ describe('ksef-pdf HTTP server', () => {
     expect(JSON.parse(res.body.toString())).toEqual({ error: 'Not found' });
   });
 
-  it('POST /generate with empty body returns 400', async () => {
-    const res = await request('/generate', {
+  it('POST /generate/pdf with empty body returns 400', async () => {
+    const res = await request('/generate/pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/xml' },
       body: Buffer.alloc(0),
