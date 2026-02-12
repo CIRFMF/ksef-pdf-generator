@@ -1,6 +1,6 @@
 # Biblioteka do generowania wizualizacji PDF faktur i UPO
 
-Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta.
+Biblioteka do generowania wizualizacji PDF oraz HTML faktur oraz UPO na podstawie plików XML.
 
 ---
 
@@ -8,6 +8,7 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
     Biblioteka zawiera następujące funkcjonalności:
     - Generowanie wizualizacji PDF faktur
+    - Generowanie wizualizacji HTML faktur
     - Generowanie wizualizacji PDF UPO
 
 ---
@@ -68,7 +69,7 @@ Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://
 
 ## 5. Serwer HTTP (mikroserwis)
 
-Biblioteka może działać jako samodzielny serwer HTTP — XML na wejściu, PDF na wyjściu.
+Biblioteka może działać jako samodzielny serwer HTTP — XML na wejściu, PDF lub HTML na wyjściu.
 
 ### Uruchomienie lokalne
 
@@ -84,6 +85,7 @@ Serwer nasłuchuje na porcie `3001` (zmiana przez zmienną środowiskową `PORT`
 | Metoda | Ścieżka | Opis |
 |--------|---------|------|
 | `POST` | `/generate` | Wyślij XML, otrzymaj PDF |
+| `POST` | `/generate/html` | Wyślij XML, otrzymaj HTML |
 | `GET` | `/health` | Health check (`{"status":"ok"}`) |
 
 ### Opcjonalne nagłówki
@@ -112,6 +114,14 @@ curl -X POST \
   -H 'X-KSeF-QRCode: https://ksef-test.mf.gov.pl/invoice/...' \
   --data-binary @assets/invoice.xml \
   http://localhost:3001/generate -o faktura.pdf
+```
+
+Generowanie HTML (te same nagłówki co dla PDF):
+
+```bash
+curl -X POST -H 'Content-Type: application/xml' \
+  --data-binary @assets/invoice.xml \
+  http://localhost:3001/generate/html -o faktura.html
 ```
 
 ### Docker
