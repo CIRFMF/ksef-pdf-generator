@@ -7,7 +7,8 @@
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "test:server": "npm run build && vitest run --config vitest.server.config.ts"
   },
   "main": "./ksef-fe-invoice-converter.umd.cjs",
   "module": "./ksef-fe-invoice-converter.js",
@@ -41,7 +42,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
-    "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
@@ -50,7 +50,9 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "jsdom": "^26.1.0",
     "pdfmake": "^0.2.20",
+    "pdfmake-html-renderer": "^0.3.2",
     "xml-js": "^1.6.11"
   }
 }

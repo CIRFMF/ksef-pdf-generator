@@ -1,6 +1,6 @@
 # Biblioteka do generowania wizualizacji PDF faktur i UPO
 
-Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta.
+Biblioteka do generowania wizualizacji PDF oraz HTML faktur oraz UPO na podstawie plików XML.
 
 ---
 
@@ -8,6 +8,7 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
     Biblioteka zawiera następujące funkcjonalności:
     - Generowanie wizualizacji PDF faktur
+    - Generowanie wizualizacji HTML faktur
     - Generowanie wizualizacji PDF UPO
 
 ---
@@ -19,7 +20,7 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
 2. Sklonuj repozytorium i przejdź do folderu projektu:
    ```bash
-   git clone https://github.com/CIRFMF/ksef-pdf-generator#
+   git clone https://github.com/appunite/ksef-pdf-generator.git
    cd ksef-pdf-generator
    ```
 
@@ -66,7 +67,73 @@ Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://
 
 ---
 
-## 5. Testy jednostkowe
+## 5. Serwer HTTP (mikroserwis)
+
+Biblioteka może działać jako samodzielny serwer HTTP — XML na wejściu, PDF lub HTML na wyjściu.
+
+### Uruchomienie lokalne
+
+```bash
+npm run build
+node server/index.js
+```
+
+Serwer nasłuchuje na porcie `3001` (zmiana przez zmienną środowiskową `PORT`).
+
+### Endpointy
+
+| Metoda | Ścieżka | Opis |
+|--------|---------|------|
+| `POST` | `/generate/pdf` | Wyślij XML, otrzymaj PDF |
+| `POST` | `/generate/html` | Wyślij XML, otrzymaj HTML |
+| `GET` | `/health` | Health check (`{"status":"ok"}`) |
+
+### Opcjonalne nagłówki
+
+| Nagłówek | Opis |
+|----------|------|
+| `X-KSeF-Number` | Numer KSeF faktury (wyświetlany w prawym górnym rogu) |
+| `X-KSeF-QRCode` | URL kodu QR (renderowany na dole dokumentu) |
+
+### Przykłady użycia
+
+Podstawowe generowanie PDF:
+
+```bash
+curl -X POST -H 'Content-Type: application/xml' \
+  --data-binary @assets/invoice.xml \
+  http://localhost:3001/generate/pdf -o faktura.pdf
+```
+
+Z numerem KSeF i kodem QR:
+
+```bash
+curl -X POST \
+  -H 'Content-Type: application/xml' \
+  -H 'X-KSeF-Number: 5555555555-20250808-9231003CA67B-BE' \
+  -H 'X-KSeF-QRCode: https://ksef-test.mf.gov.pl/invoice/...' \
+  --data-binary @assets/invoice.xml \
+  http://localhost:3001/generate/pdf -o faktura.pdf
+```
+
+Generowanie HTML (te same nagłówki co dla PDF):
+
+```bash
+curl -X POST -H 'Content-Type: application/xml' \
+  --data-binary @assets/invoice.xml \
+  http://localhost:3001/generate/html -o faktura.html
+```
+
+### Docker
+
+```bash
+docker build -t ksef-pdf .
+docker run -p 3001:3001 ksef-pdf
+```
+
+---
+
+## 6. Testy jednostkowe
 
 Aplikacja zawiera zestaw testów napisanych w **TypeScript**, które weryfikują poprawność działania aplikacji.  
 Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy.
@@ -86,6 +153,11 @@ Projekt wykorzystuje **Vite** do bundlowania i **Vitest** jako framework testowy
 3. Uruchom testy w trybie CI z raportem pokrycia:
    ```bash
    npm run test:ci
+   ```
+
+4. Uruchom testy integracyjne serwera HTTP:
+   ```bash
+   npm run test:server
    ```
 
 ---

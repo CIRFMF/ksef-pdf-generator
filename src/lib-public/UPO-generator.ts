@@ -7,9 +7,8 @@ import { Position } from '../shared/enums/common.enum';
 import { generateDokumentUPO } from './generators/UPO4_3/Dokumenty';
 import { generateNaglowekUPO } from './generators/UPO4_3/Naglowek';
 
-export async function generatePDFUPO(file: File): Promise<Blob> {
-  const upo = (await parseXML(file)) as Upo;
-  const docDefinition: TDocumentDefinitions = {
+export function buildUPODocDefinition(upo: Upo): TDocumentDefinitions {
+  return {
     content: [generateNaglowekUPO(upo.Potwierdzenie!), generateDokumentUPO(upo.Potwierdzenie!)],
     ...generateStyle(),
     pageSize: 'A4',
@@ -22,6 +21,11 @@ export async function generatePDFUPO(file: File): Promise<Blob> {
       };
     },
   };
+}
+
+export async function generatePDFUPO(file: File): Promise<Blob> {
+  const upo = (await parseXML(file)) as Upo;
+  const docDefinition: TDocumentDefinitions = buildUPODocDefinition(upo);
 
   return new Promise((resolve, reject): void => {
     pdfMake.createPdf(docDefinition).getBlob((blob: Blob): void => {

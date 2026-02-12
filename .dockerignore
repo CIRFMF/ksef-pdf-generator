@@ -1,0 +1,12 @@
+node_modules
+.git
+*.md
+.idea
+.vscode
+coverage
+.vitest
+.cache
+temp
+out
+*.tsbuildinfo
+.claude
