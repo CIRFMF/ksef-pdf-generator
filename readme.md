@@ -93,7 +93,7 @@ Serwer nasłuchuje na porcie `3001` (zmiana przez zmienną środowiskową `PORT`
 | Nagłówek | Opis |
 |----------|------|
 | `X-KSeF-Number` | Numer KSeF faktury (wyświetlany w prawym górnym rogu) |
-| `X-KSeF-QRCode` | URL kodu QR (renderowany na dole PDF) |
+| `X-KSeF-QRCode` | URL kodu QR (renderowany na dole dokumentu) |
 
 ### Przykłady użycia
 

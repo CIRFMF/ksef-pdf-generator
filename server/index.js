@@ -1,7 +1,8 @@
 import { JSDOM } from 'jsdom';
+import { randomUUID } from 'node:crypto';
 
-// pdfmake expects browser globals (window, document, navigator) at module load time.
-// Provide them via jsdom before importing the library.
+// Intentional global pollution: pdfmake expects browser globals (window, document,
+// navigator) at module load time. This server should run as a dedicated process.
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', { url: 'http://localhost' });
 globalThis.window = dom.window;
 globalThis.document = dom.window.document;
@@ -20,7 +21,7 @@ import { createServer } from 'node:http';
 import { generateInvoice, buildInvoiceDocDefinition } from '../dist/ksef-fe-invoice-converter.js';
 import { renderDocDefinitionToHtml } from './render-html.js';
 
-const PORT = Number(process.env.PORT) || 3001;
+const PORT = process.env.PORT !== undefined ? Number(process.env.PORT) : 3001;
 const MAX_BODY_BYTES = Number(process.env.MAX_BODY_BYTES) || 10 * 1024 * 1024; // 10 MB
 
 function collectBody(req, maxBytes = MAX_BODY_BYTES) {
@@ -54,6 +55,7 @@ function collectBody(req, maxBytes = MAX_BODY_BYTES) {
 }
 
 const server = createServer(async (req, res) => {
+  const requestId = randomUUID();
   const start = Date.now();
   let status = 200;
 
@@ -107,22 +109,25 @@ const server = createServer(async (req, res) => {
       res.end(JSON.stringify({ error: 'Not found' }));
     }
   } catch (err) {
-    console.error('Request error:', err);
+    console.error(`[${requestId}] Request error:`, err);
     if (err.status === 413) {
       status = 413;
       res.writeHead(413, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Payload too large' }));
+      res.end(JSON.stringify({ error: 'Payload too large', requestId }));
     } else {
       status = 500;
       res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Internal server error' }));
+      res.end(JSON.stringify({ error: 'Internal server error', requestId }));
     }
   }
 
   const duration = Date.now() - start;
-  console.log(`${req.method} ${req.url} ${status} ${duration}ms`);
+  console.log(`[${requestId}] ${req.method} ${req.url} ${status} ${duration}ms`);
 });
 
 server.listen(PORT, () => {
-  console.log(`ksef-pdf-generator listening on port ${PORT}`);
+  const addr = server.address();
+  const actualPort = typeof addr === 'object' ? addr.port : PORT;
+
+  console.log(`ksef-pdf-generator listening on port ${actualPort}`);
 });

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { request as httpRequest, IncomingMessage } from 'node:http';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const PORT = 3456 + Math.floor(Math.random() * 1000);
+let PORT: number;
 let serverProcess: ChildProcess;
 
 function request(
@@ -23,6 +23,7 @@ function request(
 
     req.on('response', (res: IncomingMessage) => {
       const chunks: Buffer[] = [];
+
       res.on('data', (chunk: Buffer) => chunks.push(chunk));
       res.on('end', () => {
         resolve({
@@ -45,16 +46,19 @@ function request(
 describe('ksef-pdf HTTP server', () => {
   beforeAll(async () => {
     serverProcess = spawn('node', [join(__dirname, 'index.js')], {
-      env: { ...process.env, PORT: String(PORT) },
+      env: { ...process.env, PORT: '0' },
       stdio: ['ignore', 'pipe', 'pipe'],
     });
 
-    // Wait for server to be ready
+    // Wait for server to be ready and parse the OS-assigned port
     await new Promise<void>((resolve, reject) => {
       const timeout = setTimeout(() => reject(new Error('Server startup timeout')), 15000);
 
       serverProcess.stdout?.on('data', (data: Buffer) => {
-        if (data.toString().includes('listening')) {
+        const match = data.toString().match(/listening on port (\d+)/);
+
+        if (match) {
+          PORT = Number(match[1]);
           clearTimeout(timeout);
           resolve();
         }
@@ -129,9 +133,13 @@ describe('ksef-pdf HTTP server', () => {
 
     expect(res.status).toBe(500);
     expect(res.headers['content-type']).toBe('application/json');
+
     const body = JSON.parse(res.body.toString());
+
     expect(body).toHaveProperty('error');
-    expect(typeof body.error).toBe('string');
+    expect(body.error).toBe('Internal server error');
+    expect(body).toHaveProperty('requestId');
+    expect(body.requestId.length).toBeGreaterThan(0);
   });
 
   it('GET /nonexistent returns 404', async () => {
@@ -194,7 +202,12 @@ describe('ksef-pdf HTTP server', () => {
     });
 
     expect(res.status).toBe(413);
-    expect(JSON.parse(res.body.toString())).toEqual({ error: 'Payload too large' });
+
+    const body = JSON.parse(res.body.toString());
+
+    expect(body.error).toBe('Payload too large');
+    expect(body).toHaveProperty('requestId');
+    expect(body.requestId.length).toBeGreaterThan(0);
   }, 15000);
 
   it('POST /generate/html with invalid XML returns 500 with JSON error', async () => {
@@ -206,8 +219,12 @@ describe('ksef-pdf HTTP server', () => {
 
     expect(res.status).toBe(500);
     expect(res.headers['content-type']).toBe('application/json');
+
     const body = JSON.parse(res.body.toString());
+
     expect(body).toHaveProperty('error');
-    expect(typeof body.error).toBe('string');
+    expect(body.error).toBe('Internal server error');
+    expect(body).toHaveProperty('requestId');
+    expect(body.requestId.length).toBeGreaterThan(0);
   });
 });
