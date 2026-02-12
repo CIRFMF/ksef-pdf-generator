@@ -58,6 +58,25 @@ const server = createServer(async (req, res) => {
         });
         res.end(buffer);
       }
+    } else if (req.method === 'POST' && req.url === '/generate/html') {
+      const body = await collectBody(req);
+
+      if (!body.length) {
+        status = 400;
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Empty request body' }));
+      } else {
+        const nrKSeF = req.headers['x-ksef-number'] || '';
+        const qrCode = req.headers['x-ksef-qrcode'] || undefined;
+        const file = new File([body], 'invoice.xml', { type: 'text/xml' });
+        const html = await generateInvoice(file, { nrKSeF, qrCode }, 'html');
+
+        res.writeHead(200, {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Content-Length': Buffer.byteLength(html),
+        });
+        res.end(html);
+      }
     } else {
       status = 404;
       res.writeHead(404, { 'Content-Type': 'application/json' });
