@@ -16,7 +16,15 @@ export default defineConfig(({ mode }) => {
         emptyOutDir: true,
         formats: ['es', 'umd'],
         rollupOptions: {
-          external: [/\.spec\.ts$/, /\.test\.ts$/, 'src/app-private', 'src/app-public'],
+          external: [
+            /\.spec\.ts$/,
+            /\.test\.ts$/,
+            'src/app-private',
+            'src/app-public',
+            'pdfmake-html-renderer/server',
+            'node:fs',
+            'node:module',
+          ],
         },
       },
     },
