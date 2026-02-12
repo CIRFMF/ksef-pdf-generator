@@ -17,7 +17,8 @@ globalThis.File = dom.window.File;
 globalThis.Blob = dom.window.Blob;
 
 import { createServer } from 'node:http';
-import { generateInvoice } from '../dist/ksef-fe-invoice-converter.js';
+import { generateInvoice, buildInvoiceDocDefinition } from '../dist/ksef-fe-invoice-converter.js';
+import { renderDocDefinitionToHtml } from './render-html.js';
 
 const PORT = Number(process.env.PORT) || 3001;
 
@@ -69,7 +70,8 @@ const server = createServer(async (req, res) => {
         const nrKSeF = req.headers['x-ksef-number'] || '';
         const qrCode = req.headers['x-ksef-qrcode'] || undefined;
         const file = new File([body], 'invoice.xml', { type: 'text/xml' });
-        const html = await generateInvoice(file, { nrKSeF, qrCode }, 'html');
+        const docDefinition = await buildInvoiceDocDefinition(file, { nrKSeF, qrCode });
+        const html = renderDocDefinitionToHtml(docDefinition);
 
         res.writeHead(200, {
           'Content-Type': 'text/html; charset=utf-8',
