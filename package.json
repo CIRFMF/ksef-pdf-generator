@@ -52,6 +52,7 @@
   "dependencies": {
     "jsdom": "^26.1.0",
     "pdfmake": "^0.2.20",
+    "pdfmake-html-renderer": "^0.3.2",
     "xml-js": "^1.6.11"
   }
 }
