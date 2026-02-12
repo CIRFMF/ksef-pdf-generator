@@ -210,6 +210,23 @@ describe('ksef-pdf HTTP server', () => {
     expect(body.requestId.length).toBeGreaterThan(0);
   }, 15000);
 
+  it('POST /generate/html with X-KSeF-Number header includes the number in output', async () => {
+    const xml = readFileSync(join(__dirname, '..', 'assets', 'invoice.xml'));
+    const ksefNumber = '5555555555-20250808-9231003CA67B-BE';
+
+    const res = await request('/generate/html', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/xml',
+        'X-KSeF-Number': ksefNumber,
+      },
+      body: xml,
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body.toString()).toContain(ksefNumber);
+  }, 15000);
+
   it('POST /generate/html with invalid XML returns 500 with JSON error', async () => {
     const res = await request('/generate/html', {
       method: 'POST',

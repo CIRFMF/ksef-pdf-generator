@@ -20,7 +20,7 @@ Biblioteka do generowania wizualizacji PDF oraz HTML faktur oraz UPO na podstawi
 
 2. Sklonuj repozytorium i przejdź do folderu projektu:
    ```bash
-   git clone https://github.com/CIRFMF/ksef-pdf-generator#
+   git clone https://github.com/appunite/ksef-pdf-generator.git
    cd ksef-pdf-generator
    ```
 
