@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
@@ -7,8 +8,6 @@
 
     "strict": true,
     "skipLibCheck": true,
-
-    "extends": "./tsconfig.base.json",
-    "include": ["src"]
-  }
+  },
+  "include": ["src"]
 }
