@@ -214,9 +214,11 @@ describe(generateSzczegoly.name, () => {
 
   describe('ceny labels', () => {
     it('should add "netto" label when P_11 exists in FaWiersz', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
+      vi.mocked(PDFFunctions.getTable).mockReturnValueOnce([{}]).mockReturnValueOnce([]);
 
-      vi.mocked(PDFFunctions.hasColumnsValue).mockImplementation((column: string) => column === 'P_11');
+      vi.mocked(PDFFunctions.hasColumnsValue)
+        .mockImplementationOnce((column: string) => column === 'P_11')
+        .mockReturnValueOnce(false);
 
       generateSzczegoly(mockFaVat);
 
@@ -224,22 +226,55 @@ describe(generateSzczegoly.name, () => {
     });
 
     it('should add "netto" label when P_11 exists in ZamowienieWiersz', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
+      vi.mocked(PDFFunctions.getTable).mockReturnValueOnce([]).mockReturnValueOnce([{}]);
 
-      vi.mocked(PDFFunctions.hasColumnsValue).mockImplementation((column: string) => column === 'P_11');
+      vi.mocked(PDFFunctions.hasColumnsValue)
+        .mockReturnValueOnce(false)
+        .mockImplementationOnce((column: string) => column === 'P_11');
 
       generateSzczegoly(mockFaVat);
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'netto');
     });
 
-    it('should add "brutto" label when P_11 does not exist', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
-      vi.mocked(PDFFunctions.hasColumnsValue).mockReturnValue(false);
+    it('should add "brutto" label when P_11A exist in FaWiersz', () => {
+      vi.mocked(PDFFunctions.getTable).mockReturnValueOnce([{}]).mockReturnValueOnce([]);
+
+      vi.mocked(PDFFunctions.hasColumnsValue)
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(false)
+        .mockImplementationOnce((column: string) => column === 'P_11A')
+        .mockReturnValueOnce(false);
 
       generateSzczegoly(mockFaVat);
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'brutto');
+    });
+
+    it('should add "brutto" label when P_11A exist in ZamowienieWiersz', () => {
+      vi.mocked(PDFFunctions.getTable).mockReturnValueOnce([]).mockReturnValueOnce([{}]);
+
+      vi.mocked(PDFFunctions.hasColumnsValue)
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(false)
+        .mockReturnValueOnce(false)
+        .mockImplementationOnce((column: string) => column === 'P_11A');
+
+      generateSzczegoly(mockFaVat);
+
+      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'brutto');
+    });
+
+    it('should not add "brutto" or "netto" label when there are no FaWiersz and no ZamowienieWiersz', () => {
+      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
+
+      generateSzczegoly(mockFaVat);
+
+      expect(PDFFunctions.createLabelText).not.toHaveBeenCalledWith(
+        'Faktura wystawiona w cenach: ',
+        'brutto'
+      );
+      expect(PDFFunctions.createLabelText).not.toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'netto');
     });
 
     it('should add currency code label', () => {
