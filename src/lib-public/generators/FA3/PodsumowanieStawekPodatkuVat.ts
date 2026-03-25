@@ -140,8 +140,8 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
 
     if (summary.length > 0) {
       const totalRow = [];
-      totalRow.push('');
       if (AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)) {
+        totalRow.push('');
         totalRow.push({ text: 'Razem:', style: FormatTyp.GrayBoldTitle });
       }
       if (AnyP13) {
