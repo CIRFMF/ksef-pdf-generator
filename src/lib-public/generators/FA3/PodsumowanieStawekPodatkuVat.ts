@@ -96,7 +96,17 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
   if (faktura?.Fa) {
     const summary = getSummaryTaxRate(faktura.Fa);
 
+    let sumNet = 0;
+    let sumTax = 0;
+    let sumGross = 0;
+    let sumTaxPLN = 0;
+
     tableBody = summary.map((item) => {
+      sumNet += getNumberRounded(item.net);
+      sumTax += getNumberRounded(item.tax);
+      sumGross += getNumberRounded(item.gross);
+      sumTaxPLN += getNumberRounded(item.taxPLN);
+
       const data = [];
 
       data.push(item.no);
@@ -127,6 +137,27 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       }
       return data;
     });
+
+    if (summary.length > 0) {
+      const totalRow = [];
+      totalRow.push('');
+      if (AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)) {
+        totalRow.push({ text: 'Razem:', style: FormatTyp.GrayBoldTitle });
+      }
+      if (AnyP13) {
+        totalRow.push(formatText(getNumberRounded(sumNet).toFixed(2), FormatTyp.Currency));
+      }
+      if (AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)) {
+        totalRow.push(formatText(getNumberRounded(sumTax).toFixed(2), FormatTyp.Currency));
+      }
+      if (AnyP13) {
+        totalRow.push(formatText(getNumberRounded(sumGross).toFixed(2), FormatTyp.Currency));
+      }
+      if (AnyP_14xW) {
+        totalRow.push(formatText(getNumberRounded(sumTaxPLN).toFixed(2), FormatTyp.Currency));
+      }
+      tableBody.push(totalRow);
+    }
   }
   table.table.body = [[...definedHeader], ...tableBody] as TableCell[][];
   table.table.widths = [...widths] as never[];
