@@ -5,7 +5,7 @@
     "dev": "vite --mode public --config vite.config.ts",
     "prepare": "npm run build",
     "build": "vite build --mode production",
-    "build:exe": "npm run build && pkg cli.cjs --targets node18-linux-x64,node18-win-x64 --out-path bin/",
+    "build:exe": "npm run build && pkg cli.cjs --targets node18-linux-x64 --output bin/ksef-pdf-generator && pkg cli.cjs --targets node18-win-x64 --output bin/ksef-pdf-generator.exe",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",

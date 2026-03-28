@@ -26,26 +26,62 @@ if (['-h','--help'].includes(documentType)) {
     process.exit(0);
 }
 if (!documentType || !inputXmlPath || !outputPdfPath) {
-    console.error('Użycie: node generate-pdf-wrapper.mjs <invoice|faktura|upo> <inputXml> <outputPdf> [additionalDataJson]');
+    console.error('Użycie: node ksef-pdf-generator <invoice|faktura|upo> <inputXml> <outputPdf> [additionalDataJson]');
     process.exit(1);
 }
 const allowedTypes = ['invoice', 'faktura', 'upo'];
 if (!allowedTypes.includes(documentType.toLowerCase())) {
-    console.error(`Invalid document type "${type}". Allowed: ${allowedTypes.join(', ')}`);
+    console.error(`Invalid document type "${documentType}". Allowed: ${allowedTypes.join(', ')}`);
     process.exit(1);
 }
 
 (async function main() {
-  try {
-      const xmlBuffer = await readFile(inputXmlPath);
-      const xmlFile = new File([xmlBuffer], inputXmlPath.split(/[/\\]/).pop() || 'input.xml', { type: 'application/xml' });
+    try {
+        const xmlBuffer = await readFile(inputXmlPath);
+        const xmlFile = new File([xmlBuffer], path.basename(inputXmlPath), { type: 'application/xml' });
 
-      const docType = documentType.toLowerCase();
-      const isInvoice = docType === 'invoice' || docType === 'faktura';
-      
-      const pdfBlob = isInvoice
-          ? await generateInvoice(xmlFile, additionalDataJson ? JSON.parse(additionalDataJson) : {}, 'blob')
-          : await generatePDFUPO(xmlFile);
+        const docType = documentType.toLowerCase();
+        const isInvoice = docType === 'invoice' || docType === 'faktura';
+
+        let additionalData = additionalDataJson ? JSON.parse(additionalDataJson) : {};
+
+        // Jeśli nie podano kodu QR, spróbuj automatycznie go wygenerować na podstawie nrKSeF z nazwy pliku i danych z XML
+        if (isInvoice && (!additionalData.qrCode || !additionalData.nrKSeF)) {
+            const fileName = path.basename(inputXmlPath).replace(/\.xml$/i, '');
+            // Struktura numeru KSeF: 10-cyfrowy NIP - 8-cyfrowa data - 12-znakowa część techniczna - 2-cyfrowa suma kontrolna
+            const ksefRegex = /^\d{10}-\d{8}-[A-Z0-9]{12}-[A-Z0-9]{2}$/i;
+
+            if (ksefRegex.test(fileName)) {
+                if (!additionalData.nrKSeF) {
+                    additionalData.nrKSeF = fileName;
+                }
+
+                if (!additionalData.qrCode) {
+                    const xmlString = xmlBuffer.toString();
+                    const nipMatch = xmlString.match(/<NIP>([^<]+)<\/NIP>/i);
+                    const dataMatch = xmlString.match(/<P_1>([^<]+)<\/P_1>/i);
+
+                    const nip = nipMatch ? nipMatch[1] : '';
+                    let data = dataMatch ? dataMatch[1] : '';
+
+                    // Zamień format daty z RRRR-MM-DD na DD-MM-RRRR
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+                        const [yyyy, mm, dd] = data.split('-');
+                        data = `${dd}-${mm}-${yyyy}`;
+                    }
+
+                    if (nip && data) {
+                        const crypto = require('crypto');
+                        const hash = crypto.createHash('sha256').update(xmlString).digest('base64url');
+                        additionalData.qrCode = `https://qr.ksef.mf.gov.pl/invoice/${nip}/${data}/${hash}`;
+                    }
+                }
+            }
+        }
+
+        const pdfBlob = isInvoice
+            ? await generateInvoice(xmlFile, additionalData, 'blob')
+            : await generatePDFUPO(xmlFile);
 
       const buffer = await new Promise((resolve, reject) => {
           const reader = new FileReader();
