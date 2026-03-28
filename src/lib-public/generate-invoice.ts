@@ -48,7 +48,7 @@ export async function generateInvoice(
         break;
       case 'FA_RR (1)':
       case 'FA_RR(1)':
-        pdf = generateFARR((xml as any).Faktura as FaRR, additionalData);
+        pdf = generateFARR((xml as any).Faktura as FaRR, additionalData, dataUri, file.name, file.lastModified);
         break;
     }
 

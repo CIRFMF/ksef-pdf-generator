@@ -1,6 +1,6 @@
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { TDocumentDefinitions, Attachment } from 'pdfmake/interfaces';
 import { generateStyle } from '../shared/PDF-functions';
 import { AdditionalDataTypes } from './types/common.types';
 import { FaRR } from './types/FaRR.types';
@@ -17,8 +17,10 @@ import { Position } from '../shared/enums/common.enum';
 
 pdfMake.addVirtualFileSystem(pdfFonts);
 
-export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes): TCreatedPdf {
+export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes, dataUri?: string, filename?: string, date?: number): TCreatedPdf {
   const docDefinition: TDocumentDefinitions = {
+    version: '1.7',
+    subset: 'PDF/A-3',
     content: [
       ...generateNaglowek(invoice.FakturaRR, additionalData),
       generateDaneFaKorygowanej(invoice.FakturaRR),
@@ -38,6 +40,7 @@ export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes)
       };
     },
     ...generateStyle(),
+    ...(dataUri && { files: { xml: { src: dataUri, name: filename, relationship: 'Data', creationDate: date, modifiedDate: date } as Attachment } })
   };
 
   return pdfMake.createPdf(docDefinition);
