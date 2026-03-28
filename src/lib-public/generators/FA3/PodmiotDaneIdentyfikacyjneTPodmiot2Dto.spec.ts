@@ -44,7 +44,22 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
     expect(result.some((r: any) => r.text.includes('Numer VAT-UE'))).toBe(true);
   });
 
-  it('adds KodKraju section when KodKraju is present', () => {
+  it('adds NrID section when KodKraju is not present', () => {
+    const data: DaneIdentyfikacyjneTPodmiot2Dto = {
+      ...baseData,
+      NrID: { _text: '999999' },
+    };
+    const result = generateDaneIdentyfikacyjneTPodmiot2Dto(data);
+    expect(createLabelTextArray).toHaveBeenCalledWith([
+      { value: 'Identyfikator podatkowy inny: ', formatTyp: FormatTyp.Label },
+      { value: '', formatTyp: FormatTyp.Value },
+      { value: ' ' },
+      { value: data.NrID, formatTyp: FormatTyp.Value },
+    ]);
+    expect(result.some((r: any) => (r as any).text.includes('Identyfikator podatkowy inny'))).toBe(true);
+  });
+
+  it('adds NrID section when KodKraju is present', () => {
     const data: DaneIdentyfikacyjneTPodmiot2Dto = {
       ...baseData,
       KodKraju: { _text: 'DE' },

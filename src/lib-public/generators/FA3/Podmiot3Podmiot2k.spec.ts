@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k';
-import type {Content} from "pdfmake/interfaces";
+import { Content } from 'pdfmake/interfaces';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => [`header:${text}`]),
@@ -9,10 +9,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getTable: vi.fn((data: any) => (data ? ['table:data'] : [])),
   hasValue: vi.fn((val: any) => val !== undefined && val !== null && val !== ''),
   generateLine: vi.fn((): Content[] => [{ line: true } as any]),
-}));
-
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getRolaString: vi.fn((rola: any) => `rola:${rola}`),
 }));
 
 vi.mock('./PodmiotAdres', () => ({
@@ -30,6 +26,7 @@ vi.mock('./PodmiotDaneKontaktowe', () => ({
 describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
   it('should return empty array when input is undefined', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(undefined, 0);
+
     expect(result).toEqual([]);
   });
 
@@ -56,9 +53,11 @@ describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
 
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(podmiotDto as any, 0);
 
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
 
     expect(result.some((r: any) => r.columns)).toBe(true);
   });
@@ -71,8 +70,10 @@ describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
 
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(podmiotDto as any, 1);
 
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
   });
 });

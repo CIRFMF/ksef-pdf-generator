@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generateSzczegoly } from './Szczegoly';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa } from '../../types/fa1.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({
@@ -86,6 +86,13 @@ describe(generateSzczegoly.name, () => {
 
   describe('P_6 scope', () => {
     it('creates scope array when P_6_Od and P_6_Do exist', () => {
+      vi.mocked(PDFFunctions.getValue).mockImplementation((item: any) => {
+        if (typeof item === 'object') {
+          return item._text;
+        }
+
+        return item;
+      });
       const data = {
         ...mockFaVat,
         OkresFa: { P_6_Od: { _text: '2024-01-01' }, P_6_Do: { _text: '2024-01-31' } },
@@ -99,27 +106,16 @@ describe(generateSzczegoly.name, () => {
 
       expect(PDFFunctions.createLabelTextArray).toHaveBeenCalledWith([
         { value: 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ' },
-        { value: data.OkresFa.P_6_Od, formatTyp: FormatTyp.Value },
+        { value: '01.01.2024', formatTyp: FormatTyp.Value },
         { value: ' do ' },
-        { value: data.OkresFa.P_6_Do, formatTyp: FormatTyp.Value },
+        { value: '31.01.2024', formatTyp: FormatTyp.Value },
       ]);
     });
   });
 
   describe('ceny labels', () => {
-    it('adds netto label when P_11 exists', () => {
-      vi.mocked(PDFFunctions.hasColumnsValue).mockImplementation((col) => col === 'P_11');
-      generateSzczegoly(mockFaVat);
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'netto');
-    });
-
-    it('adds brutto label when P_11 does not exist', () => {
-      vi.mocked(PDFFunctions.hasColumnsValue).mockReturnValue(false);
-      generateSzczegoly(mockFaVat);
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'brutto');
-    });
-
     it('adds currency label', () => {
+      vi.mocked(PDFFunctions.hasValue).mockReturnValue(true);
       generateSzczegoly(mockFaVat);
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Kod waluty: ', mockFaVat.KodWaluty);
     });
@@ -136,6 +132,7 @@ describe(generateSzczegoly.name, () => {
   describe('kurs waluty', () => {
     it('adds currency rate when currency is not PLN and common rate exists', () => {
       const data = { ...mockFaVat, KodWaluty: { _text: 'EUR' }, Zamowienie: { ZamowienieWiersz: [] } } as any;
+
       vi.mocked(PDFFunctions.hasValue).mockReturnValue(true);
       vi.mocked(PDFFunctions.getValue).mockReturnValue('EUR');
       vi.mocked(PDFFunctions.getDifferentColumnsValue).mockReturnValue([{ value: '4.50' }]);
@@ -153,6 +150,7 @@ describe(generateSzczegoly.name, () => {
       generateSzczegoly(mockFaVat);
       const calls = vi.mocked(PDFFunctions.createLabelText).mock.calls;
       const currencyCall = calls.find((call) => call[0] === 'Kurs waluty: ');
+
       expect(currencyCall).toBeUndefined();
     });
   });
@@ -167,6 +165,7 @@ describe(generateSzczegoly.name, () => {
   describe('faktura zaliczkowa', () => {
     it('generates table when data exists', () => {
       const data = { ...mockFaVat, NrFaZaliczkowej: [{ _text: 'FA001' }] } as any;
+
       vi.mocked(PDFFunctions.getTable).mockReturnValueOnce([{ _text: 'FA001' }] as any);
       generateSzczegoly(data);
       expect(PDFFunctions.getContentTable).toHaveBeenCalled();

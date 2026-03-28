@@ -8,13 +8,14 @@ import {
   hasValue,
 } from '../../../shared/PDF-functions';
 import { Podmiot3Podmiot2KDto } from '../../types/fa2-additional-types';
-import { getRolaString } from '../../../shared/generators/common/functions';
+import { translateMap } from '@shared/generators/common/functions';
 import { generatePodmiotAdres } from './PodmiotAdres';
 import { generateDaneIdentyfikacyjneTPodmiot2Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot2Dto';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Podmiot1DaneKontaktowe, Podmiot2K, Podmiot3 } from '../../types/fa2.types';
 import { Adres } from '../../types/fa1.types';
+import { FA2RolaPodmiotu3 } from '../../../shared/consts/FA.const';
 
 export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   podmiot2KDto: Podmiot3Podmiot2KDto | undefined,
@@ -40,7 +41,7 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
     result.push(
       ...createHeader('Dane identyfikacyjne'),
       createLabelText('Numer EORI: ', podmiot1.NrEORI),
-      createLabelText('Rola: ', getRolaString(podmiot1.Rola, 2)),
+      createLabelText('Rola: ', translateMap(podmiot1.Rola, FA2RolaPodmiotu3)),
       createLabelText('Rola inna: ', podmiot1.OpisRoli),
       createLabelText('Udział: ', podmiot1.Udzial, FormatTyp.Percentage)
     );

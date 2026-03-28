@@ -1,4 +1,4 @@
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { FP } from '../../types/fa1.types';
 import { getValue } from '../../../shared/PDF-functions';
 

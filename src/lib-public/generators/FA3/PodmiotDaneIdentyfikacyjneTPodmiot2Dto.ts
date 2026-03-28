@@ -19,11 +19,11 @@ export function generateDaneIdentyfikacyjneTPodmiot2Dto(
       ])
     );
   }
-  if (daneIdentyfikacyjne.KodKraju?._text) {
+  if (daneIdentyfikacyjne.NrID?._text) {
     result.push(
       createLabelTextArray([
         { value: 'Identyfikator podatkowy inny: ', formatTyp: FormatTyp.Label },
-        { value: daneIdentyfikacyjne.KodKraju, formatTyp: FormatTyp.Value },
+        { value: daneIdentyfikacyjne.KodKraju || '', formatTyp: FormatTyp.Value },
         { value: ' ' },
         { value: daneIdentyfikacyjne.NrID, formatTyp: FormatTyp.Value },
       ])
