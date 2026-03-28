@@ -12,7 +12,7 @@ import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { Dokument, IDKontekstu, Potwierdzenie } from '../../types/upo-v4_2.types';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { FormContentState } from '../../../shared/types/additional-data.types';
-import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/const';
+import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
 
 export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   const dokumenty: Dokument[] = getTable(potwierdzenie.Dokument);

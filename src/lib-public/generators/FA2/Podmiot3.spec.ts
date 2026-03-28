@@ -5,17 +5,14 @@ import * as PDFFunctions from '../../../shared/PDF-functions';
 import * as AdresModule from './Adres';
 import * as DaneIdModule from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto';
 import * as DaneKontaktoweModule from './PodmiotDaneKontaktowe';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
 
 vi.mock('../../../shared/PDF-functions');
 vi.mock('./Adres');
 vi.mock('./PodmiotDaneIdentyfikacyjneTPodmiot3Dto');
 vi.mock('./PodmiotDaneKontaktowe');
-vi.mock('../../../shared/generators/common/functions');
 
 describe(generatePodmiot3.name, () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     vi.mocked(PDFFunctions.createHeader).mockImplementation((text) => [{ text }]);
     vi.mocked(PDFFunctions.createLabelText).mockImplementation((label, value) => [
       { text: `${label}${value ?? ''}` },
@@ -29,7 +26,6 @@ describe(generatePodmiot3.name, () => {
       { text: 'mockDaneIdentyfikacyjne' },
     ]);
     vi.mocked(DaneKontaktoweModule.generateDaneKontaktowe).mockReturnValue([{ text: 'mockDaneKontaktowe' }]);
-    vi.mocked(CommonFunctions.getRolaString).mockReturnValue('mockRola');
   });
 
   it('generates minimal podmiot3 structure', () => {
@@ -94,7 +90,7 @@ describe(generatePodmiot3.name, () => {
       IDNabywcy: 'ID1',
       NrEORI: 'EORI1',
       DaneIdentyfikacyjne: {},
-      Rola: 2,
+      Rola: { _text: '2' },
       OpisRoli: 'opisRoli',
       Udzial: '50%',
       Adres: {},
@@ -119,9 +115,15 @@ describe(generatePodmiot3.name, () => {
     expect(
       flatColumn1.some((c) => typeof c.text === 'string' && c.text.includes('Identyfikator nabywcy: ID1'))
     ).toBe(true);
-    expect(flatColumn1.some((c) => typeof c.text === 'string' && c.text.includes('Rola: mockRola'))).toBe(
-      true
-    );
+    expect(
+      flatColumn1.some(
+        (c) =>
+          typeof c.text === 'string' &&
+          c.text.includes(
+            'Rola: Odbiorca - w przypadku, gdy na fakturze występują dane jednostek wewnętrznych, oddziałów, wyodrębnionych w ramach nabywcy, które same nie stanowią nabywcy w rozumieniu ustawy'
+          )
+      )
+    ).toBe(true);
     expect(
       flatColumn1.some((c) => typeof c.text === 'string' && c.text.includes('Rola inna: opisRoli'))
     ).toBe(true);

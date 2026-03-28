@@ -1,4 +1,4 @@
-import { Content, ContentText } from 'pdfmake/interfaces';
+import { Content, ContentTable, ContentText, TableCell } from 'pdfmake/interfaces';
 import {
   createHeader,
   createLabelText,
@@ -9,12 +9,14 @@ import {
   getTable,
   getValue,
   hasValue,
+  makeBreakable,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { Platnosc } from '../../types/fa3.types';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
 import { generujRachunekBankowy } from './RachunekBankowy';
 import FormatTyp from '../../../shared/enums/common.enum';
+import { translateMap } from '@shared/generators/common/functions';
+import { DEFAULT_TABLE_LAYOUT, FormaPlatnosci } from '@shared/consts/FA.const';
 
 export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (!platnosc) {
@@ -26,23 +28,13 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     {
       name: 'Termin',
       title: 'Termin płatności',
-      format: FormatTyp.Default,
+      format: FormatTyp.Date,
     },
   ];
 
   if (terminPlatnosci.some((termin) => termin.TerminOpis)) {
-    zaplataCzesciowaHeader.push({ name: 'TerminOpis', title: 'Opis płatności', format: FormatTyp.Default });
+    zaplataCzesciowaHeader.push({ name: 'TerminOpis', title: 'Opis płatności', format: FormatTyp.Date });
   }
-
-  const zaplataCzesciowaNaglowek: HeaderDefine[] = [
-    {
-      name: 'DataZaplatyCzesciowej',
-      title: 'Data zapłaty częściowej',
-      format: FormatTyp.Default,
-    },
-    { name: 'KwotaZaplatyCzesciowej', title: 'Kwota zapłaty częściowej', format: FormatTyp.Currency },
-    { name: 'FormaPlatnosci', title: 'Forma płatności', format: FormatTyp.FormOfPayment },
-  ];
 
   const table: Content[] = [generateLine(), ...createHeader('Płatność')];
 
@@ -68,7 +60,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   }
 
   if (hasValue(platnosc.FormaPlatnosci)) {
-    table.push(createLabelText('Forma płatności: ', getFormaPlatnosciString(platnosc.FormaPlatnosci)));
+    table.push(createLabelText('Forma płatności: ', translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)));
   } else {
     if (platnosc.OpisPlatnosci?._text) {
       table.push(createLabelText('Forma płatności: ', 'Płatność inna'));
@@ -77,13 +69,46 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   }
 
   const zaplataCzesciowa = getTable(platnosc.ZaplataCzesciowa);
-  const tableZaplataCzesciowa = getContentTable<(typeof zaplataCzesciowa)[0]>(
-    zaplataCzesciowaNaglowek,
-    zaplataCzesciowa,
-    '*',
-    undefined,
-    20
-  );
+  const tableZaplataCzesciowa = prepareContentTable();
+
+  function prepareContentTable(): { content: ContentTable } {
+    const definedHeader: Content[] = [
+      formatText(makeBreakable('Data zapłaty częściowej', 20), FormatTyp.GrayBoldTitle),
+      formatText(makeBreakable('Kwota zapłaty częściowej', 20), FormatTyp.GrayBoldTitle),
+      formatText(makeBreakable('Forma płatności', 20), FormatTyp.GrayBoldTitle),
+    ];
+
+    const defineTableBody: TableCell[] = zaplataCzesciowa.map((item) => {
+      const value = [];
+
+      value.push(
+        formatText(getValue(item.DataZaplatyCzesciowej), FormatTyp.Date),
+        formatText(getValue(item.KwotaZaplatyCzesciowej), FormatTyp.Currency)
+      );
+
+      if (item.PlatnoscInna) {
+        value.push(formatText(makeBreakable(getValue(item.OpisPlatnosci) ?? '', 20), FormatTyp.Default));
+      } else {
+        value.push(formatText(getValue(item.FormaPlatnosci), FormatTyp.FormOfPayment));
+      }
+
+      return value;
+    });
+
+    return {
+      content: {
+        table: {
+          headerRows: 1,
+          keepWithHeaderRows: 1,
+          widths: ['*', '*', '*'],
+          body: [definedHeader, ...defineTableBody] as TableCell[][],
+        },
+        margin: [0, 0, 0, 8],
+        layout: DEFAULT_TABLE_LAYOUT,
+      },
+    };
+  }
+
   const terminPatnosciContent = terminPlatnosci.map((platnosc) => {
     if (!terminPlatnosci.some((termin) => termin.TerminOpis)) {
       return platnosc;

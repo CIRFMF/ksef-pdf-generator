@@ -12,17 +12,19 @@ import {
 } from 'pdfmake/interfaces';
 import {
   DEFAULT_TABLE_LAYOUT,
+  FormaPlatnosci,
   Kraj,
   TStawkaPodatku_FA1,
   TStawkaPodatku_FA2,
   TStawkaPodatku_FA3,
-} from './consts/const';
-import { formatDateTime, formatTime, getFormaPlatnosciString } from './generators/common/functions';
+} from './consts/FA.const';
+import { formatDateTime, formatTime, translateMap } from './generators/common/functions';
 import { HeaderDefine, PdfFP, PdfOptionField } from './types/pdf-types';
 import { FP } from '../lib-public/types/fa3.types';
 import { DifferentValues, FilteredKeysOfValues, TypesOfValues } from './types/universal.types';
 import { CreateLabelTextData } from './types/additional-data.types';
 import FormatTyp, { Answer, Position } from './enums/common.enum';
+import { TStawkaPodatku_FARR } from './consts/FARR.const';
 
 export function formatText(
   value: number | string | undefined | null,
@@ -54,12 +56,18 @@ export function formatText(
 export function generateTable<T>(array: T[], keys: Partial<Record<keyof T, string>>): Content {
   const faRows: NonNullable<T>[] = getTable(array);
 
-  const headers: { name: string; title: string; format: FormatTyp }[] = Object.entries(keys).map(
-    ([key, value]: [string, unknown]): { name: string; title: string; format: FormatTyp } => {
+  const headers: { name: string; title: string; format: FormatTyp; width?: string }[] = Object.entries(
+    keys
+  ).map(
+    (
+      [key, value]: [string, unknown],
+      index
+    ): { name: string; title: string; format: FormatTyp; width?: string } => {
       return {
         name: key,
         title: value as string,
         format: FormatTyp.Default,
+        ...(index === 0 ? { width: 'auto' } : {}),
       };
     }
   );
@@ -67,7 +75,9 @@ export function generateTable<T>(array: T[], keys: Partial<Record<keyof T, strin
   const table: { content: ContentTable | null; fieldsWithValue: string[] } = getContentTable(
     headers,
     faRows,
-    '*'
+    '*',
+    undefined,
+    15
   );
 
   return table.content ?? [];
@@ -114,10 +124,10 @@ function formatValue(
       result.text = formatTime(value as string);
       break;
     case FormatTyp.FormOfPayment:
-      result.text = getFormaPlatnosciString({ _text: value as string });
+      result.text = translateMap({ _text: value as string }, FormaPlatnosci);
       break;
     case FormatTyp.Boolean:
-      result.text = (value as string) === '1' ? Answer.TRUE : Answer.FALSE;
+      result.text = (value as string)?.trim() === '1' ? Answer.TRUE : Answer.FALSE;
       break;
     case FormatTyp.Percentage:
       result.text = `${value}%`;
@@ -328,10 +338,12 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       HeaderContent: {
         fontSize: 10,
         bold: true,
+        color: '#343A40',
       },
       SubHeaderContent: {
         fontSize: 7,
         bold: true,
+        color: '#343A40',
       },
       TitleContent: {
         fontSize: 10,
@@ -479,6 +491,7 @@ export function generateTwoColumns(kol1: Column, kol2: Column, margin?: Margins)
     ],
     margin: margin ?? [0, 0, 0, 0],
     columnGap: 20,
+    unbreakable: true,
   };
 }
 
@@ -516,7 +529,7 @@ export function getKraj(code: string): string {
   return code;
 }
 
-export function getTStawkaPodatku(code: string, version: 1 | 2 | 3, P_PMarzy?: string): string {
+export function getTStawkaPodatku(code: string, version: 1 | 2 | 3 | 'RR', P_PMarzy?: string): string {
   let TStawkaPodatkuVersioned: Record<string, string> = {};
 
   switch (version) {
@@ -528,6 +541,9 @@ export function getTStawkaPodatku(code: string, version: 1 | 2 | 3, P_PMarzy?: s
       break;
     case 3:
       TStawkaPodatkuVersioned = TStawkaPodatku_FA3;
+      break;
+    case 'RR':
+      TStawkaPodatkuVersioned = TStawkaPodatku_FARR;
       break;
   }
   if (!code && P_PMarzy === '1') {

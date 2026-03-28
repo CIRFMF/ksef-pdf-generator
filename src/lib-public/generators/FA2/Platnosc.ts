@@ -10,11 +10,12 @@ import {
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { Platnosc, TerminPlatnosci, ZaplataCzesciowa } from '../../types/fa2.types';
-import { getFormaPlatnosciString } from '../../../shared/generators/common/functions';
 import { generujRachunekBankowy } from './RachunekBankowy';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { FP } from '../../types/fa1.types';
 import { FormContentState } from '../../../shared/types/additional-data.types';
+import { translateMap } from '@shared/generators/common/functions';
+import { FormaPlatnosci } from '@shared/consts/FA.const';
 
 export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (!platnosc) {
@@ -27,19 +28,19 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     {
       name: 'Termin',
       title: 'Termin płatności',
-      format: FormatTyp.Default,
+      format: FormatTyp.Date,
     },
   ];
 
   if (terminPlatnosci.some((termin: TerminPlatnosci): FP | undefined => termin.TerminOpis)) {
-    zaplataCzesciowaHeader.push({ name: 'TerminOpis', title: 'Opis płatności', format: FormatTyp.Default });
+    zaplataCzesciowaHeader.push({ name: 'TerminOpis', title: 'Opis płatności', format: FormatTyp.Date });
   }
 
   const zaplataCzesciowaNaglowek: HeaderDefine[] = [
     {
       name: 'DataZaplatyCzesciowej',
       title: 'Data zapłaty częściowej',
-      format: FormatTyp.Default,
+      format: FormatTyp.Date,
     },
     { name: 'KwotaZaplatyCzesciowej', title: 'Kwota zapłaty częściowej', format: FormatTyp.Currency },
     { name: 'FormaPlatnosci', title: 'Forma płatności', format: FormatTyp.FormOfPayment },
@@ -57,7 +58,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   }
 
   if (hasValue(platnosc.FormaPlatnosci)) {
-    table.push(createLabelText('Forma płatności: ', getFormaPlatnosciString(platnosc.FormaPlatnosci)));
+    table.push(createLabelText('Forma płatności: ', translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)));
   } else {
     if (platnosc.OpisPlatnosci?._text) {
       table.push(createLabelText('Forma płatności: ', 'Płatność inna'));

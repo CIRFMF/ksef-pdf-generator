@@ -13,11 +13,12 @@ import {
   hasValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa, FP } from '../../types/fa1.types';
 import { DifferentValues, TypesOfValues } from '../../../shared/types/universal.types';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
+import { formatDateTime } from '@shared/generators/common/functions';
 
 export function generateSzczegoly(faVat: Fa): Content[] {
   const faWiersze: Record<string, FP>[] = getTable(faVat.FaWiersze?.FaWiersz);
@@ -32,15 +33,7 @@ export function generateSzczegoly(faVat: Fa): Content[] {
   const cenyLabel1: Content[] = [];
   const cenyLabel2: Content[] = [];
 
-  if (!(faWiersze.length > 0 || zamowieniaWiersze.length > 0)) {
-    const Any_P_11: boolean =
-      hasColumnsValue('P_11', faWiersze) || hasColumnsValue('P_11', zamowieniaWiersze);
-
-    if (Any_P_11) {
-      cenyLabel1.push(createLabelText('Faktura wystawiona w cenach: ', 'netto'));
-    } else {
-      cenyLabel1.push(createLabelText('Faktura wystawiona w cenach: ', 'brutto'));
-    }
+  if (hasValue(faVat.KodWaluty)) {
     cenyLabel2.push(createLabelText('Kod waluty: ', faVat.KodWaluty));
   }
 
@@ -127,18 +120,24 @@ function generateP_6Scope(P_6_Od: TypesOfValues, P_6_Do: TypesOfValues): Content
         {
           value: 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
         },
-        { value: P_6_Od, formatTyp: FormatTyp.Value },
+        { value: formatDateTime(getValue(P_6_Od) as string, true, true), formatTyp: FormatTyp.Value },
         { value: ' do ' },
-        { value: P_6_Do, formatTyp: FormatTyp.Value },
+        { value: formatDateTime(getValue(P_6_Do) as string, true, true), formatTyp: FormatTyp.Value },
       ])
     );
   } else if (hasValue(P_6_Od)) {
     table.push(
-      createLabelText('Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ', P_6_Od)
+      createLabelText(
+        'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
+        formatDateTime(getValue(P_6_Od) as string, true, true)
+      )
     );
   } else if (hasValue(P_6_Do)) {
     table.push(
-      createLabelText('Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ', P_6_Do)
+      createLabelText(
+        'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ',
+        formatDateTime(getValue(P_6_Do) as string, true, true)
+      )
     );
   }
   return table;

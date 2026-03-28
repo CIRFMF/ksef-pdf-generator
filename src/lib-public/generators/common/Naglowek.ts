@@ -1,6 +1,6 @@
 import { Content, ContentText } from 'pdfmake/interfaces';
-import { formatText, generateLine } from '../../../shared/PDF-functions';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { formatText, generateLine, getValue } from '../../../shared/PDF-functions';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa2 } from '../../types/fa2.types';
 import { Fa as Fa3, Zalacznik } from '../../types/fa3.types';
@@ -12,9 +12,9 @@ export function generateNaglowek(
   additionalData?: AdditionalDataTypes,
   zalacznik?: Zalacznik
 ): Content[] {
-  let invoiceName = '???';
+  let invoiceName = '';
 
-  switch (fa?.RodzajFaktury?._text) {
+  switch (getValue(fa?.RodzajFaktury)) {
     case TRodzajFaktury.VAT:
       invoiceName = 'Faktura podstawowa';
       break;
@@ -51,7 +51,10 @@ export function generateNaglowek(
       ],
     },
     { ...(formatText('Numer Faktury:', FormatTyp.ValueMedium) as ContentText), alignment: Position.RIGHT },
-    { ...(formatText(fa?.P_2?._text, FormatTyp.HeaderPosition) as ContentText), alignment: Position.RIGHT },
+    {
+      ...(formatText(getValue(fa?.P_2), FormatTyp.HeaderPosition) as ContentText),
+      alignment: Position.RIGHT,
+    },
     {
       ...(formatText(invoiceName, [FormatTyp.ValueMedium, FormatTyp.Default]) as ContentText),
       alignment: Position.RIGHT,

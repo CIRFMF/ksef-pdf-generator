@@ -1,18 +1,8 @@
 import { xml2js } from 'xml-js';
 import { Faktura } from '../lib-public/types/fa2.types';
 
-export function stripPrefixes<T>(obj: T): T {
-  if (Array.isArray(obj)) {
-    return obj.map(stripPrefixes) as T;
-  } else if (typeof obj === 'object' && obj !== null) {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]: [string, T]): [string, T] => [
-        key.includes(':') ? key.split(':')[1] : key,
-        stripPrefixes(value),
-      ])
-    ) as T;
-  }
-  return obj;
+export function stripPrefix(key: string): string {
+  return key.includes(':') ? key.split(':')[1] : key;
 }
 
 export function parseXML(file: File): Promise<unknown> {
@@ -22,7 +12,13 @@ export function parseXML(file: File): Promise<unknown> {
     reader.onload = function (e: ProgressEvent<FileReader>): void {
       try {
         const xmlStr: string = e.target?.result as string;
-        const jsonDoc: Faktura = stripPrefixes(xml2js(xmlStr, { compact: true })) as Faktura;
+        const jsonDoc: Faktura = xml2js(xmlStr, {
+          compact: true,
+          cdataKey: '_text',
+          trim: true,
+          elementNameFn: stripPrefix,
+          attributeNameFn: stripPrefix,
+        }) as Faktura;
 
         resolve(jsonDoc);
       } catch (error) {
