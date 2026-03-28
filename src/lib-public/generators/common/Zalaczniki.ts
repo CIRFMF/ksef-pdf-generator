@@ -138,7 +138,7 @@ function createTable(
   const definedHeader: Content[] = cols.map((item: Kol): string | ContentText =>
     formatText(makeBreakable(item.NKom?._text), FormatTyp.GrayBoldTitle)
   );
-  const tableBody: Content[] = [];
+  const tableBody: TableCell[][] = [];
 
   getTable(rows).forEach((item: Wiersz): void => {
     const WKom: FP[] = getTable(item.WKom);

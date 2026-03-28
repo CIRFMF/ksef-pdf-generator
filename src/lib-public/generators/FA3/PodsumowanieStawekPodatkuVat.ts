@@ -1,4 +1,4 @@
-import { Content, ContentTable } from 'pdfmake/interfaces';
+import { Content, ContentTable, TableCell } from 'pdfmake/interfaces';
 import {
   createHeader,
   createSection,
@@ -46,12 +46,12 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
     hasValue(faktura.Fa?.P_14_3W) ||
     hasValue(faktura.Fa?.P_14_4W);
 
-  let tableBody: Content[][] = [];
+  let tableBody: TableCell[][] = [];
   const table: ContentTable = {
     table: {
       headerRows: 1,
       widths: [],
-      body: [] as Content[][],
+      body: [] as TableCell[][],
     },
     layout: {
       hLineWidth: () => 1,
@@ -128,7 +128,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       return data;
     });
   }
-  table.table.body = [[...definedHeader], ...tableBody] as Content[][];
+  table.table.body = [[...definedHeader], ...tableBody] as TableCell[][];
   table.table.widths = [...widths] as never[];
 
   return tableBody.length
