@@ -4,7 +4,6 @@ import * as PDFFunctions from '../../../shared/PDF-functions';
 import { makeBreakable } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { RachunekBankowy } from '../../types/fa3.types';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),
@@ -13,10 +12,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   makeBreakable: vi.fn(),
   getValue: (val: any) => val?._text || '',
   hasValue: (val: any) => val?._text || '',
-}));
-
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getTypRachunkowWlasnych: vi.fn(),
 }));
 
 describe(generujRachunekBankowy.name, () => {
@@ -36,7 +31,6 @@ describe(generujRachunekBankowy.name, () => {
     vi.mocked(PDFFunctions.createHeader).mockReturnValue(['header'] as any);
     vi.mocked(PDFFunctions.createSection).mockReturnValue('section' as any);
     vi.mocked(PDFFunctions.formatText).mockReturnValue('formatted' as any);
-    vi.mocked(CommonFunctions.getTypRachunkowWlasnych).mockReturnValue('Tak');
   });
 
   describe('when accounts is undefined or empty', () => {
@@ -92,12 +86,9 @@ describe(generujRachunekBankowy.name, () => {
     });
 
     it('should format "Rachunek własny banku" field', () => {
-      vi.mocked(CommonFunctions.getTypRachunkowWlasnych).mockReturnValue('Tak');
-
       generujRachunekBankowy([mockAccount], 'Rachunek bankowy');
 
       expect(PDFFunctions.formatText).toHaveBeenCalledWith('Rachunek własny banku', FormatTyp.GrayBoldTitle);
-      expect(CommonFunctions.getTypRachunkowWlasnych).toHaveBeenCalledWith(mockAccount.RachunekWlasnyBanku);
       expect(PDFFunctions.formatText).toHaveBeenCalledWith(
         mockAccount.NazwaBanku?._text ? makeBreakable('Bank', 20) : 'Tak',
         FormatTyp.Default
@@ -131,7 +122,7 @@ describe(generujRachunekBankowy.name, () => {
       const tableContent = sectionCall[0][1];
 
       expect(tableContent).toHaveProperty('table');
-      expect(tableContent.table).toHaveProperty('widths', ['*', 'auto']);
+      expect(tableContent.table).toHaveProperty('widths', ['auto', '*']);
     });
 
     it('should create table structure with unbreakable property', () => {
@@ -218,10 +209,6 @@ describe(generujRachunekBankowy.name, () => {
       } as any;
 
       generujRachunekBankowy([mockAccount, account2], 'Rachunek bankowy');
-
-      expect(CommonFunctions.getTypRachunkowWlasnych).toHaveBeenCalledTimes(2);
-      expect(CommonFunctions.getTypRachunkowWlasnych).toHaveBeenCalledWith(mockAccount.RachunekWlasnyBanku);
-      expect(CommonFunctions.getTypRachunkowWlasnych).toHaveBeenCalledWith(account2.RachunekWlasnyBanku);
     });
 
     it('should format all fields for all accounts', () => {

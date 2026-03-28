@@ -30,9 +30,6 @@ vi.mock('./Podmiot3Podmiot2k', () => ({
 vi.mock('./PodmiotUpowazniony', () => ({
   generatePodmiotUpowazniony: vi.fn(() => [{ upowazniony: true }]),
 }));
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getValue: vi.fn((val) => (val && val._text ? val._text : '')),
-}));
 
 describe(generatePodmioty.name, () => {
   beforeEach(() => {

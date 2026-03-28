@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { Kraj } from '../../../shared/consts/const';
+import { Kraj, RodzajTransportu, TypLadunku } from '../../../shared/consts/FA.const';
 import {
   createHeader,
   createLabelText,
@@ -12,11 +12,7 @@ import {
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Adres, Transport } from '../../types/fa2.types';
-import {
-  getDateTimeWithoutSeconds,
-  getOpisTransportuString,
-  getRodzajTransportuString,
-} from '../../../shared/generators/common/functions';
+import { getDateTimeWithoutSeconds, translateMap } from '@shared/generators/common/functions';
 import { generatePrzewoznik } from './Przewoznik';
 
 export function generateTransport(transport: Transport, index?: number | null): Content {
@@ -32,7 +28,7 @@ export function generateTransport(transport: Transport, index?: number | null): 
   table.push(createHeader(index ? `Transport ${index}` : 'Transport'));
   if (transport.RodzajTransportu?._text) {
     columns.transport.push(
-      createLabelText('Rodzaj transportu: ', getRodzajTransportuString(transport.RodzajTransportu))
+      createLabelText('Rodzaj transportu: ', translateMap(transport.RodzajTransportu, RodzajTransportu))
     );
   } else if (transport.TransportInny?._text == '1' && transport.OpisInnegoTransportu?._text) {
     columns.transport.push(createLabelText('Rodzaj transportu: ', 'Transport inny'));
@@ -42,7 +38,7 @@ export function generateTransport(transport: Transport, index?: number | null): 
   }
   columns.dane.push(createLabelText('Numer zlecenia transportu: ', transport.NrZleceniaTransportu));
   if (hasValue(transport.OpisLadunku)) {
-    columns.dane.push(createLabelText('Opis ładunku: ', getOpisTransportuString(transport.OpisLadunku)));
+    columns.dane.push(createLabelText('Opis ładunku: ', translateMap(transport.OpisLadunku, TypLadunku)));
     if (transport.LadunekInny?._text === '1' && transport.OpisInnegoLadunku?._text) {
       columns.dane.push(createLabelText('Opis ładunku: ', 'Ładunek inny'));
       columns.dane.push(createLabelText('Opis innego ładunku: ', transport.OpisInnegoLadunku));

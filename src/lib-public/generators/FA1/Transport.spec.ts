@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generateTransport } from './Transport';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import * as PrzewoznikModule from './Przewoznik';
-import * as CommonFunctions from '../../../shared/generators/common/functions';
+import * as CommonFunctions from '@shared/generators/common/functions';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),
@@ -18,12 +18,6 @@ vi.mock('./Przewoznik', () => ({
   generatePrzewoznik: vi.fn(),
 }));
 
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getDateTimeWithoutSeconds: vi.fn(),
-  getRodzajTransportuString: vi.fn(),
-  getOpisTransportuString: vi.fn(),
-}));
-
 describe(generateTransport.name, () => {
   let mockTransport: any;
 
@@ -34,7 +28,7 @@ describe(generateTransport.name, () => {
       TransportInny: { _text: '0' },
       OpisInnegoTransportu: { _text: '' },
       NrZleceniaTransportu: { _text: 'TR001' },
-      OpisLadunku: { _text: 'Goods' },
+      OpisLadunku: { _text: '1' },
       LadunekInny: { _text: '0' },
       OpisInnegoLadunku: { _text: '' },
       JednostkaOpakowania: { _text: 'Box' },
@@ -65,20 +59,18 @@ describe(generateTransport.name, () => {
     vi.mocked(PDFFunctions.hasValue).mockReturnValue(true);
     vi.mocked(PrzewoznikModule.generatePrzewoznik).mockReturnValue('przewoznik' as any);
     vi.mocked(CommonFunctions.getDateTimeWithoutSeconds).mockReturnValue('2024-01-01 10:00');
-    vi.mocked(CommonFunctions.getRodzajTransportuString).mockReturnValue('Road');
-    vi.mocked(CommonFunctions.getOpisTransportuString).mockReturnValue('Opis');
   });
 
   it('should return a section', () => {
     const result = generateTransport(mockTransport);
+
     expect(PDFFunctions.createSection).toHaveBeenCalledWith(expect.any(Array), true);
     expect(result).toBe('section');
   });
 
   it('should handle RodzajTransportu', () => {
     generateTransport(mockTransport);
-    expect(CommonFunctions.getRodzajTransportuString).toHaveBeenCalledWith(mockTransport.RodzajTransportu);
-    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Road');
+    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Transport morski');
   });
 
   it('should handle TransportInny', () => {
@@ -88,6 +80,7 @@ describe(generateTransport.name, () => {
       TransportInny: { _text: '1' },
       OpisInnegoTransportu: { _text: 'Custom transport' },
     };
+
     generateTransport(data);
     expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Transport inny');
     expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Transport inny');
@@ -99,7 +92,7 @@ describe(generateTransport.name, () => {
       'Numer zlecenia transportu: ',
       mockTransport.NrZleceniaTransportu
     );
-    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Opis ładunku: ', 'Opis');
+    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Opis ładunku: ', 'Bańka');
     expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
       'Jednostka opakowania: ',
       mockTransport.JednostkaOpakowania
@@ -141,6 +134,7 @@ describe(generateTransport.name, () => {
         },
       ],
     };
+
     vi.mocked(PDFFunctions.getTable).mockReturnValue(data.WysylkaPrzez as any);
     generateTransport(data);
     expect(PDFFunctions.createSubHeader).toHaveBeenCalledWith('Adres pośredni wysyłki', [0, 4, 0, 0]);
@@ -163,8 +157,9 @@ describe(generateTransport.name, () => {
       LadunekInny: { _text: '1' },
       OpisInnegoLadunku: { _text: 'Custom cargo' },
     };
+
     generateTransport(data);
     expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Opis ładunku: ', 'Ładunek inny');
-    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Road');
+    expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Rodzaj transportu: ', 'Transport morski');
   });
 });

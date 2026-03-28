@@ -1,4 +1,4 @@
-import { Content, ContentText } from 'pdfmake/interfaces';
+import { Content } from 'pdfmake/interfaces';
 import {
   createHeader,
   createLabelTextArray,
@@ -11,7 +11,7 @@ import {
   getValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa, FP } from '../../types/fa2.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
@@ -68,10 +68,10 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'PKWiU', title: 'PKWiU', format: FormatTyp.Default, width: 'auto' },
     { name: 'CN', title: 'CN', format: FormatTyp.Default, width: 'auto' },
     { name: 'PKOB', title: 'PKOB', format: FormatTyp.Default, width: 'auto' },
-    { name: 'KwotaAkcyzy', title: 'KwotaAkcyzy', format: FormatTyp.Default, width: 'auto' },
+    { name: 'KwotaAkcyzy', title: 'Kwota podatku akcyzowego', format: FormatTyp.Default, width: 'auto' },
     { name: 'GTU', title: 'GTU', format: FormatTyp.Default, width: 'auto' },
     { name: 'Procedura', title: 'Procedura', format: FormatTyp.Default, width: '*' },
-    { name: 'P_6A', title: 'Data dostawy / wykonania', format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_6A', title: 'Data dostawy / wykonania', format: FormatTyp.Date, width: 'auto' },
     { name: 'Indeks', title: 'Indeks', format: FormatTyp.Default, width: 'auto' },
   ];
   let content: TableWithFields = getContentTable<(typeof faWiersze)[0]>(
@@ -79,10 +79,10 @@ export function generateWiersze(faVat: Fa): Content {
     faWiersze,
     'auto'
   );
-  const ceny: string | ContentText = formatText(
-    `Faktura wystawiona w cenach ${content.fieldsWithValue.includes('P_11') ? 'netto' : 'brutto'} w walucie ${faVat.KodWaluty?._text}`,
-    [FormatTyp.Label, FormatTyp.MarginBottom8]
-  );
+  const ceny = formatText(`Faktura wystawiona w walucie ${faVat.KodWaluty?._text}`, [
+    FormatTyp.Label,
+    FormatTyp.MarginBottom8,
+  ]);
 
   const p_15: string | number | undefined = getValue(faVat.P_15);
   let opis: Content = '';

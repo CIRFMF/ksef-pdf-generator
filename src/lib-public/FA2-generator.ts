@@ -2,7 +2,7 @@ import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
-import { TRodzajFaktury } from '../shared/consts/const';
+import { TRodzajFaktury } from '../shared/consts/FA.const';
 import { generateAdnotacje } from './generators/FA2/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA2/DodatkoweInformacje';
 import { generatePlatnosc } from './generators/FA2/Platnosc';
@@ -20,6 +20,7 @@ import { generateStopka } from './generators/common/Stopka';
 import { Faktura } from './types/fa2.types';
 import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
+import { Position } from '../shared/enums/common.enum';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -50,6 +51,13 @@ export function generateFA2(invoice: Faktura, additionalData: AdditionalDataType
       generateWarunkiTransakcji(invoice.Fa?.WarunkiTransakcji),
       ...generateStopka(additionalData, invoice.Stopka, invoice.Naglowek, invoice.Fa?.WZ),
     ],
+    footer: (currentPage, pageCount) => {
+      return {
+        text: currentPage.toString() + ' z ' + pageCount,
+        alignment: Position.RIGHT,
+        margin: [0, 0, 40, 0],
+      };
+    },
     ...generateStyle(),
   };
 

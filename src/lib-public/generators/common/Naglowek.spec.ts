@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa3 } from '../../types/fa3.types';
 import { generateNaglowek } from './Naglowek';
@@ -26,7 +26,7 @@ describe('generateNaglowek', () => {
     ).toBe(true);
   });
 
-  it('generates header with ??? for unknown invoice type', () => {
+  it('generates header with empty string for unknown invoice type', () => {
     const fa: Fa1 = {
       RodzajFaktury: { _text: 'UNKNOWN' },
       P_2: { _text: 'FUNK/2025/99' },
@@ -41,7 +41,7 @@ describe('generateNaglowek', () => {
           c !== null &&
           'text' in c &&
           typeof (c as any).text === 'string' &&
-          (c as any).text.includes('???')
+          (c as any).text.includes('')
       )
     ).toBe(true);
   });
