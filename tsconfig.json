@@ -8,6 +8,14 @@
 
     "strict": true,
     "skipLibCheck": true,
-  },
-  "include": ["src"]
+    "include": [
+      "src"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": [
+        "src/shared/*"
+      ]
+    }
+  }
 }

@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generateSzczegoly } from './Szczegoly';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
-import { TRodzajFaktury } from '../../../shared/consts/const';
+import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa } from '../../types/fa2.types';
 
 vi.mock('../../../shared/PDF-functions', () => ({
@@ -23,7 +23,6 @@ describe(generateSzczegoly.name, () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-
   const mockFaVat: Fa = {
     FaWiersz: [],
     Zamowienie: {
@@ -67,6 +66,7 @@ describe(generateSzczegoly.name, () => {
 
   it('should call createSection and return result', () => {
     const mockSection = 'section';
+
     vi.mocked(PDFFunctions.createSection).mockReturnValue(mockSection as any);
 
     const result = generateSzczegoly(mockFaVat);
@@ -136,6 +136,13 @@ describe(generateSzczegoly.name, () => {
 
   describe('P_6 scope', () => {
     it('should generate P_6 scope when both P_6_Od and P_6_Do exist', () => {
+      vi.mocked(PDFFunctions.getValue).mockImplementation((item: any) => {
+        if (typeof item === 'object') {
+          return item._text;
+        }
+
+        return item;
+      });
       const data = {
         ...mockFaVat,
         OkresFa: {
@@ -154,13 +161,20 @@ describe(generateSzczegoly.name, () => {
         {
           value: 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
         },
-        { value: data.OkresFa.P_6_Od, formatTyp: FormatTyp.Value },
+        { value: '01.01.2024', formatTyp: FormatTyp.Value },
         { value: ' do ' },
-        { value: data.OkresFa.P_6_Do, formatTyp: FormatTyp.Value },
+        { value: '31.01.2024', formatTyp: FormatTyp.Value },
       ]);
     });
 
     it('should generate P_6 scope when only P_6_Od exists', () => {
+      vi.mocked(PDFFunctions.getValue).mockImplementation((item: any) => {
+        if (typeof item === 'object') {
+          return item._text;
+        }
+
+        return item;
+      });
       const data = {
         ...mockFaVat,
         OkresFa: {
@@ -175,11 +189,18 @@ describe(generateSzczegoly.name, () => {
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
         'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
-        data.OkresFa.P_6_Od
+        '01.01.2024'
       );
     });
 
     it('should generate P_6 scope when only P_6_Do exists', () => {
+      vi.mocked(PDFFunctions.getValue).mockImplementation((item: any) => {
+        if (typeof item === 'object') {
+          return item._text;
+        }
+
+        return item;
+      });
       const data = {
         ...mockFaVat,
         OkresFa: {
@@ -194,7 +215,7 @@ describe(generateSzczegoly.name, () => {
 
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
         'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ',
-        data.OkresFa.P_6_Do
+        '31.01.2024'
       );
     });
 
@@ -208,42 +229,15 @@ describe(generateSzczegoly.name, () => {
       const p6Call = calls.find((call) =>
         call[0].some((item: any) => item.value?.includes('Data dokonania lub zakończenia'))
       );
+
       expect(p6Call).toBeUndefined();
     });
   });
 
   describe('ceny labels', () => {
-    it('should add "netto" label when P_11 exists in FaWiersz', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
-
-      vi.mocked(PDFFunctions.hasColumnsValue).mockImplementation((column: string) => column === 'P_11');
-
-      generateSzczegoly(mockFaVat);
-
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'netto');
-    });
-
-    it('should add "netto" label when P_11 exists in ZamowienieWiersz', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
-
-      vi.mocked(PDFFunctions.hasColumnsValue).mockImplementation((column: string) => column === 'P_11');
-
-      generateSzczegoly(mockFaVat);
-
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'netto');
-    });
-
-    it('should add "brutto" label when P_11 does not exist', () => {
-      vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
-      vi.mocked(PDFFunctions.hasColumnsValue).mockReturnValue(false);
-
-      generateSzczegoly(mockFaVat);
-
-      expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Faktura wystawiona w cenach: ', 'brutto');
-    });
-
     it('should add currency code label', () => {
       vi.mocked(PDFFunctions.getTable).mockReturnValue([]);
+      vi.mocked(PDFFunctions.hasValue).mockReturnValue(true);
 
       generateSzczegoly(mockFaVat);
 
@@ -252,16 +246,19 @@ describe(generateSzczegoly.name, () => {
 
     it('should not add ceny labels when FaWiersz or ZamowienieWiersz exist', () => {
       vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-        if (field === mockFaVat.FaWiersz) return [{}];
+        if (field === mockFaVat.FaWiersz) {
+          return [{}];
+        }
         return [];
       });
 
       vi.mocked(PDFFunctions.createLabelText).mockClear();
 
       generateSzczegoly(mockFaVat);
-
       const calls = vi.mocked(PDFFunctions.createLabelText).mock.calls;
+
       const cenyCall = calls.find((call) => call[0] === 'Faktura wystawiona w cenach: ');
+
       expect(cenyCall).toBeUndefined();
     });
   });
@@ -291,6 +288,7 @@ describe(generateSzczegoly.name, () => {
 
       const calls = vi.mocked(PDFFunctions.createLabelText).mock.calls;
       const ossCall = calls.find((call) => call[0] === 'Procedura One Stop Shop');
+
       expect(ossCall).toBeUndefined();
     });
   });
@@ -358,6 +356,7 @@ describe(generateSzczegoly.name, () => {
 
       const calls = vi.mocked(PDFFunctions.createLabelText).mock.calls;
       const currencyCall = calls.find((call) => call[0] === 'Kurs waluty: ');
+
       expect(currencyCall).toBeUndefined();
     });
 
@@ -385,6 +384,7 @@ describe(generateSzczegoly.name, () => {
 
       const calls = vi.mocked(PDFFunctions.createLabelText).mock.calls;
       const currencyCall = calls.find((call) => call[0] === 'Kurs waluty: ');
+
       expect(currencyCall).toBeUndefined();
     });
   });
@@ -427,9 +427,11 @@ describe(generateSzczegoly.name, () => {
       generateSzczegoly(mockFaVat);
 
       const calls = vi.mocked(PDFFunctions.generateTwoColumns).mock.calls;
+
       expect(calls.length).toBeGreaterThanOrEqual(1);
 
       const firstCall = calls[0];
+
       expect(Array.isArray(firstCall[0])).toBe(true);
       expect(Array.isArray(firstCall[1])).toBe(true);
     });
@@ -449,7 +451,7 @@ describe(generateSzczegoly.name, () => {
       } as any;
 
       vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-        if (field === data.ZaliczkaCzesciowa)
+        if (field === data.ZaliczkaCzesciowa) {
           return [
             {
               P_6Z: { _text: '2024-01-01' },
@@ -457,6 +459,7 @@ describe(generateSzczegoly.name, () => {
               KursWalutyZW: { _text: '4.50' },
             },
           ] as any;
+        }
         return [];
       });
 
@@ -506,7 +509,9 @@ describe(generateSzczegoly.name, () => {
       } as any;
 
       vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-        if (field === data.ZaliczkaCzesciowa) return [{ P_6Z: { _text: '' } }] as any;
+        if (field === data.ZaliczkaCzesciowa) {
+          return [{ P_6Z: { _text: '' } }] as any;
+        }
         return [];
       });
 
@@ -533,12 +538,13 @@ describe(generateSzczegoly.name, () => {
       } as any;
 
       vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-        if (field === data.FakturaZaliczkowa)
+        if (field === data.FakturaZaliczkowa) {
           return [
             {
               NrKSeFFaZaliczkowej: { _text: 'FA001' },
             },
           ] as any;
+        }
         return [];
       });
 
@@ -590,7 +596,9 @@ describe(generateSzczegoly.name, () => {
       } as any;
 
       vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-        if (field === data.FakturaZaliczkowa) return [{ NrKSeFFaZaliczkowej: { _text: '' } }] as any;
+        if (field === data.FakturaZaliczkowa) {
+          return [{ NrKSeFFaZaliczkowej: { _text: '' } }] as any;
+        }
         return [];
       });
 

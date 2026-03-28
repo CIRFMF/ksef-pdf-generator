@@ -25,11 +25,11 @@ export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji |
   const zamowienia: Zamowienia[] = getTable(warunkiTransakcji?.Zamowienia);
   const partiaTowaru: FP[] = getTable(warunkiTransakcji?.NrPartiiTowaru);
   const definedHeaderUmowy: HeaderDefine[] = [
-    { name: 'DataUmowy', title: 'Data umowy', format: FormatTyp.Default },
+    { name: 'DataUmowy', title: 'Data umowy', format: FormatTyp.Date },
     { name: 'NrUmowy', title: 'Numer umowy', format: FormatTyp.Default },
   ];
   const definedHeaderZamowienia: HeaderDefine[] = [
-    { name: 'DataZamowienia', title: 'Data zamówienia', format: FormatTyp.Default },
+    { name: 'DataZamowienia', title: 'Data zamówienia', format: FormatTyp.Date },
     { name: 'NrZamowienia', title: 'Numer zamówienia', format: FormatTyp.Default },
   ];
   const definedHeaderPartiaTowaru: HeaderDefine[] = [

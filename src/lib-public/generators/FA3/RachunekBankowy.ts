@@ -9,7 +9,8 @@ import {
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { RachunekBankowy } from '../../types/fa3.types';
-import { getTypRachunkowWlasnych } from '../../../shared/generators/common/functions';
+import { translateMap } from '@shared/generators/common/functions';
+import { TypRachunkowWlasnych } from '@shared/consts/FA.const';
 
 export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: string): Content[] => {
   const result: Content[] = [];
@@ -35,7 +36,10 @@ export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: str
     ]);
     table.push([
       formatText('Rachunek własny banku', FormatTyp.GrayBoldTitle),
-      formatText(makeBreakable(getTypRachunkowWlasnych(account.RachunekWlasnyBanku), 20), FormatTyp.Default),
+      formatText(
+        makeBreakable(translateMap(account.RachunekWlasnyBanku, TypRachunkowWlasnych), 20),
+        FormatTyp.Default
+      ),
     ]);
     table.push([
       formatText('Nazwa banku', FormatTyp.GrayBoldTitle),
@@ -61,7 +65,7 @@ export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: str
         unbreakable: true,
         table: {
           body: table,
-          widths: ['*', 'auto'],
+          widths: ['auto', '*'],
         },
         layout: {
           hLineWidth: () => 1,

@@ -10,9 +10,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   generateTwoColumns: vi.fn((left, right) => ({ type: '2COL', left, right })),
 }));
 
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getRolaUpowaznionegoString: vi.fn(() => 'Rola string'),
-}));
 vi.mock('./PodmiotAdres', () => ({
   generatePodmiotAdres: vi.fn((adres, label) => ({ adr: label })),
 }));
@@ -40,6 +37,7 @@ describe(generatePodmiotUpowazniony.name, () => {
       NrEORI: { _text: 'EORI123' },
     };
     const res = generatePodmiotUpowazniony(podmiot);
+
     expect(res[0]).toEqual({ text: 'HEADER:Podmiot upoważniony' });
     expect(res.some((r: any) => r.type === '2COL')).toBe(true);
   });

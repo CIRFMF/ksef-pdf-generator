@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, createLabelText, formatText, getTable } from '../../../shared/PDF-functions';
+import { createHeader, createLabelText, formatText, getValue } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Podmiot2 } from '../../types/fa3.types';
 import { generateAdres } from './Adres';
@@ -37,23 +37,29 @@ export function generatePodmiot2(podmiot2: Podmiot2): Content[] {
       ...generateDaneKontaktowe(podmiot2.DaneKontaktowe ?? []),
       createLabelText('Numer klienta: ', podmiot2.NrKlienta)
     );
-
-    const daneKontaktowe = getTable(podmiot2.DaneKontaktowe);
-
-    if (daneKontaktowe.length) {
-      result.push(
-        createLabelText(
-          'Faktura dotyczy jednostki podrzędnej JST: ',
-          daneKontaktowe[0].JST?._text === '1' ? 'TAK' : 'NIE'
-        )
-      );
-      result.push(
-        createLabelText(
-          'Faktura dotyczy członka grupy GV: ',
-          daneKontaktowe[0].GV?._text === '1' ? 'TAK' : 'NIE'
-        )
-      );
-    }
   }
+
+  if (podmiot2?.JST) {
+    result.push(
+      createLabelText(
+        'Faktura dotyczy jednostki podrzędnej JST: ',
+        getValue(podmiot2?.JST)?.toString().trim() === '1' ? 'TAK' : 'NIE',
+        FormatTyp.Default,
+        { marginTop: 8 }
+      )
+    );
+  }
+
+  if (podmiot2?.GV) {
+    result.push(
+      createLabelText(
+        'Faktura dotyczy członka grupy GV: ',
+        getValue(podmiot2?.GV)?.toString().trim() === '1' ? 'TAK' : 'NIE',
+        FormatTyp.Default,
+        podmiot2?.JST ? {} : { marginTop: 8 }
+      )
+    );
+  }
+
   return result;
 }
