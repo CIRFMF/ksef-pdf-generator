@@ -1,6 +1,6 @@
 import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions, Attachment } from 'pdfmake/interfaces';
 import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/FA.const';
 import { generateAdnotacje } from './generators/FA3/Adnotacje';
@@ -22,13 +22,15 @@ import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
 import { Position } from '../shared/enums/common.enum';
 
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.addVirtualFileSystem(pdfFonts);
 
-export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
+export function generateFA3(invoice: Faktura, additionalData: AdditionalDataTypes, dataUri?: string, filename?: string, date?: number): TCreatedPdf {
   const isKOR_RABAT: boolean =
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
   const docDefinition: TDocumentDefinitions = {
+    version: '1.7',
+    subset: 'PDF/A-3',
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
       generateDaneFaKorygowanej(invoice.Fa),
@@ -59,6 +61,7 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
       };
     },
     ...generateStyle(),
+    ...(dataUri && { files: { xml: { src: dataUri, name: filename, relationship: 'Data', creationDate: date, modifiedDate: date } as Attachment } })
   };
 
   return pdfMake.createPdf(docDefinition);

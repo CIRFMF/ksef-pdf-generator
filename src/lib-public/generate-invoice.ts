@@ -27,7 +27,12 @@ export async function generateInvoice(
 ): Promise<FormatTypeResult> {
   const xml: unknown = await parseXML(file);
   const wersja: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
-
+  const dataUri: string = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
   let pdf: TCreatedPdf;
 
   return new Promise((resolve): void => {
@@ -39,23 +44,23 @@ export async function generateInvoice(
         pdf = generateFA2((xml as any).Faktura as Faktura2, additionalData);
         break;
       case 'FA (3)':
-        pdf = generateFA3((xml as any).Faktura as Faktura3, additionalData);
+        pdf = generateFA3((xml as any).Faktura as Faktura3, additionalData, dataUri, file.name, file.lastModified);
         break;
       case 'FA_RR (1)':
       case 'FA_RR(1)':
-        pdf = generateFARR((xml as any).Faktura as FaRR, additionalData);
+        pdf = generateFARR((xml as any).Faktura as FaRR, additionalData, dataUri, file.name, file.lastModified);
         break;
     }
 
     switch (formatType) {
       case 'blob':
-        pdf.getBlob((blob: Blob): void => {
+        pdf.getBlob().then((blob: Blob): void => {
           resolve(blob);
         });
         break;
       case 'base64':
       default:
-        pdf.getBase64((base64: string): void => {
+        pdf.getBase64().then((base64: string): void => {
           resolve(base64);
         });
     }
