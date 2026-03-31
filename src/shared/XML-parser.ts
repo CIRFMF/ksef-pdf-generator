@@ -16,22 +16,38 @@ export function stripPrefixes<T>(obj: T): T {
 }
 
 export function parseXMLFromString(xmlStr: string): unknown {
-  return stripPrefixes(xml2js(xmlStr, { compact: true })) as Faktura;
+  return stripPrefixes(xml2js(xmlStr, { compact: true }));
 }
 
-export function parseXML(file: File): Promise<unknown> {
-  return new Promise((resolve, reject): void => {
-    const reader = new FileReader();
+type XmlInput = {
+  text?: () => Promise<string>;
+};
 
-    reader.onload = function (e: ProgressEvent<FileReader>): void {
-      try {
-        const xmlStr: string = e.target?.result as string;
+export async function parseXML(file: File | XmlInput): Promise<unknown> {
+  // Prefer text() because it works in Node.js and browser environments.
+  if (typeof file?.text === 'function') {
+    const xmlStr = await file.text();
 
-        resolve(parseXMLFromString(xmlStr));
-      } catch (error) {
-        reject(error);
-      }
-    };
-    reader.readAsText(file);
-  });
+    return parseXMLFromString(xmlStr);
+  }
+
+  if (typeof FileReader !== 'undefined') {
+    return new Promise((resolve, reject): void => {
+      const reader = new FileReader();
+
+      reader.onload = function (e: ProgressEvent<FileReader>): void {
+        try {
+          const xmlStr: string = e.target?.result as string;
+
+          resolve(parseXMLFromString(xmlStr));
+        } catch (error) {
+          reject(error);
+        }
+      };
+      reader.onerror = () => reject(new Error('Unable to read XML input'));
+      reader.readAsText(file as File);
+    });
+  }
+
+  throw new Error('Unsupported XML input. Expected object with text() method.');
 }
