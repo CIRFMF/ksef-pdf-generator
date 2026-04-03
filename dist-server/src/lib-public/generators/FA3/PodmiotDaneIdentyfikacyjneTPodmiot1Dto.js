@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateDaneIdentyfikacyjneTPodmiot1Dto = generateDaneIdentyfikacyjneTPodmiot1Dto;
+const PDF_functions_1 = require("../../../shared/PDF-functions");
+function generateDaneIdentyfikacyjneTPodmiot1Dto(daneIdentyfikacyjne) {
+    return [
+        (0, PDF_functions_1.createLabelText)('NIP: ', daneIdentyfikacyjne.NIP),
+        (0, PDF_functions_1.createLabelText)('Nazwa: ', daneIdentyfikacyjne.Nazwa),
+    ];
+}

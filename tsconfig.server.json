@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "./dist-server",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/shared/*"]
+    },
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,           // ← Ignoruje błędy w node_modules i .d.ts
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "allowJs": true                 // ← Pozwala na import .js files
+  },
+  "include": [
+    "server.ts",
+    "src/server/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-server",
+    "src/lib-public/**/*.spec.ts",   // ← Wyklucz testy
+    "src/lib-public/**/*.test.ts",   // ← Wyklucz testy
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}
