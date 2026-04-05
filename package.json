@@ -1,9 +1,13 @@
 {
   "name": "@akmf/ksef-fe-invoice-converter",
   "version": "1.1.0",
+  "bin": {
+    "ksef-pdf": "./dist-cli/ksef-pdf.js"
+  },
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
+    "build:cli": "vite build --config vite.cli.config.ts",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -50,6 +54,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "commander": "^13.1.0",
     "pdfmake": "^0.2.20",
     "xml-js": "^1.6.11"
   }
