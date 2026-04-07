@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   FA1RolaPodmiotu3,
@@ -6,113 +6,76 @@ import {
   FA3RolaPodmiotu3,
   FormaPlatnosci,
   RodzajTransportu,
-  TRolaPodmiotuUpowaznionegoFA1,
-  TRolaPodmiotuUpowaznionegoFA2,
-  TRolaPodmiotuUpowaznionegoFA3,
   TypRachunkowWlasnych,
-} from '../../consts/const';
-import {
-  formatDateTime,
-  getDateTimeWithoutSeconds,
-  getFormaPlatnosciString,
-  getRodzajTransportuString,
-  getRolaString,
-  getRolaUpowaznionegoString,
-  getTypRachunkowWlasnych,
-} from './functions';
+} from '../../consts/FA.const';
+import { formatDateTime, getDateTimeWithoutSeconds, translateMap } from '@shared/generators/common/functions';
 
-describe('getRolaString', () => {
+vi.unmock('@shared/generators/common/functions');
+
+describe('translateMap RolaPodmimotu', () => {
   it('returns empty string if rola undefined or _text missing', () => {
-    expect(getRolaString(undefined, 1)).toBe('');
-    expect(getRolaString({} as any, 1)).toBe('');
+    expect(translateMap(undefined, FA1RolaPodmiotu3)).toBe('');
+    expect(translateMap({} as any, FA1RolaPodmiotu3)).toBe('');
   });
 
   it('returns correct string for FA=1', () => {
     const key = Object.keys(FA1RolaPodmiotu3)[0];
     const expected = FA1RolaPodmiotu3[key as keyof typeof FA1RolaPodmiotu3];
 
-    expect(getRolaString({ _text: key } as any, 1)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA1RolaPodmiotu3)).toBe(expected);
   });
 
   it('returns correct string for FA=2', () => {
     const key = Object.keys(FA2RolaPodmiotu3)[0];
     const expected = FA2RolaPodmiotu3[key as keyof typeof FA2RolaPodmiotu3];
 
-    expect(getRolaString({ _text: key } as any, 2)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA2RolaPodmiotu3)).toBe(expected);
   });
 
   it('returns correct string for FA=3', () => {
     const key = Object.keys(FA3RolaPodmiotu3)[0];
     const expected = FA3RolaPodmiotu3[key as keyof typeof FA3RolaPodmiotu3];
 
-    expect(getRolaString({ _text: key } as any, 3)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA3RolaPodmiotu3)).toBe(expected);
   });
 });
 
-describe('getRolaUpowaznionegoString', () => {
-  it('returns empty string if rola undefined or _text missing', () => {
-    expect(getRolaUpowaznionegoString(undefined, 1)).toBe('');
-    expect(getRolaUpowaznionegoString({} as any, 1)).toBe('');
-  });
-
-  it('returns correct string for FA=1', () => {
-    const key = Object.keys(TRolaPodmiotuUpowaznionegoFA1)[0];
-    const expected = TRolaPodmiotuUpowaznionegoFA1[key].split('-')[0];
-
-    expect(getRolaUpowaznionegoString({ _text: key } as any, 1)).toBe(expected);
-  });
-
-  it('returns correct string for FA=2', () => {
-    const key = Object.keys(TRolaPodmiotuUpowaznionegoFA2)[0];
-    const expected = TRolaPodmiotuUpowaznionegoFA2[key].split('-')[0];
-
-    expect(getRolaUpowaznionegoString({ _text: key } as any, 2)).toBe(expected);
-  });
-
-  it('returns correct string for FA=3', () => {
-    const key = Object.keys(TRolaPodmiotuUpowaznionegoFA3)[0];
-    const expected = TRolaPodmiotuUpowaznionegoFA3[key].split('-')[0];
-
-    expect(getRolaUpowaznionegoString({ _text: key } as any, 3)).toBe(expected);
-  });
-});
-
-describe('getFormaPlatnosciString', () => {
+describe('FormaPlatnosci', () => {
   it('returns empty string if undefined or no _text', () => {
-    expect(getFormaPlatnosciString(undefined)).toBe('');
+    expect(translateMap(undefined, FormaPlatnosci)).toBe('');
   });
 
   it('returns correct string for known key', () => {
     const key = Object.keys(FormaPlatnosci)[0];
     const expected = FormaPlatnosci[key as keyof typeof FormaPlatnosci];
 
-    expect(getFormaPlatnosciString({ _text: key } as any)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FormaPlatnosci)).toBe(expected);
   });
 });
 
 describe('getRodzajTransportuString', () => {
   it('returns empty string if undefined or no _text', () => {
-    expect(getRodzajTransportuString(undefined)).toBe('');
+    expect(translateMap(undefined, RodzajTransportu)).toBe('');
   });
 
   it('returns correct string for known key', () => {
     const key = Object.keys(RodzajTransportu)[0];
     const expected = RodzajTransportu[key as keyof typeof RodzajTransportu];
 
-    expect(getRodzajTransportuString({ _text: key } as any)).toBe(expected);
+    expect(translateMap({ _text: key } as any, RodzajTransportu)).toBe(expected);
   });
 });
 
 describe('getTypRachunkowWlasnych', () => {
   it('returns empty string if undefined or no _text', () => {
-    expect(getTypRachunkowWlasnych(undefined)).toBe('');
+    expect(translateMap(undefined, TypRachunkowWlasnych)).toBe('');
   });
 
   it('returns correct string for known key', () => {
     const key = Object.keys(TypRachunkowWlasnych)[0];
     const expected = TypRachunkowWlasnych[key as keyof typeof TypRachunkowWlasnych];
 
-    expect(getTypRachunkowWlasnych({ _text: key } as any)).toBe(expected);
+    expect(translateMap({ _text: key } as any, TypRachunkowWlasnych)).toBe(expected);
   });
 });
 
@@ -138,6 +101,10 @@ describe('formatDateTime', () => {
     const date = '2025-10-03T12:15:30Z';
 
     expect(formatDateTime(date, true)).toBe('03.10.2025 14:15');
+  });
+
+  it('uses Europe/Warsaw for ISO with offset (not process TZ / UTC in Docker)', () => {
+    expect(formatDateTime('2026-04-02T13:49:00+02:00')).toBe('02.04.2026 13:49:00');
   });
 });
 

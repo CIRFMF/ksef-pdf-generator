@@ -1,53 +1,38 @@
 import { xml2js } from 'xml-js';
 import { Faktura } from '../lib-public/types/fa2.types';
 
-export function stripPrefixes<T>(obj: T): T {
-  if (Array.isArray(obj)) {
-    return obj.map(stripPrefixes) as T;
-  } else if (typeof obj === 'object' && obj !== null) {
-    return Object.fromEntries(
-      Object.entries(obj).map(([key, value]: [string, T]): [string, T] => [
-        key.includes(':') ? key.split(':')[1] : key,
-        stripPrefixes(value),
-      ])
-    ) as T;
-  }
-  return obj;
+export function stripPrefix(key: string): string {
+  return key.includes(':') ? key.split(':')[1] : key;
 }
 
-export function parseXMLFromString(xmlStr: string): unknown {
-  return stripPrefixes(xml2js(xmlStr, { compact: true }));
+async function readBlobAsText(blob: Blob): Promise<string> {
+  if (typeof blob.text === 'function') {
+    return blob.text();
+  }
+  if (typeof blob.arrayBuffer === 'function') {
+    return new TextDecoder().decode(await blob.arrayBuffer());
+  }
+  return new Promise((resolve, reject) => {
+    if (typeof FileReader === 'undefined') {
+      reject(new Error('Cannot read Blob as text in this environment'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error ?? new Error('FileReader failed'));
+    reader.readAsText(blob);
+  });
 }
 
-type XmlInput = {
-  text?: () => Promise<string>;
-};
+export async function parseXML(file: File): Promise<unknown> {
+  const xmlStr = await readBlobAsText(file);
+  const jsonDoc: Faktura = xml2js(xmlStr, {
+    compact: true,
+    cdataKey: '_text',
+    trim: true,
+    elementNameFn: stripPrefix,
+    attributeNameFn: stripPrefix,
+  }) as Faktura;
 
-export async function parseXML(file: File | XmlInput): Promise<unknown> {
-  // Prefer text() because it works in Node.js and browser environments.
-  if (typeof file?.text === 'function') {
-    const xmlStr = await file.text();
-
-    return parseXMLFromString(xmlStr);
-  }
-
-  if (typeof FileReader !== 'undefined') {
-    return new Promise((resolve, reject): void => {
-      const reader = new FileReader();
-
-      reader.onload = function (e: ProgressEvent<FileReader>): void {
-        try {
-          const xmlStr: string = e.target?.result as string;
-
-          resolve(parseXMLFromString(xmlStr));
-        } catch (error) {
-          reject(error);
-        }
-      };
-      reader.onerror = () => reject(new Error('Unable to read XML input'));
-      reader.readAsText(file as File);
-    });
-  }
-
-  throw new Error('Unsupported XML input. Expected object with text() method.');
+  return jsonDoc;
 }

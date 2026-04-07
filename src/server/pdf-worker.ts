@@ -14,17 +14,20 @@ export interface UpoTaskData {
 
 export type PdfTaskData = InvoiceTaskData | UpoTaskData;
 
+async function blobToBuffer(blob: Blob): Promise<Buffer> {
+  return Buffer.from(await blob.arrayBuffer());
+}
+
 export default async function (task: PdfTaskData): Promise<Buffer> {
   try {
     if (task.type === 'invoice') {
-      return await generateInvoice(task.xmlContent, task.additionalData, 'buffer');
+      const file = new File([task.xmlContent], 'invoice.xml', { type: 'text/xml' });
+      const pdfBlob = await generateInvoice(file, task.additionalData, 'blob');
+      return blobToBuffer(pdfBlob);
     } else if (task.type === 'upo') {
       const file = new File([task.xmlContent], 'upo.xml', { type: 'text/xml' });
       const pdfBlob = await generatePDFUPO(file);
-      // Convert Blob to Buffer for serialization
-      const arrayBuffer = await pdfBlob.arrayBuffer();
-
-      return Buffer.from(arrayBuffer);
+      return blobToBuffer(pdfBlob);
     }
     throw new Error('Unknown task type');
   } catch (error) {

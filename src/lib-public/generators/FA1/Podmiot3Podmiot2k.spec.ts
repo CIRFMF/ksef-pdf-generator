@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './Podmiot3Podmiot2k';
 import { Podmiot3Podmiot2KDto } from '../../types/fa1-additional-types';
 import { Content } from 'pdfmake/interfaces';
@@ -14,9 +14,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getValue: vi.fn((val) => (val && val._text ? val._text : '')),
   hasValue: vi.fn((val) => !!(val && val._text)),
 }));
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getRolaString: vi.fn((rola) => (rola && rola._text ? 'SPRZEDAWCA' : '')),
-}));
 vi.mock('./PodmiotAdres', () => ({
   generatePodmiotAdres: vi.fn((adres, label) => ({ adr: label })),
 }));
@@ -28,8 +25,6 @@ vi.mock('./PodmiotDaneKontaktowe', () => ({
 }));
 
 describe('generateDaneIdentyfikacyjneTPodmiot3Dto', () => {
-  beforeEach(() => vi.clearAllMocks());
-
   it('returns empty array for undefined input', () => {
     expect(generateDaneIdentyfikacyjneTPodmiot3Dto(undefined, 0)).toEqual([]);
   });
@@ -38,7 +33,7 @@ describe('generateDaneIdentyfikacyjneTPodmiot3Dto', () => {
     const podmiot2KDto: Podmiot3Podmiot2KDto = {
       fakturaPodmiotNDto: {
         NrEORI: { _text: 'EXX' },
-        Rola: { _text: 'SPRZEDAWCA' },
+        Rola: { _text: '1' },
         OpisRoli: { _text: 'rola inna' },
         Udzial: { _text: '51%' },
         Email: { _text: 'a@b.pl' },
@@ -59,7 +54,7 @@ describe('generateDaneIdentyfikacyjneTPodmiot3Dto', () => {
         { text: 'HEADER:Podmiot inny 2' },
         { text: 'SUBHEADER:Dane identyfikacyjne' },
         { text: 'LABEL:Numer EORI: EXX' },
-        { text: 'LABEL:Rola: SPRZEDAWCA' },
+        { text: 'LABEL:Rola: Faktor - w przypadku, gdy na fakturze występują dane faktora' },
         { text: 'LABEL:Rola inna: rola inna' },
         { text: 'LABEL:Udział: 51%' },
         { contact: 'KONTAKT' },

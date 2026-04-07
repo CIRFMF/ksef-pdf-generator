@@ -15,9 +15,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getTable: vi.fn((data) => data || []),
   hasValue: vi.fn((fp: any) => Boolean(fp && fp._text && fp._text !== '')),
 }));
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getFormaPlatnosciString: vi.fn((fp: any) => (fp?._text ? 'Przelew' : '')),
-}));
 vi.mock('./RachunekBankowy', () => ({
   generujRachunekBankowy: vi.fn((table, label) => [{ text: `ACCOUNT:${label}` }]),
 }));
@@ -60,7 +57,7 @@ describe('generatePlatnosc', () => {
   });
 
   it('adds "Forma płatności" with getFormaPlatnosciString when present', () => {
-    const p: Platnosc = { FormaPlatnosci: { _text: '1' } };
+    const p: Platnosc = { FormaPlatnosci: { _text: '6' } };
     const result = generatePlatnosc(p);
 
     expect(result).toEqual(expect.arrayContaining([{ text: 'LABEL:Forma płatności: Przelew' }]));

@@ -11,10 +11,11 @@ import {
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Podmiot3 } from '../../types/fa1.types';
-import { getRolaString } from '../../../shared/generators/common/functions';
 import { generatePodmiotAdres } from './PodmiotAdres';
 import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
+import { translateMap } from '@shared/generators/common/functions';
+import { FA1RolaPodmiotu3 } from '../../../shared/consts/FA.const';
 
 export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const result: Content[] = [];
@@ -34,7 +35,7 @@ export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
     column1.push(...generateDaneIdentyfikacyjne(podmiot.DaneIdentyfikacyjne));
   }
   column1.push([
-    createLabelText('Rola: ', getRolaString(podmiot.Rola, 1)),
+    createLabelText('Rola: ', translateMap(podmiot.Rola, FA1RolaPodmiotu3)),
     createLabelText('Rola inna: ', podmiot.OpisRoli),
     createLabelText('Udział: ', podmiot.Udzial, [FormatTyp.Percentage]),
   ]);

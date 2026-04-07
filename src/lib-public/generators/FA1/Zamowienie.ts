@@ -9,7 +9,7 @@ import {
   getValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { Procedura, TRodzajFaktury } from '../../../shared/consts/const';
+import { Procedura, TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { FP, Zamowienie } from '../../types/fa1.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { ZamowienieKorekta } from '../../enums/invoice.enums';
@@ -101,7 +101,7 @@ export function generateZamowienie(
       table.push(content.content);
     }
   }
-  const ceny = `Faktura wystawiona w cenach ${content.fieldsWithValue.includes('P_11') ? 'netto' : 'brutto'} w walucie ${KodWaluty}`;
+  const ceny = `Faktura wystawiona w walucie ${KodWaluty}`;
   let opis: Content = '';
 
   if (Number(p_15) > 0 && rodzajFaktury == TRodzajFaktury.ZAL) {

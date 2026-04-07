@@ -15,9 +15,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getValue: vi.fn((val) => (val && val._text ? val._text : '')),
   hasValue: vi.fn((val) => !!(val && val._text)),
 }));
-vi.mock('../../../shared/generators/common/functions', () => ({
-  getRolaString: vi.fn((rola, idx) => (rola && rola._text ? 'SPRZEDAWCA' : '')),
-}));
+
 vi.mock('./PodmiotAdres', () => ({
   generatePodmiotAdres: vi.fn((adres, label) => ({ adr: label })),
 }));
@@ -32,7 +30,7 @@ describe('generatePodmiot3', () => {
   beforeEach(() => vi.clearAllMocks());
 
   it('renders minimal column structure', () => {
-    const podmiot: Podmiot3 = { NrEORI: { _text: '999' }, Rola: { _text: 'X' } };
+    const podmiot: Podmiot3 = { NrEORI: { _text: '999' }, Rola: { _text: '1' } };
     const result: Content[] = generatePodmiot3(podmiot, 0);
     const last: any = result[result.length - 1] || {};
 
@@ -41,7 +39,11 @@ describe('generatePodmiot3', () => {
       expect.arrayContaining([
         { text: 'HEADER:Podmiot inny 1' },
         { text: 'LABEL:Numer EORI: 999' },
-        [{ text: 'LABEL:Rola: SPRZEDAWCA' }, { text: 'LABEL:Rola inna: ' }, { text: 'LABEL:Udział: ' }],
+        [
+          { text: 'LABEL:Rola: Faktor - w przypadku, gdy na fakturze występują dane faktora' },
+          { text: 'LABEL:Rola inna: ' },
+          { text: 'LABEL:Udział: ' },
+        ],
       ])
     );
   });
@@ -50,7 +52,7 @@ describe('generatePodmiot3', () => {
     const podmiot: Podmiot3 = {
       NrEORI: { _text: '1000' },
       DaneIdentyfikacyjne: { NrID: { _text: 'TAXX' }, BrakID: { _text: '1' } },
-      Rola: { _text: 'S' },
+      Rola: { _text: '1' },
       OpisRoli: { _text: 'operator' },
       Udzial: { _text: '50%' },
     };
@@ -65,7 +67,7 @@ describe('generatePodmiot3', () => {
         { text: 'LABEL:Brak identyfikatora  ' },
         { id: 'ID' },
         [
-          { text: 'LABEL:Rola: SPRZEDAWCA' },
+          { text: 'LABEL:Rola: Faktor - w przypadku, gdy na fakturze występują dane faktora' },
           { text: 'LABEL:Rola inna: operator' },
           { text: 'LABEL:Udział: 50%' },
         ],
