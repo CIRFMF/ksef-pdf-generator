@@ -4,6 +4,8 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
+    "build:exe": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 --output KSeF-PDFGen.exe",
+    "build:elf": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-lin-x64 --output KSeF-PDFGen",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -47,7 +49,8 @@
     "typescript-eslint": "^8.40.0",
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "pkg": "^5.8.1"
   },
   "dependencies": {
     "pdfmake": "^0.2.20",
