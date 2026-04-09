@@ -49,13 +49,13 @@ export async function generateInvoice(
 
     switch (formatType) {
       case 'blob':
-        pdf.getBlob((blob: Blob): void => {
+        pdf.getBlob().then((blob: Blob): void => {
           resolve(blob);
         });
         break;
       case 'base64':
       default:
-        pdf.getBase64((base64: string): void => {
+        pdf.getBase64().then((base64: string): void => {
           resolve(base64);
         });
     }
