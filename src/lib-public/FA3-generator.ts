@@ -29,6 +29,7 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
   const docDefinition: TDocumentDefinitions = {
+    watermark: additionalData?.watermark,
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
       generateDaneFaKorygowanej(invoice.Fa),

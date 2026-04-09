@@ -18,7 +18,7 @@ import {
   TStawkaPodatku_FA2,
   TStawkaPodatku_FA3,
 } from './consts/FA.const';
-import { formatDateTime, formatTime, translateMap } from './generators/common/functions';
+import { formatDateTimePl, formatTime, translateMap } from './generators/common/functions';
 import { HeaderDefine, PdfFP, PdfOptionField } from './types/pdf-types';
 import { FP } from '../lib-public/types/fa3.types';
 import { DifferentValues, FilteredKeysOfValues, TypesOfValues } from './types/universal.types';
@@ -115,10 +115,10 @@ function formatValue(
       result.alignment = Position.RIGHT;
       break;
     case FormatTyp.DateTime:
-      result.text = formatDateTime(value as string);
+      result.text = formatDateTimePl(value as string, true, true);
       break;
     case FormatTyp.Date:
-      result.text = formatDateTime(value as string, false, true);
+      result.text = formatDateTimePl(value as string);
       break;
     case FormatTyp.Time:
       result.text = formatTime(value as string);
@@ -149,9 +149,9 @@ export function normalizeCurrencySeparator(value: string | number | undefined): 
   if (numberWithComma.includes(',')) {
     const parts = numberWithComma.split(',');
 
-    return parts[1].length > 1 ? numberWithComma : numberWithComma + '0';
+    return addThousandSeparator(parts[1].length > 1 ? numberWithComma : numberWithComma + '0');
   } else {
-    return numberWithComma + ',00';
+    return addThousandSeparator(numberWithComma + ',00');
   }
 }
 
@@ -213,6 +213,18 @@ export function createLabelTextArray(data: CreateLabelTextData[]): Content[] {
       ),
     },
   ];
+}
+
+export function addThousandSeparator(value: string, thousandSeparator = ' ', decimalSeparator = ','): string {
+  const splitRegex = /\B(?=(\d{3})+(?!\d))/g;
+
+  if (value.includes(decimalSeparator)) {
+    const splitValue = value.split(decimalSeparator);
+
+    return `${splitValue[0].replace(splitRegex, thousandSeparator)}${decimalSeparator}${splitValue[1]}`;
+  } else {
+    return value.replace(splitRegex, thousandSeparator);
+  }
 }
 
 export function createLabelText(
@@ -483,7 +495,12 @@ export function getContentTable<T>(
   };
 }
 
-export function generateTwoColumns(kol1: Column, kol2: Column, margin?: Margins): Content {
+export function generateTwoColumns(
+  kol1: Column,
+  kol2: Column,
+  margin?: Margins,
+  unbreakable = true
+): Content {
   return {
     columns: [
       { stack: [kol1], width: '50%' },
@@ -491,7 +508,7 @@ export function generateTwoColumns(kol1: Column, kol2: Column, margin?: Margins)
     ],
     margin: margin ?? [0, 0, 0, 0],
     columnGap: 20,
-    unbreakable: true,
+    unbreakable,
   };
 }
 

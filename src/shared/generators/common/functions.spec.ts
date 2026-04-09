@@ -8,7 +8,12 @@ import {
   RodzajTransportu,
   TypRachunkowWlasnych,
 } from '../../consts/FA.const';
-import { formatDateTime, getDateTimeWithoutSeconds, translateMap } from '@shared/generators/common/functions';
+import {
+  formatDateTime,
+  formatDateTimePl,
+  getDateTimeWithoutSeconds,
+  translateMap,
+} from '@shared/generators/common/functions';
 
 vi.unmock('@shared/generators/common/functions');
 
@@ -114,5 +119,26 @@ describe('getDateTimeWithoutSeconds', () => {
     const isoDate = { _text: '2025-10-03T12:15:30Z' } as any;
 
     expect(getDateTimeWithoutSeconds(isoDate)).toBe('03.10.2025 14:15');
+  });
+});
+
+describe('formatDateTimePl', () => {
+  it('returns a date from a mock string if it might be a date', () => {
+    expect(formatDateTimePl('2026-05-02')).toBe('02.05.2026');
+  });
+
+  it('returns a date-time from a mock string if it might be a date', () => {
+    expect(formatDateTimePl('2026-05-02 14:40', true)).toBe('02.05.2026 14:40');
+    expect(formatDateTimePl('2026-03-19T23:31:47.543+01:00', true)).toBe('19.03.2026 23:31');
+    expect(formatDateTimePl('2026-03-19T23:31:47.543+01:00', true)).toBe('19.03.2026 23:31');
+    expect(formatDateTimePl('2026-03-30T13:46:26.307+02:00', true)).toBe('30.03.2026 13:46');
+    expect(formatDateTimePl('2026-03-30T13:46:26.307+02:00', true, true)).toBe('30.03.2026 13:46:26');
+    expect(formatDateTimePl('2026-03-30T13:46:26.307+02:00', true, true)).toBe('30.03.2026 13:46:26');
+  });
+
+  it('returns empty value for a wrong date', () => {
+    expect(formatDateTimePl('ABC', true)).toBe('ABC');
+    expect(formatDateTimePl(undefined as any, true)).toBe('');
+    expect(formatDateTimePl('', true)).toBe('');
   });
 });

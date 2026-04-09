@@ -77,7 +77,9 @@ export function generateDaneFaKorygowanej(invoice?: Fa1 | Fa2 | Fa3 | FaRR): Con
   }
 
   if (firstColumn.length && secondColumn.length) {
-    result.push(createSection([generateTwoColumns(firstColumn, secondColumn)], previousSection));
+    result.push(
+      createSection([generateTwoColumns(firstColumn, secondColumn, undefined, false)], previousSection)
+    );
   }
   return createSection(result, true);
 }

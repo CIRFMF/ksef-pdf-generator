@@ -3,6 +3,8 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/FA.const';
+import { Position } from '../shared/enums/common.enum';
+import { ZamowienieKorekta } from './enums/invoice.enums';
 import { generateAdnotacje } from './generators/FA1/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA1/DodatkoweInformacje';
 import { generatePlatnosc } from './generators/FA1/Platnosc';
@@ -17,10 +19,8 @@ import { generateDaneFaKorygowanej } from './generators/common/DaneFaKorygowanej
 import { generateNaglowek } from './generators/common/Naglowek';
 import { generateRozliczenie } from './generators/common/Rozliczenie';
 import { generateStopka } from './generators/common/Stopka';
-import { Faktura } from './types/fa1.types';
-import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
-import { Position } from '../shared/enums/common.enum';
+import { Faktura } from './types/fa1.types';
 
 (pdfMake as any).vfs = pdfFonts.vfs;
 
@@ -29,6 +29,7 @@ export function generateFA1(invoice: Faktura, additionalData: AdditionalDataType
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
   const docDefinition: TDocumentDefinitions = {
+    watermark: additionalData?.watermark,
     content: [
       ...generateNaglowek(invoice.Fa, additionalData),
       generateDaneFaKorygowanej(invoice.Fa),

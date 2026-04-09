@@ -7,11 +7,11 @@ import {
   getValue,
   hasValue,
   verticalSpacing,
-} from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { FormContentState } from '../../../shared/types/additional-data.types';
-import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
+} from '@shared/PDF-functions';
+import { HeaderDefine } from '@shared/types/pdf-types';
+import FormatTyp from '@shared/enums/common.enum';
+import { FormContentState } from '@shared/types/additional-data.types';
+import { DEFAULT_TABLE_LAYOUT } from '@shared/consts/FA.const';
 import { Dokument, IDKontekstu, Potwierdzenie } from '../../types/upo-v4_3.types';
 
 export function generateDokumentUPO(potwierdzenie: Potwierdzenie): Content[] {

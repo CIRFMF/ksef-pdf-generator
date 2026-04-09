@@ -1,4 +1,5 @@
-import { Content, ContentQr, ContentStack } from 'pdfmake/interfaces';
+import { Content, ContentQr } from 'pdfmake/interfaces';
+import FormatTyp from '../../../shared/enums/common.enum';
 import {
   createHeader,
   createLabelText,
@@ -12,14 +13,13 @@ import {
   getTable,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { FormContentState } from '../../../shared/types/additional-data.types';
+import { HeaderDefine } from '../../../shared/types/pdf-types';
+import { AdditionalDataTypes } from '../../types/common.types';
+import { Informacje, Rejestry } from '../../types/fa1.types';
 import { FP, Naglowek, Stopka } from '../../types/fa2.types';
 import { Zalacznik } from '../../types/fa3.types';
 import { generateZalaczniki } from './Zalaczniki';
-import FormatTyp from '../../../shared/enums/common.enum';
-import { Informacje, Rejestry } from '../../types/fa1.types';
-import { AdditionalDataTypes } from '../../types/common.types';
 
 export function generateStopka(
   additionalData?: AdditionalDataTypes,
@@ -122,28 +122,29 @@ function generateInformacje(stopka?: Stopka): Content[] {
 
 function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
   const result: Content = [];
+  const QR_SIZE = 150;
 
-  if (additionalData?.qrCode && additionalData.nrKSeF) {
+  if (additionalData?.qrCode) {
     const qrCode: ContentQr | undefined = generateQRCode(additionalData.qrCode);
 
     result.push(createHeader('Sprawdź, czy Twoja faktura znajduje się w KSeF!'));
     if (qrCode) {
+      qrCode.fit = QR_SIZE;
+
       result.push({
         columns: [
           {
             stack: [
               qrCode,
               {
-                stack: [formatText(additionalData.nrKSeF, FormatTyp.Default)],
-                width: 'auto',
-                alignment: 'left',
-                marginLeft: 0,
-                marginRight: 10,
-                marginTop: 10,
-              } as ContentStack,
+                text: additionalData.qr2Code ? 'OFFLINE' : additionalData.nrKSeF,
+                alignment: 'center',
+                margin: [0, 8, 0, 0],
+              },
             ],
-            width: 150,
-          } as ContentStack,
+            alignment: 'center',
+            width: 'auto',
+          },
           {
             stack: [
               formatText(
@@ -151,45 +152,45 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
                 FormatTyp.Label
               ),
               {
-                stack: [formatText(additionalData.qrCode, FormatTyp.Link)],
-                marginTop: 5,
+                text: formatText(additionalData.qrCode, FormatTyp.Link),
                 link: additionalData.qrCode,
+                margin: [0, 5, 0, 0],
               },
             ],
-
-            margin: [10, (qrCode.fit ?? 120) / 2 - 30, 0, 0],
-            width: 'auto',
-          } as ContentStack,
+            margin: [0, 2, 0, 0],
+            width: 330,
+            alignment: 'left',
+          },
         ],
+        columnGap: 20,
       });
     }
   }
   return createSection(result, true);
 }
+
+function breakLongText(text: string, chunk = 60): string {
+  return text.match(new RegExp(`.{1,${chunk}}`, 'g'))?.join('\n') || text;
+}
+
 function generateQR2CodeData(additionalData?: AdditionalDataTypes): Content[] {
   const result: Content = [];
+  const QR_SIZE = 210;
 
   if (additionalData?.qr2Code) {
     const qrCode: ContentQr | undefined = generateQRCode(additionalData.qr2Code);
 
     result.push(createHeader('Zweryfikuj dostawcę faktury'));
     if (qrCode) {
+      qrCode.fit = QR_SIZE;
+
       result.push({
         columns: [
           {
-            stack: [
-              qrCode,
-              {
-                stack: [formatText('CERTYFIKAT', FormatTyp.Default)],
-                width: 'auto',
-                alignment: 'left',
-                marginLeft: 0,
-                marginRight: 10,
-                marginTop: 10,
-              } as ContentStack,
-            ],
-            width: 150,
-          } as ContentStack,
+            stack: [qrCode, { text: 'CERTYFIKAT', alignment: 'center', margin: [0, 8, 0, 0] }],
+            alignment: 'center',
+            width: 'auto',
+          },
           {
             stack: [
               formatText(
@@ -197,16 +198,16 @@ function generateQR2CodeData(additionalData?: AdditionalDataTypes): Content[] {
                 FormatTyp.Label
               ),
               {
-                stack: [formatText(additionalData.qr2Code, FormatTyp.Link)],
-                marginTop: 5,
-                link: additionalData.qrCode,
+                text: formatText(breakLongText(additionalData.qr2Code), FormatTyp.Link),
+                link: additionalData.qr2Code,
+                margin: [0, 5, 0, 0],
               },
             ],
-
-            margin: [10, (qrCode.fit ?? 120) / 2 - 30, 0, 0],
-            width: 'auto',
-          } as ContentStack,
+            margin: [0, 2, 0, 0],
+            alignment: 'left',
+          },
         ],
+        columnGap: 20,
       });
     }
   }

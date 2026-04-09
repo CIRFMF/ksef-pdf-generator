@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   createLabelText,
@@ -33,6 +33,41 @@ describe('formatText', () => {
         bold: true,
       })
     );
+  });
+
+  it('should format date if format is according', () => {
+    expect(formatText('2026-05-26', FormatTyp.Date)).toStrictEqual({ text: '26.05.2026', style: 'Date' });
+  });
+
+  it('should format date and time if format is according', () => {
+    expect(formatText('2026-05-26T14:36:25', FormatTyp.DateTime)).toStrictEqual({
+      text: '26.05.2026 14:36:25',
+      style: 'DateTime',
+    });
+  });
+
+  it('should format time if format is according', () => {
+    expect(formatText('14:35:26', FormatTyp.Time)).toStrictEqual({ text: '14:35:26', style: 'Time' });
+  });
+
+  it('should return empty string if no value', () => {
+    expect(formatText(null, FormatTyp.Date)).toStrictEqual('');
+  });
+
+  it('should return  empty string if provided empty string', () => {
+    expect(formatText('', FormatTyp.DateTime)).toStrictEqual('');
+  });
+
+  it('should keep input date over system date change', () => {
+    vi.useFakeTimers();
+    const localDate = formatText('2026-05-26T14:40:25', FormatTyp.DateTime, {});
+
+    vi.setSystemTime(new Date('2026-03-29T12:00:00Z'));
+
+    const timeZoneDate = formatText('2026-05-26T14:40:25', FormatTyp.DateTime, {});
+
+    expect(localDate).toEqual(timeZoneDate);
+    vi.useRealTimers();
   });
 });
 
@@ -136,16 +171,22 @@ describe('normalized currency separator', () => {
     expect(normalized).toBe('43,00');
   });
 
-  it('should correctyl add zero', () => {
+  it('should correctly add zero', () => {
     const normalized = normalizeCurrencySeparator(43.7);
 
     expect(normalized).toBe('43,70');
   });
 
-  it('should correctly displa value', () => {
+  it('should correctly display value', () => {
     const normalized = normalizeCurrencySeparator('444,9999');
 
     expect(normalized).toBe('444,9999');
+  });
+
+  it('should correctly separate bigger values with space', () => {
+    const normalized = normalizeCurrencySeparator('123456789');
+
+    expect(normalized).toBe('123 456 789,00');
   });
 });
 
