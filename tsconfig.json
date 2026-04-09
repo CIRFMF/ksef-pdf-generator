@@ -1,5 +1,10 @@
 {
+  "extends": "./tsconfig.base.json",
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "target": "es2016",
     "module": "commonjs",
     "esModuleInterop": true,
@@ -8,10 +13,6 @@
     "strict": true,
     "skipLibCheck": true,
 
-    "extends": "./tsconfig.base.json",
-    "include": [
-      "src"
-    ],
     "baseUrl": ".",
     "paths": {
       "@shared/*": [

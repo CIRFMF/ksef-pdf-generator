@@ -44,16 +44,18 @@
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
     "jsdom": "^26.1.0",
+    "pkg": "^5.8.1",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
+    "ts-node": "^10.9.2",
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.2.4",
-    "pkg": "^5.8.1"
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "pdfmake": "^0.2.20",
+    "pdfmake-html-renderer": "^0.3.3",
     "xml-js": "^1.6.11"
   }
 }

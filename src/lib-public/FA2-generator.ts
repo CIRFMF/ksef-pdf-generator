@@ -1,5 +1,3 @@
-import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
 import { TRodzajFaktury } from '../shared/consts/FA.const';
@@ -22,9 +20,7 @@ import { generateStopka } from './generators/common/Stopka';
 import { AdditionalDataTypes } from './types/common.types';
 import { Faktura } from './types/fa2.types';
 
-pdfMake.vfs = pdfFonts.vfs;
-
-export function generateFA2(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
+export function generateFA2(invoice: Faktura, additionalData: AdditionalDataTypes): TDocumentDefinitions {
   const isKOR_RABAT: boolean =
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
@@ -62,5 +58,5 @@ export function generateFA2(invoice: Faktura, additionalData: AdditionalDataType
     ...generateStyle(),
   };
 
-  return pdfMake.createPdf(docDefinition);
+  return docDefinition;
 }
