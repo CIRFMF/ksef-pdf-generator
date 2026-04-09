@@ -59,17 +59,18 @@ export async function generateUPO(
 
           resolve(new Blob([result], { type: 'text/html' }));
         }
-        break;
+        return;
       case 'blob':
         pdfMake.createPdf(doc).getBlob((blob: Blob): void => {
           resolve(blob);
         });
-        break;
+        return;
       case 'base64':
       default:
         pdfMake.createPdf(doc).getBase64((base64: string): void => {
           resolve(base64);
         });
+        return;
     }
   });
 }

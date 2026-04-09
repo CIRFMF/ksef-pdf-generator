@@ -4,9 +4,11 @@ import { Upo } from './types/upo-v4_2.types';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle } from '../shared/PDF-functions';
 import { generateNaglowekUPO } from './generators/UPO4_2/Naglowek';
-import { parseXML } from '../shared/XML-parser';
 import { Position } from '../shared/enums/common.enum';
 import { generateDokumentUPO } from './generators/UPO4_3/Dokumenty';
+import { PdfmakeHtmlRenderer } from 'pdfmake-html-renderer/server';
+import { PdfmakeHtmlRendererProps } from 'pdfmake-html-renderer';
+import * as baseCss from 'pdfmake-html-renderer/dist/index.css';
 
 pdfMake.vfs = pdfFonts.vfs;
 
