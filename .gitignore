@@ -15,3 +15,5 @@ out
 .idea
 .vscode
 *.swp
+bin/ksef-pdf-generator
+bin/ksef-pdf-generator.exe

@@ -3,7 +3,9 @@
   "version": "1.1.4-HF1",
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
+    "prepare": "npm run build",
     "build": "vite build --mode production",
+    "build:exe": "npm run build && pkg cli.cjs --targets node18-linux-x64 --output bin/ksef-pdf-generator && pkg cli.cjs --targets node18-win-x64 --output bin/ksef-pdf-generator.exe",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -13,6 +15,13 @@
   "module": "./ksef-fe-invoice-converter.js",
   "types": "./index.d.ts",
   "type": "module",
+  "bin": {
+    "ksef-pdf-generator": "./cli.cjs"
+  },
+  "files": [
+    "cli.cjs",
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./index.d.ts",
@@ -30,6 +39,7 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.2.3",
+    "@types/jsdom": "^27.0.0",
     "@types/pdfmake": "^0.2.11",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
@@ -41,7 +51,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
-    "jsdom": "^26.1.0",
+    "pkg": "^5.8.1",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
@@ -50,6 +60,7 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "jsdom": "^26.1.0",
     "pdfmake": "^0.2.20",
     "xml-js": "^1.6.11"
   }

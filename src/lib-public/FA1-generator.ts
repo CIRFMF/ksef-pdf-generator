@@ -22,7 +22,7 @@ import { generateStopka } from './generators/common/Stopka';
 import { AdditionalDataTypes } from './types/common.types';
 import { Faktura } from './types/fa1.types';
 
-pdfMake.vfs = pdfFonts.vfs;
+(pdfMake as any).vfs = pdfFonts.vfs;
 
 export function generateFA1(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
   const isKOR_RABAT: boolean =
