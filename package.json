@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
-    "build:exe": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 --output KSeF-PDFGen.exe",
-    "build:elf": "npx esbuild src/cli.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-lin-x64 --output KSeF-PDFGen",
+    "build:exe": "npx esbuild KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 --output KSeF-PDFGen.exe",
+    "build:elf": "npx esbuild KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-lin-x64 --output KSeF-PDFGen",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",

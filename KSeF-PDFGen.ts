@@ -3,11 +3,11 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { join, resolve, dirname, basename } from 'path';
 import { createHash } from 'crypto';
-import { generateInvoice } from './lib-public/generate-invoice';
-import { generateUPO } from './lib-public/UPO-generator';
-import { AdditionalDataTypes } from './lib-public/types/common.types';
+import { generateInvoice } from './src/lib-public/generate-invoice';
+import { generateUPO } from './src/lib-public/UPO-generator';
+import { AdditionalDataTypes } from './src/lib-public/types/common.types';
 import { xml2js } from 'xml-js';
-import { stripPrefix } from './shared/XML-parser';
+import { stripPrefix } from './src/shared/XML-parser';
 
 function parseXMLString(xmlString: string): any {
   try {
