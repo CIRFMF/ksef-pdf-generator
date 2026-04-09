@@ -117,7 +117,7 @@ function printHelp(): void {
   const exeName = basename(process.execPath);
 
   console.log(`
-KSEF PDF Generator - Generator PDF dla faktur i UPO
+KSEF PDF/HTML Generator - Generator PDF/HTML dla faktur i UPO
 
 Użycie:
   ${exeName} -t upo -i <ścieżka> -o <ścieżka>
@@ -126,23 +126,27 @@ Użycie:
   ${exeName} -h
 
 Opcje:
-  -i, --input <ścieżka>      Ścieżka do pliku XML wejściowego (wymagane w trybie plikowym)
-  -o, --output <ścieżka>     Ścieżka do pliku PDF wyjściowego (opcjonalne, tylko w trybie plikowym)
+  -i, --input <ścieżka>      Ścieżka do pliku XML wejściowego
+  -o, --output <ścieżka>     Ścieżka do pliku wyjściowego
   -t, --type <typ>           Typ dokumentu: 'invoice' lub 'upo' (wymagane)
   --nrKSeF <wartość>         Numer KSeF (wymagane dla faktur)
   --qrCode <url>             URL kodu QR (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
   --qr2Code <url>            URL kodu QR2 (wymagane dla faktur), obsługuje parametry {hash}, {nip}, {p1}
+  --html                     Generuj HTML zamiast PDF
   -h, --help                 Wyświetla tę pomoc
 
 Przykłady:
-  # Generowanie faktury (tryb plikowy)
+  # Generowanie faktury
   ${exeName} -i invoice.xml -t invoice --nrKSeF "1111111111-20251107-080080679C57-14" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}"
+  ${exeName} -i invoice.xml -t invoice --nrKSeF "1111111111-20251107-080080679C57-14" --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --html
 
-  # Generowanie faktury offline (tryb plikowy)
+  # Generowanie faktury offline
   ${exeName} -i invoice.xml -t invoice --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qrCode2 "https://qr.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..."
+  ${exeName} -i invoice.xml -t invoice --qrCode "https://qr.ksef.mf.gov.pl/invoice/{nip}/{p1}/{hash}" --qrCode2 "https://qr.ksef.mf.gov.pl/certificate/Nip/1111111111/{nip}/01F20A5D352AE590/..." --html
 
-  # Generowanie UPO (tryb plikowy)
+  # Generowanie UPO
   ${exeName} -i upo.xml -t upo -o output.pdf
+  ${exeName} -i upo.xml -t upo -o output.html --html
 `);
 }
 
@@ -300,7 +304,7 @@ async function main(): Promise<void> {
         qr2Code: processedQR2Code,
       };
 
-      process.stdout.write('Generowanie PDF faktury...\n');
+      process.stdout.write(`Generowanie ${args.html ? 'HTML' : 'PDF'} faktury...\n`);
       let outBuffer: any;
 
       if (args.html) {
@@ -318,9 +322,9 @@ async function main(): Promise<void> {
         outputPath = join(inputDir, `${inputBase}.${args.html ? 'html' : 'pdf'}`);
       }
       writeFileSync(outputPath, Buffer.from(await outBuffer.arrayBuffer()));
-      process.stdout.write(`✓ PDF został wygenerowany: ${outputPath}\n`);
+      process.stdout.write(`✓ ${args.html ? 'HTML' : 'PDF'} został wygenerowany: ${outputPath}\n`);
     } else if (args.type === 'upo') {
-      process.stdout.write('Generowanie PDF UPO...\n');
+      process.stdout.write(`Generowanie ${args.html ? 'HTML' : 'PDF'} UPO...\n`);
 
       let outBuffer: any;
 
@@ -339,10 +343,10 @@ async function main(): Promise<void> {
         outputPath = join(inputDir, `${inputBase}.${args.html ? 'html' : 'pdf'}`);
       }
       writeFileSync(outputPath, Buffer.from(await outBuffer.arrayBuffer()));
-      process.stdout.write(`✓ PDF został wygenerowany: ${outputPath}\n`);
+      process.stdout.write(`✓ ${args.html ? 'HTML' : 'PDF'} został wygenerowany: ${outputPath}\n`);
     }
   } catch (error) {
-    process.stderr.write(`Błąd podczas generowania PDF: ${error}\n`);
+    process.stderr.write(`Błąd podczas generowania ${args.html ? 'HTML' : 'PDF'}: ${error}\n`);
     process.exit(1);
   }
 }
