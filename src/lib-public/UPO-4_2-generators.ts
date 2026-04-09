@@ -1,4 +1,5 @@
 import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { Upo } from './types/upo-v4_2.types';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { generateStyle } from '../shared/PDF-functions';
@@ -7,9 +8,17 @@ import { parseXML } from '../shared/XML-parser';
 import { Position } from '../shared/enums/common.enum';
 import { generateDokumentUPO } from './generators/UPO4_3/Dokumenty';
 
-export async function generatePDFUPO(file: File): Promise<Blob> {
-  const upo = (await parseXML(file)) as Upo;
-  const docDefinition: TDocumentDefinitions = {
+pdfMake.vfs = pdfFonts.vfs;
+
+export async function generateUPO(xml: unknown, formatType: 'blob'): Promise<Blob>;
+export async function generateUPO(xml: unknown, formatType: 'base64'): Promise<string>;
+export async function generateUPO(xml: unknown, formatType: 'html'): Promise<Blob>;
+export async function generateUPO(
+  xmlstring: unknown,
+  formatType: FormatType = 'blob'
+): Promise<FormatTypeResult> {
+  const upo = xmlstring as Upo;
+  const doc: TDocumentDefinitions = {
     content: [generateNaglowekUPO(upo.Potwierdzenie!), generateDokumentUPO(upo.Potwierdzenie!)],
     ...generateStyle(),
     pageSize: 'A4',
@@ -23,13 +32,45 @@ export async function generatePDFUPO(file: File): Promise<Blob> {
     },
   };
 
-  return new Promise((resolve, reject): void => {
-    pdfMake.createPdf(docDefinition).getBlob((blob: Blob): void => {
-      if (blob) {
-        resolve(blob);
-      } else {
-        reject('Error');
-      }
-    });
+  return new Promise((resolve): void => {
+    switch (formatType) {
+      case 'html':
+        {
+          const htmlprops: PdfmakeHtmlRendererProps = {
+            document: doc,
+            pageShadow: false,
+            mode: 'natural',
+          };
+          const htmlResult = PdfmakeHtmlRenderer.render(htmlprops);
+          const body = htmlResult.html;
+          const componentCss = htmlResult.css;
+          const result =
+            '<!DOCTYPE html><html lang="pl">' +
+            '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+            '<title>Faktura</title><style>' +
+            baseCss +
+            '\n' +
+            componentCss.code +
+            '</style></head><body>' +
+            body +
+            '</body></html>';
+
+          resolve(new Blob([result], { type: 'text/html' }));
+        }
+        break;
+      case 'blob':
+        pdfMake.createPdf(doc).getBlob((blob: Blob): void => {
+          resolve(blob);
+        });
+        break;
+      case 'base64':
+      default:
+        pdfMake.createPdf(doc).getBase64((base64: string): void => {
+          resolve(base64);
+        });
+    }
   });
 }
+
+type FormatType = 'blob' | 'base64' | 'html';
+type FormatTypeResult = Blob | string;

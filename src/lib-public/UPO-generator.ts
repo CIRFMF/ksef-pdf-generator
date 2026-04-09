@@ -59,9 +59,6 @@ export async function generateUPO(
 
           resolve(new Blob([result], { type: 'text/html' }));
         }
-        pdfMake.createPdf(doc).getBlob((blob: Blob): void => {
-          resolve(blob);
-        });
         break;
       case 'blob':
         pdfMake.createPdf(doc).getBlob((blob: Blob): void => {
