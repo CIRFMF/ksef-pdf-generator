@@ -3,7 +3,6 @@ import * as FA1Generator from './FA1-generator';
 import * as FA2Generator from './FA2-generator';
 import * as FA3Generator from './FA3-generator';
 import { generateInvoice } from './generate-invoice';
-import * as XMLParser from '../shared/XML-parser';
 import { AdditionalDataTypes } from './types/common.types';
 
 describe('generateInvoice', () => {

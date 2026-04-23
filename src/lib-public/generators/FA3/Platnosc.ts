@@ -79,7 +79,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     ];
 
     const defineTableBody: TableCell[] = zaplataCzesciowa.map((item) => {
-      const value = [];
+      const value: Content[] = [];
 
       value.push(
         formatText(getValue(item.DataZaplatyCzesciowej), FormatTyp.Date),
