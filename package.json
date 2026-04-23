@@ -4,8 +4,11 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
-    "build:exe": "npx esbuild KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-win-x64 --output KSeF-PDFGen.exe",
-    "build:elf": "npx esbuild KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node18-lin-x64 --output KSeF-PDFGen",
+    "build:exe": "npx esbuild app/ksef-pdf/KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node24-win-x64 --compress Zstd --output KSeF-PDFGen.exe",
+    "build:elf": "npx esbuild app/ksef-pdf/KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node24-lin-x64 --compress Zstd --output KSeF-PDFGen",
+    "build:server": "tsc --project app/server/tsconfig.json",
+    "server:start": "node dist-server/server.js",
+    "server:dev": "node --watch dist-server/app/server/server.js",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -32,7 +35,10 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@types/pdfmake": "^0.2.11",
+    "@types/body-parser": "^1.19.6",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "@types/pdfmake": "^0.2.13",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vitest/coverage-v8": "^3.2.4",
@@ -44,18 +50,24 @@
     "globals": "^16.3.0",
     "jiti": "^2.5.1",
     "jsdom": "^26.1.0",
-    "pkg": "^5.8.1",
     "prettier": "^3.6.2",
+    "svelte": "^5.55.4",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
-    "ts-node": "^10.9.2",
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@yao-pkg/pkg": "^6.18.2",
+    "body-parser": "^1.20.3",
+    "buffer": "^6.0.3",
+    "formdata-node": "^6.0.3",
+    "node-fetch": "^3.3.2",
     "pdfmake": "^0.2.20",
-    "pdfmake-html-renderer": "^0.3.3",
+    "pdfmake-html-renderer": "^0.4.0",
     "xml-js": "^1.6.11"
   }
 }

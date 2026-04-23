@@ -1,4 +1,4 @@
-import pdfMake, { TCreatedPdf } from 'pdfmake/build/pdfmake';
+import pdfMake from 'pdfmake/build/pdfmake';
 import { beforeEach, describe, expect, it, MockInstance, vi } from 'vitest';
 import { generateFA3 } from './FA3-generator';
 import { Faktura } from './types/fa3.types';
@@ -67,7 +67,8 @@ describe('generateFA3', (): void => {
       .spyOn(pdfMake, 'createPdf')
       .mockReturnValue(mockCreatePdfReturn as any);
 
-    const result: TCreatedPdf = generateFA3(invoice, additionalData);
+    const doc = generateFA3(invoice, additionalData);
+    const result = pdfMake.createPdf(doc);
 
     expect(createPdfSpy).toHaveBeenCalled();
     expect(result).toBe(mockCreatePdfReturn);
@@ -92,7 +93,8 @@ describe('generateFA3', (): void => {
       .spyOn(pdfMake, 'createPdf')
       .mockReturnValue(mockCreatePdfReturn as any);
 
-    const result: TCreatedPdf = generateFA3(invoice, additionalData);
+    const doc = generateFA3(invoice, additionalData);
+    const result = pdfMake.createPdf(doc);
 
     expect(createPdfSpy).toHaveBeenCalled();
     expect(result).toBe(mockCreatePdfReturn);

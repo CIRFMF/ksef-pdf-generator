@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@shared/*": ["../../src/shared/*"],
+      "@lib-public": ["../../src/lib-public"],
+      "@lib-public/*": ["../../src/lib-public/*"]
+    },
+    "rootDir": "../../",
+    "noImplicitAny": false,
+    "sourceMap": false,
+
+    "target": "esnext",
+    "module": "esnext",
+    "allowJs": false,
+    "strict": true,
+    "moduleResolution": "bundler",
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false,
+    "types": ["node"]
+  },
+  "include": ["../../src/**/*", "./*.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "dist-server",
+    "src/lib-public/**/*.spec.ts",   // ← Wyklucz testy
+    "src/lib-public/**/*.test.ts",   // ← Wyklucz testy
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}

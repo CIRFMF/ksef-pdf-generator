@@ -1,23 +1,16 @@
 {
   "extends": "./tsconfig.base.json",
-  "include": [
-    "src"
-  ],
   "compilerOptions": {
-    "ignoreDeprecations": "6.0",
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
     "strict": true,
     "skipLibCheck": true,
 
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": [
-        "src/shared/*"
-      ]
-    }
+    "types": ["node"],
   }
 }

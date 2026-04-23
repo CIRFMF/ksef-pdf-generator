@@ -64,7 +64,8 @@ describe('generateFA1', () => {
 
     const createPdfSpy = vi.spyOn(pdfMake, 'createPdf').mockReturnValue(mockCreatePdfReturn as any);
 
-    const result = generateFA1(invoice, additionalData);
+    const doc = generateFA1(invoice, additionalData);
+    const result = pdfMake.createPdf(doc);
 
     expect(createPdfSpy).toHaveBeenCalled();
     expect(result).toBe(mockCreatePdfReturn);
@@ -86,7 +87,8 @@ describe('generateFA1', () => {
 
     const createPdfSpy = vi.spyOn(pdfMake, 'createPdf').mockReturnValue(mockCreatePdfReturn as any);
 
-    const result = generateFA1(invoice, additionalData);
+    const doc = generateFA1(invoice, additionalData);
+    const result = pdfMake.createPdf(doc);
 
     expect(createPdfSpy).toHaveBeenCalled();
     expect(result).toBe(mockCreatePdfReturn);

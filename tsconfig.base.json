@@ -1,5 +1,4 @@
 {
-  "include": ["src"],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -10,10 +9,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src",
+    "rootDir": "./src",
     "paths": {
-      "@lib-public/*": ["lib-public/*"],
-      "@lib-private/*": ["lib-private/*"]
-    }
-  }
+      "@lib-public/*": ["./src/lib-public/*"],
+      "@shared/*": ["./src/shared/*"]
+    },
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"],
 }

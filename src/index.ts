@@ -6,4 +6,6 @@ export { generateFARR } from './lib-public/FARR-generator';
 export { generateNaglowekUPO } from './lib-public/generators/UPO4_3/Naglowek';
 export { generateDokumentUPO } from './lib-public/generators/UPO4_3/Dokumenty';
 export { generateStyle } from './shared/PDF-functions';
+export { stripPrefix } from './shared/XML-parser';
+export type { AdditionalDataTypes } from './lib-public/types/common.types';
 export * from './shared/enums/common.enum';

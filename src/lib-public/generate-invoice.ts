@@ -10,11 +10,10 @@ import { Faktura as Faktura3 } from './types/fa3.types';
 import { AdditionalDataTypes } from './types/common.types';
 import { generateFARR } from './FARR-generator';
 import { FaRR } from './types/FaRR.types';
-import { PdfmakeHtmlRenderer } from 'pdfmake-html-renderer/server';
+import { render, PdfmakeHtmlRenderer } from 'pdfmake-html-renderer/server';
 import { PdfmakeHtmlRendererProps } from 'pdfmake-html-renderer';
-import * as baseCss from 'pdfmake-html-renderer/dist/index.css';
 
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.vfs = pdfFonts.vfs as any;
 
 export async function generateInvoice(
   xml: unknown,
@@ -65,17 +64,13 @@ export async function generateInvoice(
             pageShadow: false,
             mode: 'natural',
           };
-          const htmlResult = PdfmakeHtmlRenderer.render(htmlprops);
-          const body = htmlResult.html;
-          const componentCss = htmlResult.css;
+          const { body, head } = render(PdfmakeHtmlRenderer, { props: htmlprops });
           const result =
             '<!DOCTYPE html><html lang="pl">' +
             '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-            '<title>Faktura</title><style>' +
-            baseCss +
-            '\n' +
-            componentCss.code +
-            '</style></head><body>' +
+            '<title>Faktura</title>' +
+            head +
+            '</head><body>' +
             body +
             '</body></html>';
 

@@ -3,11 +3,11 @@
 import { readFileSync, writeFileSync } from 'fs';
 import { join, resolve, dirname, basename } from 'path';
 import { createHash } from 'crypto';
-import { generateInvoice } from './src/lib-public/generate-invoice';
-import { generateUPO } from './src/lib-public/UPO-generator';
-import { AdditionalDataTypes } from './src/lib-public/types/common.types';
+import { generateInvoice } from '@lib-public/generate-invoice';
+import { generateUPO } from '@lib-public/UPO-generator';
+import { AdditionalDataTypes } from '@lib-public/types/common.types';
 import { xml2js } from 'xml-js';
-import { stripPrefix } from './src/shared/XML-parser';
+import { stripPrefix } from '@shared/XML-parser';
 
 function parseXMLString(xmlString: string): any {
   try {
@@ -242,9 +242,10 @@ function processQRCodeTemplate(qrCodeTemplate: string, xmlContent: string, xml: 
 }
 
 async function main(): Promise<void> {
+  const args = parseArgs();
+
   try {
-    const args = parseArgs();
-    let inputContent: string;
+    let inputContent = '';
 
     if (!args.input) {
       process.stderr.write('Błąd: W trybie plikowym wymagany jest argument --input\n');
@@ -279,7 +280,7 @@ async function main(): Promise<void> {
       let processedQRCode: string;
 
       try {
-        processedQRCode = processQRCodeTemplate(args.qrCode, inputContent, parsedXml);
+        processedQRCode = processQRCodeTemplate(args.qrCode!, inputContent, parsedXml);
       } catch (error) {
         process.stderr.write(`Błąd podczas przetwarzania qrCode: ${error}\n`);
         process.exit(1);

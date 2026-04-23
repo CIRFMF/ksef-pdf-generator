@@ -1,10 +1,9 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { generatePDFUPO } from './UPO-4_2-generators';
+import { generateUPO } from './UPO-4_2-generators';
 import * as XMLParser from '../shared/XML-parser';
 
-describe('generatePDFUPO', () => {
-  const dummyFile = new File(['dummy'], 'dummy.xml', { type: 'text/xml' });
+describe('generateUPO', () => {
   const dummyUpo = {
     Potwierdzenie: {
       field1: 'value1',
@@ -13,8 +12,6 @@ describe('generatePDFUPO', () => {
   };
 
   beforeEach(() => {
-    vi.spyOn(XMLParser, 'parseXML').mockResolvedValue(dummyUpo);
-
     vi.spyOn(pdfMake, 'createPdf').mockImplementation(
       () =>
         ({
@@ -32,7 +29,7 @@ describe('generatePDFUPO', () => {
   });
 
   it('successfully generates a PDF blob', async () => {
-    const blob = await generatePDFUPO(dummyFile);
+    const blob = await generateUPO(dummyUpo, 'blob');
 
     expect(blob).toBeInstanceOf(Blob);
     const text = await new Promise<string>((resolve, reject) => {
@@ -53,13 +50,6 @@ describe('generatePDFUPO', () => {
       },
     } as any);
 
-    await expect(generatePDFUPO(dummyFile)).rejects.toEqual('Error');
-  });
-
-  it('calls parseXML with the input file', async () => {
-    const parseXMLSpy = vi.spyOn(XMLParser, 'parseXML');
-
-    await generatePDFUPO(dummyFile);
-    expect(parseXMLSpy).toHaveBeenCalledWith(dummyFile);
+    await expect(generateUPO(dummyUpo, 'blob')).rejects.toEqual('Error');
   });
 });
