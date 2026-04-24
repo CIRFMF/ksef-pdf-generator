@@ -22,6 +22,7 @@ export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes,
   const docDefinition: TDocumentDefinitions = {
     version: '1.7',
     subset: 'PDF/A-3',
+    tagged: true,
     ...generateWatermark(additionalData?.watermark),
     content: [
       ...generateNaglowek(invoice.FakturaRR, additionalData),

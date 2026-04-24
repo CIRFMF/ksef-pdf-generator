@@ -32,6 +32,7 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
   const docDefinition: TDocumentDefinitions = {
     version: '1.7',
     subset: 'PDF/A-3',
+    tagged: true,
     ...generateWatermark(additionalData?.watermark),
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
