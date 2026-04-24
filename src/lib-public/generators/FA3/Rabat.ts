@@ -1,46 +1,47 @@
-import { Content } from 'pdfmake/interfaces';
+import {Content} from 'pdfmake/interfaces';
 import {
-  createHeader,
-  createLabelText,
-  createSection,
-  formatText,
-  generateTwoColumns,
-  getContentTable,
-  getTable,
+    createHeader,
+    createLabelText,
+    createSection,
+    formatText,
+    generateTwoColumns,
+    getContentTable,
+    getTable,
 } from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { Fa } from '../../types/fa3.types';
-import FormatTyp, { Position } from '../../../shared/enums/common.enum';
+import {HeaderDefine} from '../../../shared/types/pdf-types';
+import {Fa} from '../../types/fa3.types';
+import FormatTyp, {Position} from '../../../shared/enums/common.enum';
+import i18n from "i18next";
 
 export function generateRabat(invoice: Fa): Content[] {
-  const faRows = getTable(invoice!.FaWiersz);
-  const result: Content[] = [];
-  const definedHeader: HeaderDefine[] = [
-    { name: 'NrWierszaFa', title: 'Lp.', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_7', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default },
-    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Default },
-    { name: 'P_8A', title: 'Miara', format: FormatTyp.Default },
-  ];
-  const tabRabat = getContentTable<(typeof faRows)[0]>(definedHeader, faRows, '*');
+    const faRows = getTable(invoice!.FaWiersz);
+    const result: Content[] = [];
+    const definedHeader: HeaderDefine[] = [
+        {name: 'NrWierszaFa', title: i18n.t('invoice.discount.lp'), format: FormatTyp.Default, width: 'auto'},
+        {name: 'P_7', title: i18n.t('invoice.discount.productName'), format: FormatTyp.Default},
+        {name: 'P_8B', title: i18n.t('invoice.discount.quantity'), format: FormatTyp.Default},
+        {name: 'P_8A', title: i18n.t('invoice.discount.unit'), format: FormatTyp.Default},
+    ];
+    const tabRabat = getContentTable<(typeof faRows)[0]>(definedHeader, faRows, '*');
 
-  const isNrWierszaFa = tabRabat.fieldsWithValue.includes('NrWierszaFa');
+    const isNrWierszaFa = tabRabat.fieldsWithValue.includes('NrWierszaFa');
 
-  result.push(
-    ...createHeader('Rabat'),
-    ...createLabelText('Wartość rabatu ogółem: ', invoice.P_15, FormatTyp.Currency, {
-      alignment: Position.RIGHT,
-    }),
-    generateTwoColumns(
-      formatText(
-        `Rabat ${isNrWierszaFa ? 'nie ' : ''}dotyczy wszystkich dostaw towarów i wykonanych usług na rzecz tego nabywcy w danym okresie.`,
-        FormatTyp.Default
-      ),
-      ''
-    )
-  );
-  if (tabRabat.fieldsWithValue.length > 0 && tabRabat.content) {
-    result.push(tabRabat.content);
-  }
+    result.push(
+        ...createHeader(i18n.t('invoice.discount.header')),
+        ...createLabelText(i18n.t('invoice.discount.totalValue'), invoice.P_15, FormatTyp.Currency, {
+            alignment: Position.RIGHT,
+        }),
+        generateTwoColumns(
+            formatText(
+                i18n.t(isNrWierszaFa ? 'invoice.discount.notAll' : 'invoice.discount.all'),
+                FormatTyp.Default
+            ),
+            ''
+        )
+    );
+    if (tabRabat.fieldsWithValue.length > 0 && tabRabat.content) {
+        result.push(tabRabat.content);
+    }
 
-  return createSection(result, true);
+    return createSection(result, true);
 }

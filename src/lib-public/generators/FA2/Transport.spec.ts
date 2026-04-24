@@ -7,6 +7,7 @@ import { Kraj, TypLadunku } from '../../../shared/consts/FA.const';
 import * as PrzewoznikModule from './Przewoznik';
 import * as CommonFunctions from '@shared/generators/common/functions';
 import { translateMap } from '@shared/generators/common/functions';
+import i18n from "i18next";
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),
@@ -267,7 +268,7 @@ describe(generateTransport.name, () => {
     it('should add WysylkaZ country code', () => {
       generateTransport(mockTransport);
 
-      expect(PDFFunctions.formatText).toHaveBeenCalledWith(Kraj['PL'], FormatTyp.Default);
+      expect(PDFFunctions.formatText).toHaveBeenCalledWith(i18n.t(Kraj['PL']), FormatTyp.Default);
     });
 
     it('should add WysylkaZ GLN', () => {
@@ -290,7 +291,7 @@ describe(generateTransport.name, () => {
     it('should add WysylkaDo country code', () => {
       generateTransport(mockTransport);
 
-      expect(PDFFunctions.formatText).toHaveBeenCalledWith(Kraj['DE'], FormatTyp.Default);
+      expect(PDFFunctions.formatText).toHaveBeenCalledWith(i18n.t(Kraj['DE']), FormatTyp.Default);
     });
 
     it('should add WysylkaDo GLN', () => {
@@ -329,7 +330,7 @@ describe(generateTransport.name, () => {
 
       generateTransport(data);
 
-      expect(PDFFunctions.formatText).toHaveBeenCalledWith(Kraj[''], FormatTyp.Default);
+      expect(PDFFunctions.formatText).toHaveBeenCalledWith(i18n.t(Kraj['']), FormatTyp.Default);
     });
   });
 
@@ -362,7 +363,7 @@ describe(generateTransport.name, () => {
       expect(PDFFunctions.createSubHeader).toHaveBeenCalledWith('Adres pośredni wysyłki', [0, 4, 0, 0]);
       expect(PDFFunctions.formatText).toHaveBeenCalledWith('Street 3', FormatTyp.Default);
       expect(PDFFunctions.formatText).toHaveBeenCalledWith('City 3', FormatTyp.Default);
-      expect(PDFFunctions.formatText).toHaveBeenCalledWith(Kraj['FR'], FormatTyp.Default);
+      expect(PDFFunctions.formatText).toHaveBeenCalledWith(i18n.t(Kraj['FR']), FormatTyp.Default);
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('GLN: ', '345678');
     });
 

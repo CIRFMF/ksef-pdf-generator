@@ -13,6 +13,7 @@ import { Adnotacje, NoweSrodkiTransportu, Zwolnienie } from '../../types/fa2.typ
 import FormatTyp from '../../../shared/enums/common.enum';
 import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
 import { FP } from '../../types/fa1.types';
+import i18n from 'i18next';
 
 export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
   const result: Content[] = [];
@@ -24,36 +25,34 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
 
     if (zwolnienie?.P_19?._text === '1') {
       firstColumn.push({
-        text: 'Dostawa towarów lub świadczenie usług zwolnionych od podatku na podstawie art. 43 ust. 1, art. 113 ust. 1 i 9 albo przepisów wydanych na podstawie art. 82 ust. 3 lub na podstawie innych przepisów',
+        text: i18n.t('invoice.annotations.noTaxDelivery'),
       });
       if (zwolnienie.P_19A?._text) {
         firstColumn.push(
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie którego podatnik stosuje zwolnienie od podatku'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument')
           )
         );
-        firstColumn.push(
-          createLabelText('Przepis ustawy albo aktu wydanego na podstawie ustawy: ', zwolnienie.P_19A._text)
-        );
+        firstColumn.push(createLabelText(i18n.t('invoice.annotations.law'), zwolnienie.P_19A._text));
       }
       if (zwolnienie.P_19B?._text) {
         firstColumn.push(
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Przepis dyrektywy 2006/112/WE, który zwalnia od podatku taką dostawę towarów lub takie świadczenie usług'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument2')
           )
         );
-        firstColumn.push(createLabelText('Przepis dyrektywy: ', zwolnienie.P_19B._text));
+        firstColumn.push(createLabelText(i18n.t('invoice.annotations.directiveLaw'), zwolnienie.P_19B._text));
       }
       if (zwolnienie.P_19C?._text) {
         firstColumn.push(
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Inna podstawa prawna wskazującą na to, że dostawa towarów lub świadczenie usług korzysta ze zwolnienia'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument3')
           )
         );
-        firstColumn.push(createLabelText('Inna podstawa prawna: ', zwolnienie.P_19C._text));
+        firstColumn.push(createLabelText(i18n.t('invoice.annotations.otherLaw'), zwolnienie.P_19C._text));
       }
     }
 
@@ -65,12 +64,12 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
       let value: string = ' ';
 
       if (adnotacje.NoweSrodkiTransportu.P_42_5?._text === '1') {
-        value = 'Istnieje obowiązek wystawienia dokumentu VAT-22';
+        value = i18n.t('invoice.annotations.vat22DocumentRequired');
       } else if (adnotacje.NoweSrodkiTransportu.P_42_5?._text === '2') {
-        value = 'Nie istnieje obowiązek wystawienia dokumentu VAT-22';
+        value = i18n.t('invoice.annotations.vat22DocumentNotRequired');
       }
       obowiazekVAT = [
-        ...createLabelText('Wewnątrzwspólnotowe dostawy nowych środków transportu: ', value ?? ''),
+        ...createLabelText(`${i18n.t('invoice.annotations.newTransportsDelivery')}: `, value ?? ''),
       ];
       if (obowiazekVAT) {
         firstColumn = [firstColumn, ...obowiazekVAT];
@@ -78,33 +77,33 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
     }
 
     if (adnotacje.P_18A?._text === '1') {
-      secondColumn.push({ text: 'Mechanizm podzielonej płatności' });
+      secondColumn.push({ text: i18n.t('invoice.annotations.partialPayMechanism') });
     }
     if (adnotacje.P_16?._text === '1') {
-      secondColumn.push({ text: 'Metoda kasowa' });
+      secondColumn.push({ text: i18n.t('invoice.annotations.cashMethod') });
     }
     if (adnotacje.P_18?._text === '1') {
-      secondColumn.push({ text: 'Odwrotne obciążenie' });
+      secondColumn.push({ text: i18n.t('invoice.annotations.reverseTax') });
     }
     if (adnotacje.P_23?._text === '1') {
-      secondColumn.push({ text: 'Procedura trójstronna uproszczona' });
+      secondColumn.push({ text: i18n.t('invoice.annotations.threePartsSimplerMethod') });
     }
     if (adnotacje.PMarzy?.P_PMarzy?._text === '1') {
       let valueMarzy: string = '';
 
       if (adnotacje.PMarzy.P_PMarzy_3_1?._text === '1') {
-        valueMarzy = 'towary używane';
+        valueMarzy = i18n.t('invoice.annotations.usedGoods');
       } else if (adnotacje.PMarzy.P_PMarzy_3_2?._text === '1') {
-        valueMarzy = 'dzieła sztuki';
+        valueMarzy = i18n.t('invoice.annotations.artPieces');
       } else if (adnotacje.PMarzy.P_PMarzy_2?._text === '1') {
-        valueMarzy = 'biura podróży';
+        valueMarzy = i18n.t('invoice.annotations.travelAgencies');
       } else if (adnotacje.PMarzy.P_PMarzy_3_3?._text === '1') {
-        valueMarzy = 'przedmioty kolekcjonerskie i antyki';
+        valueMarzy = i18n.t('invoice.annotations.antiques');
       }
-      secondColumn.push(createLabelText('Procedura marży: ', valueMarzy));
+      secondColumn.push(createLabelText(i18n.t('invoice.annotations.marginProcedure'), valueMarzy));
     }
     if (adnotacje.P_17?._text === '1') {
-      secondColumn.push({ text: 'Samofakturowanie' });
+      secondColumn.push({ text: i18n.t('invoice.annotations.selfInvoice') });
     }
     if (firstColumn.length || secondColumn.length) {
       result.push(generateColumns([firstColumn, secondColumn]));
@@ -112,7 +111,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
 
     if (result.length) {
       result.unshift(verticalSpacing(1));
-      result.unshift(createHeader('Adnotacje'));
+      result.unshift(createHeader(i18n.t('invoice.annotations.header')));
       result.unshift(verticalSpacing(1));
       result.push(verticalSpacing(1));
     }
@@ -142,8 +141,8 @@ export function generateDostawy(noweSrodkiTransportu: NoweSrodkiTransportu): Con
 
   if (nowySrodekTransportu?.length) {
     const definedHeader: Content[] = [
-      { text: 'Data dopuszczenia do użytku', style: FormatTyp.GrayBoldTitle },
-      { text: 'Opis', style: FormatTyp.GrayBoldTitle },
+      { text: i18n.t('invoice.annotations.usePermissionDate'), style: FormatTyp.GrayBoldTitle },
+      { text: i18n.t('invoice.annotations.description'), style: FormatTyp.GrayBoldTitle },
     ];
 
     tableBody = nowySrodekTransportu.map((item: Record<string, FP>): (string | ContentText)[] => {
@@ -164,11 +163,11 @@ export function generateDostawy(noweSrodkiTransportu: NoweSrodkiTransportu): Con
         value.push(item.P_NrWierszaNST._text);
       }
       if (anyP22B) {
-        value.push('Dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy');
+        value.push(i18n.t('invoice.annotations.landDelivery'));
       } else if (anyP22C) {
-        value.push('Dostawa dotyczy jednostek pływających, o których mowa w art. 2 pkt 10 lit. b ustawy');
+        value.push(i18n.t('invoice.annotations.boatDelivery'));
       } else if (anyP22D) {
-        value.push('Dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy');
+        value.push(i18n.t('invoice.annotations.airDelivery'));
       }
 
       const transportProperties = [
@@ -190,23 +189,23 @@ export function generateDostawy(noweSrodkiTransportu: NoweSrodkiTransportu): Con
         value.push(item.P_22B?._text ?? item.P_22C?._text ?? item.P_22D?._text ?? '');
       }
       if (item.P_22C1?._text) {
-        value.push(`Numer kadłuba nowego środka transportu:  ${item.P_22C1._text}`);
+        value.push(`${i18n.t('invoice.annotations.hullNumber')}: ${item.P_22C1._text}`);
       }
       if (item.P_22D1?._text) {
-        value.push(`Numer fabryczny nowego środka transportu: ${item.P_22D1._text}`);
+        value.push(`${i18n.t('invoice.annotations.factoryNumber')}: ${item.P_22D1._text}`);
       }
       if (anyP22N) {
         if (item.P_22B1?._text) {
-          value.push(`Numer VIN:  ${item.P_22B1._text}`);
+          value.push(`${i18n.t('invoice.annotations.vin')}: ${item.P_22B1._text}`);
         }
         if (item.P_22B2?._text) {
-          value.push(`Numer nadwozia:  ${item.P_22B2._text}`);
+          value.push(`${i18n.t('invoice.annotations.bodyNumber')}: ${item.P_22B2._text}`);
         }
         if (item.P_22B3?._text) {
-          value.push(`Numer podwozia:  ${item.P_22B3._text}`);
+          value.push(`${i18n.t('invoice.annotations.chassisNumber')}: ${item.P_22B3._text}`);
         }
         if (item.P_22B4?._text) {
-          value.push(`Numer ramy:  ${item.P_22B4._text}`);
+          value.push(`${i18n.t('invoice.annotations.frameNumber')}: ${item.P_22B4._text}`);
         }
       }
       if (item.P_22BT?._text) {

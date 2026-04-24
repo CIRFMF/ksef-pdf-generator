@@ -20,6 +20,7 @@ import { Informacje, Rejestry } from '../../types/fa1.types';
 import { FP, Naglowek, Stopka } from '../../types/fa2.types';
 import { Zalacznik } from '../../types/fa3.types';
 import { generateZalaczniki } from './Zalaczniki';
+import i18n from 'i18next';
 
 export function generateStopka(
   additionalData?: AdditionalDataTypes,
@@ -48,7 +49,7 @@ export function generateStopka(
     createSection(
       [
         {
-          stack: createLabelText('Wytworzona w: ', naglowek?.SystemInfo),
+          stack: createLabelText(i18n.t('invoice.footer.generatedIn'), naglowek?.SystemInfo),
           margin: [0, 8, 0, 0],
         },
       ],
@@ -62,7 +63,9 @@ export function generateStopka(
 
 function generateWZ(wz?: FP[]): Content[] {
   const result: Content[] = [];
-  const definedHeader: HeaderDefine[] = [{ name: '', title: 'Numer WZ', format: FormatTyp.Default }];
+  const definedHeader: HeaderDefine[] = [
+    { name: '', title: i18n.t('invoice.wz.number'), format: FormatTyp.Default },
+  ];
   const faWiersze: FP[] = getTable(wz ?? []);
   const content: FormContentState = getContentTable<(typeof faWiersze)[0]>(
     [...definedHeader],
@@ -71,7 +74,7 @@ function generateWZ(wz?: FP[]): Content[] {
   );
 
   if (content.fieldsWithValue.length && content.content) {
-    result.push(createSubHeader('Numery dokumentów magazynowych WZ', [0, 8, 0, 4]));
+    result.push(createSubHeader(i18n.t('invoice.wz.documentsHeader'), [0, 8, 0, 4]));
     result.push(content.content);
   }
   return result;
@@ -80,10 +83,10 @@ function generateWZ(wz?: FP[]): Content[] {
 function generateRejestry(stopka?: Stopka): Content[] {
   const result: Content[] = [];
   const definedHeader: HeaderDefine[] = [
-    { name: 'PelnaNazwa', title: 'Pełna nazwa', format: FormatTyp.Default },
-    { name: 'KRS', title: 'KRS', format: FormatTyp.Default },
-    { name: 'REGON', title: 'REGON', format: FormatTyp.Default },
-    { name: 'BDO', title: 'BDO', format: FormatTyp.Default },
+    { name: 'PelnaNazwa', title: i18n.t('invoice.registers.fullName'), format: FormatTyp.Default },
+    { name: 'KRS', title: i18n.t('invoice.registers.krs'), format: FormatTyp.Default },
+    { name: 'REGON', title: i18n.t('invoice.registers.regon'), format: FormatTyp.Default },
+    { name: 'BDO', title: i18n.t('invoice.registers.bdo'), format: FormatTyp.Default },
   ];
   const faWiersze: Rejestry[] = getTable(stopka?.Rejestry ?? []);
   const content: FormContentState = getContentTable<(typeof faWiersze)[0]>(
@@ -95,7 +98,7 @@ function generateRejestry(stopka?: Stopka): Content[] {
   );
 
   if (content.fieldsWithValue.length && content.content) {
-    result.push(createHeader('Rejestry'));
+    result.push(createHeader(i18n.t('invoice.registers.header')));
     result.push(content.content);
   }
   return result;
@@ -104,7 +107,7 @@ function generateRejestry(stopka?: Stopka): Content[] {
 function generateInformacje(stopka?: Stopka): Content[] {
   const result: Content[] = [];
   const definedHeader: HeaderDefine[] = [
-    { name: 'StopkaFaktury', title: 'Stopka faktury', format: FormatTyp.Default },
+    { name: 'StopkaFaktury', title: i18n.t('invoice.information.invoiceFooter'), format: FormatTyp.Default },
   ];
   const faWiersze: Informacje[] = getTable(stopka?.Informacje ?? []);
   const content: FormContentState = getContentTable<(typeof faWiersze)[0]>(
@@ -114,7 +117,7 @@ function generateInformacje(stopka?: Stopka): Content[] {
   );
 
   if (content.fieldsWithValue.length && content.content) {
-    result.push(createHeader('Pozostałe informacje'));
+    result.push(createHeader(i18n.t('invoice.information.header')));
     result.push(content.content);
   }
   return result;
@@ -127,7 +130,7 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
   if (additionalData?.qrCode) {
     const qrCode: ContentQr | undefined = generateQRCode(additionalData.qrCode);
 
-    result.push(createHeader('Sprawdź, czy Twoja faktura znajduje się w KSeF!'));
+    result.push(createHeader(i18n.t('invoice.qr1.header')));
     if (qrCode) {
       qrCode.fit = QR_SIZE;
 
@@ -137,7 +140,7 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
             stack: [
               qrCode,
               {
-                text: additionalData.qr2Code ? 'OFFLINE' : additionalData.nrKSeF,
+                text: additionalData.qr2Code ? i18n.t('invoice.qr1.offline') : additionalData.nrKSeF,
                 alignment: 'center',
                 margin: [0, 8, 0, 0],
               },
@@ -147,10 +150,7 @@ function generateQRCodeData(additionalData?: AdditionalDataTypes): Content[] {
           },
           {
             stack: [
-              formatText(
-                'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji faktury!',
-                FormatTyp.Label
-              ),
+              formatText(i18n.t('invoice.qr1.description'), FormatTyp.Label),
               {
                 text: formatText(additionalData.qrCode, FormatTyp.Link),
                 link: additionalData.qrCode,
@@ -180,21 +180,21 @@ function generateQR2CodeData(additionalData?: AdditionalDataTypes): Content[] {
   if (additionalData?.qr2Code) {
     const qrCode: ContentQr | undefined = generateQRCode(additionalData.qr2Code);
 
-    result.push(createHeader('Zweryfikuj dostawcę faktury'));
+    result.push(createHeader(i18n.t('invoice.qr2.header')));
     if (qrCode) {
       qrCode.fit = QR_SIZE;
 
       result.push({
         columns: [
           {
-            stack: [qrCode, { text: 'CERTYFIKAT', alignment: 'center', margin: [0, 8, 0, 0] }],
+            stack: [qrCode, { text: i18n.t('invoice.qr2.certificate'), alignment: 'center', margin: [0, 8, 0, 0] }],
             alignment: 'center',
             width: 'auto',
           },
           {
             stack: [
               formatText(
-                'Nie możesz zeskanować kodu z obrazka? Kliknij w link weryfikacyjny i przejdź do weryfikacji wystawcy faktury!',
+                  i18n.t('invoice.qr2.description'),
                 FormatTyp.Label
               ),
               {

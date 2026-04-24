@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export { generateInvoice, generateUPO } from './lib-public';
 export { generateFA1 } from './lib-public/FA1-generator';
 export { generateFA2 } from './lib-public/FA2-generator';
@@ -9,3 +11,5 @@ export { generateStyle } from './shared/PDF-functions';
 export { stripPrefix } from './shared/XML-parser';
 export type { AdditionalDataTypes } from './lib-public/types/common.types';
 export * from './shared/enums/common.enum';
+export { i18next };
+export { initI18next } from './lib-public/i18n/i18n-init';

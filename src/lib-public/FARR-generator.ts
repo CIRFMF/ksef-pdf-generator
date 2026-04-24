@@ -12,10 +12,11 @@ import { generateSzczegoly } from './generators/FA_RR/Szczegoly';
 import { generateWiersze } from './generators/FA_RR/Wiersze';
 import { AdditionalDataTypes } from './types/common.types';
 import { FaRR } from './types/FaRR.types';
+import { generateWatermark } from '@shared/consts/watermark';
 
 export function generateFARR(invoice: FaRR, additionalData: AdditionalDataTypes): TDocumentDefinitions {
   const docDefinition: TDocumentDefinitions = {
-    watermark: additionalData?.watermark,
+    ...generateWatermark(additionalData?.watermark),
     content: [
       ...generateNaglowek(invoice.FakturaRR, additionalData),
       generateDaneFaKorygowanej(invoice.FakturaRR),

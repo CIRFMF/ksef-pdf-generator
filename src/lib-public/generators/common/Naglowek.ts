@@ -6,6 +6,7 @@ import { Fa as Fa2 } from '../../types/fa2.types';
 import { Fa as Fa3, Zalacznik } from '../../types/fa3.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { AdditionalDataTypes } from '../../types/common.types';
+import i18n from 'i18next';
 
 export function generateNaglowek(
   fa?: Fa2 | Fa3 | Fa1,
@@ -16,41 +17,41 @@ export function generateNaglowek(
 
   switch (getValue(fa?.RodzajFaktury)) {
     case TRodzajFaktury.VAT:
-      invoiceName = 'Faktura podstawowa';
+      invoiceName = i18n.t('invoice.header.vat');
       break;
     case TRodzajFaktury.ZAL:
-      invoiceName = 'Faktura zaliczkowa';
+      invoiceName = i18n.t('invoice.header.advance');
       break;
     case TRodzajFaktury.ROZ:
-      invoiceName = 'Faktura rozliczeniowa';
+      invoiceName = i18n.t('invoice.header.settlement');
       break;
     case TRodzajFaktury.KOR_ROZ:
-      invoiceName = 'Faktura korygująca rozliczeniową';
+      invoiceName = i18n.t('invoice.header.correctionSettlement');
       break;
     case TRodzajFaktury.KOR_ZAL:
-      invoiceName = 'Faktura korygująca zaliczkową';
+      invoiceName = i18n.t('invoice.header.correctionAdvance');
       break;
     case TRodzajFaktury.KOR:
       if (fa?.OkresFaKorygowanej != null) {
-        invoiceName = 'Faktura korygująca zbiorcza (rabat)';
+        invoiceName = i18n.t('invoice.header.correctionCollective');
       } else {
-        invoiceName = 'Faktura korygująca';
+        invoiceName = i18n.t('invoice.header.correction');
       }
       break;
     case TRodzajFaktury.UPR:
-      invoiceName = 'Faktura uproszczona';
+      invoiceName = i18n.t('invoice.header.simplified');
       break;
   }
 
   return [
     {
       text: [
-        { text: 'Krajowy System ', fontSize: 18 },
-        { text: 'e', color: 'red', bold: true, fontSize: 18 },
-        { text: '-Faktur', bold: true, fontSize: 18 },
+        { text: i18n.t('invoice.header.ksefPart1'), fontSize: 18 },
+        { text: i18n.t('invoice.header.ksefPart2'), color: 'red', bold: true, fontSize: 18 },
+        { text: i18n.t('invoice.header.ksefPart3'), bold: true, fontSize: 18 },
       ],
     },
-    { ...(formatText('Numer Faktury:', FormatTyp.ValueMedium) as ContentText), alignment: Position.RIGHT },
+    { ...(formatText(i18n.t('invoice.header.invoiceNumberLabel'), FormatTyp.ValueMedium) as ContentText), alignment: Position.RIGHT },
     {
       ...(formatText(getValue(fa?.P_2), FormatTyp.HeaderPosition) as ContentText),
       alignment: Position.RIGHT,
@@ -63,7 +64,7 @@ export function generateNaglowek(
       ? [
           {
             text: [
-              formatText('Numer KSEF:', FormatTyp.LabelMedium) as ContentText,
+              formatText(i18n.t('invoice.header.ksefNumberLabel'), FormatTyp.LabelMedium) as ContentText,
               formatText(additionalData?.nrKSeF, FormatTyp.ValueMedium),
             ],
             alignment: Position.RIGHT,
@@ -74,12 +75,7 @@ export function generateNaglowek(
       ? [
           { stack: [generateLine()], margin: [0, 8, 0, 8] } as Content,
           {
-            text: [
-              formatText(
-                'Uwaga, faktura zawiera załącznik, jednak ze względu na ograniczenia wizualizacji, nie został on uwzględniony w pliku PDF',
-                FormatTyp.Bold
-              ),
-            ],
+            text: [formatText(i18n.t('invoice.header.attachmentWarning'), FormatTyp.Bold)],
           },
         ]
       : []),

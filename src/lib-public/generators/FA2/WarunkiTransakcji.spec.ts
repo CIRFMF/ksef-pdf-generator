@@ -232,7 +232,9 @@ describe(generateWarunkiTransakcji.name, () => {
 
         expect(PDFFunctions.generateTwoColumns).toHaveBeenCalledWith(
           expect.arrayContaining(['subheader', { table: 'umowy' }]),
-          []
+          [],
+          0,
+          false
         );
       });
 
@@ -259,7 +261,9 @@ describe(generateWarunkiTransakcji.name, () => {
 
         expect(PDFFunctions.generateTwoColumns).toHaveBeenCalledWith(
           [],
-          expect.arrayContaining(['subheader', { table: 'zamowienia' }])
+          expect.arrayContaining(['subheader', { table: 'zamowienia' }]),
+          0,
+          false
         );
       });
 
@@ -342,7 +346,7 @@ describe(generateWarunkiTransakcji.name, () => {
           '*',
           [0, 4]
         );
-        expect(PDFFunctions.generateTwoColumns).toHaveBeenCalledWith({ table: 'partia' }, '');
+        expect(PDFFunctions.generateTwoColumns).toHaveBeenCalledWith({ table: 'partia' }, '', 0, false);
       });
 
       it('should not create partia towaru section when NrPartiiTowaru is empty', () => {

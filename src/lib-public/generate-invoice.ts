@@ -10,6 +10,7 @@ import { Faktura as Faktura3 } from './types/fa3.types';
 import { AdditionalDataTypes } from './types/common.types';
 import { generateFARR } from './FARR-generator';
 import { FaRR } from './types/FaRR.types';
+import { initI18next } from "./i18n/i18n-init";
 import { render, PdfmakeHtmlRenderer } from 'pdfmake-html-renderer/server';
 import { PdfmakeHtmlRendererProps } from 'pdfmake-html-renderer';
 
@@ -38,6 +39,8 @@ export async function generateInvoice(
   const wersja: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
 
   let doc: TDocumentDefinitions;
+
+  await initI18next();
 
   return new Promise((resolve): void => {
     switch (wersja) {

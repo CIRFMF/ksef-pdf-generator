@@ -13,6 +13,7 @@ import { Dokument, IDKontekstu, Potwierdzenie } from '../../types/upo-v4_2.types
 import FormatTyp from '../../../shared/enums/common.enum';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
+import i18n from "i18next";
 
 export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   const dokumenty: Dokument[] = getTable(potwierdzenie.Dokument);
@@ -24,42 +25,41 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   result.push(generateLine());
   result.push(verticalSpacing(8));
   result.push(
-    formatText('Urzędowe poświadczenie odbioru dokumentu elektronicznego KSeF', FormatTyp.HeaderPosition)
-  );
+      formatText(i18n.t('invoice.upo.upoKsef'), FormatTyp.HeaderPosition));
   result.push(verticalSpacing(8));
   if (hasValue(potwierdzenie.NumerReferencyjnySesji)) {
     table.push([
-      formatText('Numer referencyjny sesji: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.sessionReferenceNumber'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.NumerReferencyjnySesji?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.OpisPotwierdzenia?.Strona)) {
     table.push([
-      formatText('Strona dokumentu UPO: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.upoPage'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.OpisPotwierdzenia?.Strona?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.OpisPotwierdzenia?.LiczbaStron)) {
     table.push([
-      formatText('Całkowita liczba stron dokumentu UPO: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.upoPageTotal'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.OpisPotwierdzenia?.LiczbaStron?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.OpisPotwierdzenia?.ZakresDokumentowOd)) {
     table.push([
-      formatText('Zakres dokumentów od: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.documentRangeFrom'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.OpisPotwierdzenia?.ZakresDokumentowOd?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.OpisPotwierdzenia?.ZakresDokumentowDo)) {
     table.push([
-      formatText('Zakres dokumentów do: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.documentRangeTo'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.OpisPotwierdzenia?.ZakresDokumentowDo?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.OpisPotwierdzenia?.CalkowitaLiczbaDokumentow)) {
     table.push([
-      formatText('Całkowita liczba dokumentów: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.documentsTotal'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.OpisPotwierdzenia?.CalkowitaLiczbaDokumentow?._text, FormatTyp.Default),
     ]);
   }
@@ -70,43 +70,43 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
     let id: string | number | undefined;
 
     if (hasValue(idKontekstu.IdDostawcyUslugPeppol)) {
-      typKontekstu = 'Identyfikator Peppol';
+      typKontekstu = i18n.t('invoice.upo.peppolId');
       id = getValue(idKontekstu.IdDostawcyUslugPeppol);
     }
 
     if (hasValue(idKontekstu.Nip)) {
-      typKontekstu = 'NIP';
+      typKontekstu = i18n.t('invoice.subjectIdentificationData.nip');
       id = getValue(idKontekstu.Nip);
     }
 
     if (hasValue(idKontekstu.IdWewnetrzny)) {
-      typKontekstu = 'Identyfikator wewnętrzny';
+      typKontekstu = i18n.t('invoice.upo.internalId');
       id = getValue(idKontekstu.IdWewnetrzny);
     }
 
     if (hasValue(idKontekstu.IdZlozonyVatUE)) {
-      typKontekstu = 'Identyfikator złożony';
+      typKontekstu = i18n.t('invoice.upo.complexId');
       id = getValue(idKontekstu.IdZlozonyVatUE);
     }
     table.push([
-      formatText('Typ kontekstu: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.contextType'), FormatTyp.GrayBoldTitle),
       formatText(typKontekstu, FormatTyp.Default),
     ]);
     table.push([
-      formatText('Identyfikator kontekstu uwierzytelnienia: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.contextAuthorizationId'), FormatTyp.GrayBoldTitle),
       formatText(id, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.Uwierzytelnienie?.SkrotDokumentuUwierzytelniajacego)) {
     table.push([
-      formatText('Skrót dokumentu uwierzytelniającego: ', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.authorizationDocumentShortcut'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.Uwierzytelnienie?.SkrotDokumentuUwierzytelniajacego?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(potwierdzenie.NazwaStrukturyLogicznej)) {
     table.push([
       formatText(
-        'Nazwa pliku XSD struktury logicznej dotycząca przesłanego dokumentu:',
+          i18n.t('invoice.upo.xsdFileLogicName'),
         FormatTyp.GrayBoldTitle
       ),
       formatText(potwierdzenie.NazwaStrukturyLogicznej?._text, FormatTyp.Default),
@@ -114,7 +114,7 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   }
   if (hasValue(potwierdzenie.KodFormularza)) {
     table.push([
-      formatText('Kod formularza przedłożonego dokumentu elektronicznego:', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.upo.eDocumentFormCode'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.KodFormularza?._text, FormatTyp.Default),
     ]);
   }
@@ -130,32 +130,32 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   ]);
   result.push(verticalSpacing(8));
   const definedHeader: HeaderDefine[] = [
-    { name: 'lp', title: 'Lp.', format: FormatTyp.Default },
+    { name: 'lp', title:  i18n.t('invoice.additionalInformation.ordinalNumber'), format: FormatTyp.Default },
     {
       name: 'NumerKSeFDokumentu',
-      title: 'Numer identyfikujący fakturę w KSeF',
+      title: i18n.t('invoice.additionalInformation.ksefDocumentNumber'),
       format: FormatTyp.Default,
     },
-    { name: 'NumerFaktury', title: 'Numer faktury', format: FormatTyp.Default },
-    { name: 'NipSprzedawcy', title: 'NIP Sprzedawcy', format: FormatTyp.Default },
+    { name: 'NumerFaktury', title:  i18n.t('invoice.details.invoiceNumber'), format: FormatTyp.Default },
+    { name: 'NipSprzedawcy', title: i18n.t('invoice.upo.vendorNIP'), format: FormatTyp.Default },
     {
       name: 'DataWystawieniaFaktury',
-      title: 'Data wystawienia faktury',
+      title: i18n.t('invoice.details.invoiceDate'),
       format: FormatTyp.Date,
     },
     {
       name: 'DataPrzeslaniaDokumentu',
-      title: 'Data przesłania do KSeF',
+      title: i18n.t('invoice.details.invoiceDateSentToKsef'),
       format: FormatTyp.DateTime,
     },
     {
       name: 'DataNadaniaNumeruKSeF',
-      title: 'Data nadania numeru KSeF',
+      title: i18n.t('invoice.details.assignKsefNumberDate'),
       format: FormatTyp.DateTime,
     },
     {
       name: 'SkrotDokumentu',
-      title: 'Wartość funkcji skrótu złożonego dokumentu',
+      title: i18n.t('invoice.upo.functionValueShortcut'),
       format: FormatTyp.Default,
       width: '*',
     },

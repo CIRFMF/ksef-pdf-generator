@@ -6,6 +6,7 @@ import { generateStyle } from '../shared/PDF-functions';
 import { Position } from '../shared/enums/common.enum';
 import { generateDokumentUPO } from './generators/UPO4_3/Dokumenty';
 import { generateNaglowekUPO } from './generators/UPO4_3/Naglowek';
+import { initI18next } from './i18n/i18n-init';
 import { render, PdfmakeHtmlRenderer } from 'pdfmake-html-renderer/server';
 import { PdfmakeHtmlRendererProps } from 'pdfmake-html-renderer';
 
@@ -19,6 +20,8 @@ export async function generateUPO(
   formatType: FormatType = 'blob'
 ): Promise<FormatTypeResult> {
   const upo = xmlstring as Upo;
+
+  await initI18next();
   const doc: TDocumentDefinitions = {
     content: [generateNaglowekUPO(upo.Potwierdzenie!), generateDokumentUPO(upo.Potwierdzenie!)],
     ...generateStyle(),

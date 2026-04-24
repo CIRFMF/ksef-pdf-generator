@@ -16,6 +16,7 @@ import { Fa, FP } from '../../types/fa1.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 import { addMarza } from '../common/Wiersze';
+import i18n from 'i18next';
 
 export function generateWiersze(faVat: Fa): Content {
   const table: Content[] = [];
@@ -32,57 +33,89 @@ export function generateWiersze(faVat: Fa): Content {
     }
   );
   const definedHeaderLp: HeaderDefine[] = [
-    { name: 'NrWierszaFa', title: 'Lp.', format: FormatTyp.Default, width: 'auto' },
+    { name: 'NrWierszaFa', title: i18n.t('invoice.rows.lp'), format: FormatTyp.Default, width: 'auto' },
   ];
   const definedHeader1: HeaderDefine[] = [
-    { name: 'UU_ID', title: 'Unikalny numer wiersza', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_7', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default, width: '*' },
-    { name: 'P_9A', title: 'Cena jedn. netto', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'P_9B', title: 'Cena jedn. brutto', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'P_8B', title: 'Ilość', format: FormatTyp.Number, width: 'auto' },
-    { name: 'P_8A', title: 'Miara', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_10', title: 'Rabat', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'P_12', title: 'Stawka podatku', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12_XII', title: 'Stawka podatku OSS', format: FormatTyp.Percentage, width: 'auto' },
-    { name: 'P_11', title: 'Wartość sprzedaży netto', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'P_11A', title: 'Wartość sprzedaży brutto', format: FormatTyp.Currency, width: 'auto' },
+    {
+      name: 'UU_ID',
+      title: i18n.t('invoice.rows.uniqueRowNumber'),
+      format: FormatTyp.Default,
+      width: 'auto',
+    },
+    { name: 'P_7', title: i18n.t('invoice.rows.productName'), format: FormatTyp.Default, width: '*' },
+    { name: 'P_9A', title: i18n.t('invoice.rows.netUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
+    { name: 'P_9B', title: i18n.t('invoice.rows.grossUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
+    { name: 'P_8B', title: i18n.t('invoice.rows.quantity'), format: FormatTyp.Number, width: 'auto' },
+    { name: 'P_8A', title: i18n.t('invoice.rows.unit'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_10', title: i18n.t('invoice.rows.discount'), format: FormatTyp.Currency, width: 'auto' },
+    { name: 'P_12', title: i18n.t('invoice.rows.taxRate'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'P_12_XII',
+      title: i18n.t('invoice.rows.ossTaxRate'),
+      format: FormatTyp.Percentage,
+      width: 'auto',
+    },
+    { name: 'P_11', title: i18n.t('invoice.rows.netSalesValue'), format: FormatTyp.Currency, width: 'auto' },
+    {
+      name: 'P_11A',
+      title: i18n.t('invoice.rows.grossSalesValue'),
+      format: FormatTyp.Currency,
+      width: 'auto',
+    },
   ];
 
   if (getDifferentColumnsValue('KursWaluty', faWiersze).length !== 1) {
     definedHeader1.push({
       name: 'KursWaluty',
-      title: 'Kurs waluty',
+      title: i18n.t('invoice.rows.currencyRate'),
       format: FormatTyp.Currency6,
       width: 'auto',
     });
   }
   const definedHeader2: HeaderDefine[] = [
-    { name: 'GTIN', title: 'GTIN', format: FormatTyp.Default, width: 'auto' },
-    { name: 'PKWiU', title: 'PKWiU', format: FormatTyp.Default, width: 'auto' },
-    { name: 'CN', title: 'CN', format: FormatTyp.Default, width: 'auto' },
-    { name: 'PKOB', title: 'PKOB', format: FormatTyp.Default, width: 'auto' },
-    { name: 'DodatkoweInfo', title: 'Dodatkowe informacje', format: FormatTyp.Default, width: 'auto' },
+    { name: 'GTIN', title: i18n.t('invoice.rows.gtin'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'PKWiU', title: i18n.t('invoice.rows.pkwiu'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'CN', title: i18n.t('invoice.rows.cn'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'PKOB', title: i18n.t('invoice.rows.pkob'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'DodatkoweInfo',
+      title: i18n.t('invoice.rows.additionalInfo'),
+      format: FormatTyp.Default,
+      width: 'auto',
+    },
     {
       name: 'P_12_Procedura',
-      title: 'Procedura',
+      title: i18n.t('invoice.rows.procedure'),
       format: FormatTyp.Default,
       mappingData: Procedura,
       width: '*',
     },
-    { name: 'KwotaAkcyzy', title: 'Kwota podatku akcyzowego', format: FormatTyp.Default, width: 'auto' },
-    { name: 'GTU', title: 'GTU', format: FormatTyp.Default, width: 'auto' },
-    { name: 'Procedura', title: 'Oznaczenia dotyczące procedur', format: FormatTyp.Default, width: '*' },
-    { name: 'P_6A', title: 'Data dostawy / wykonania', format: FormatTyp.Date, width: 'auto' },
+    {
+      name: 'KwotaAkcyzy',
+      title: i18n.t('invoice.rows.exciseTaxAmount'),
+      format: FormatTyp.Default,
+      width: 'auto',
+    },
+    { name: 'GTU', title: i18n.t('invoice.rows.gtu'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'Procedura',
+      title: i18n.t('invoice.rows.procedureMarkings'),
+      format: FormatTyp.Default,
+      width: '*',
+    },
+    { name: 'P_6A', title: i18n.t('invoice.rows.deliveryDate'), format: FormatTyp.Default, width: 'auto' },
   ];
   let content: FormContentState = getContentTable<(typeof faWiersze)[0]>(
     [...definedHeaderLp, ...definedHeader1, ...definedHeader2],
     faWiersze,
     '*'
   );
-  const ceny: string | ContentText = formatText(`Faktura wystawiona w walucie ${faVat.KodWaluty?._text}`, [
-    FormatTyp.Label,
-    FormatTyp.MarginBottom8,
-  ]);
+  const ceny: string | ContentText = formatText(
+    i18n.t('invoice.rows.issuedInCurrency', {
+      currency: faVat.KodWaluty?._text,
+    }),
+    [FormatTyp.Label, FormatTyp.MarginBottom8]
+  );
 
   const p_15: string | number | undefined = getValue(faVat.P_15);
   let opis: ContentStack[] = [];
@@ -91,7 +124,7 @@ export function generateWiersze(faVat: Fa): Content {
     opis = [
       {
         stack: createLabelTextArray([
-          { value: 'Kwota pozostała do zapłaty: ', formatTyp: FormatTyp.LabelGreater },
+          { value: i18n.t('invoice.rows.remainingAmount'), formatTyp: FormatTyp.LabelGreater },
           {
             value: p_15,
             formatTyp: FormatTyp.CurrencyGreater,
@@ -112,7 +145,7 @@ export function generateWiersze(faVat: Fa): Content {
     opis = [
       {
         stack: createLabelTextArray([
-          { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
+          { value: i18n.t('invoice.rows.totalAmountDue'), formatTyp: FormatTyp.LabelGreater },
           {
             value: p_15,
             formatTyp: [FormatTyp.CurrencyGreater],
@@ -140,5 +173,5 @@ export function generateWiersze(faVat: Fa): Content {
   if (table.length < 1) {
     return [];
   }
-  return createSection([...createHeader('Pozycje'), ceny, ...table, ...opis], true);
+  return createSection([...createHeader(i18n.t('invoice.rows.header')), ceny, ...table, ...opis], true);
 }

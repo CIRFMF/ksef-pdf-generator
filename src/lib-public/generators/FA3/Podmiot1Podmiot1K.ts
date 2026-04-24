@@ -5,7 +5,6 @@ import {
   formatText,
   generateColumns,
   getTable,
-  getValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
@@ -14,13 +13,18 @@ import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfika
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { generateAdres } from './Adres';
 import { TAXPAYER_STATUS } from '../../../shared/consts/FA.const';
+import { translateMap } from '@shared/generators/common/functions';
+import i18n from 'i18next';
 
 export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot1K): Content[] {
-  const result: Content[] = createHeader('Sprzedawca');
+  const result: Content[] = createHeader(i18n.t('invoice.subject1K.seller'));
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
-  firstColumn.push(createHeader('Dane identyfikacyjne'), createLabelText('Numer EORI: ', podmiot1.NrEORI));
+  firstColumn.push(
+    createHeader(i18n.t('invoice.subject1K.identificationData')),
+    createLabelText(i18n.t('invoice.subject1K.eoriNumber'), podmiot1.NrEORI)
+  );
   if (podmiot1.DaneIdentyfikacyjne) {
     firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot1Dto(podmiot1.DaneIdentyfikacyjne));
   }
@@ -29,24 +33,24 @@ export function generatePodmiot1Podmiot1K(podmiot1: Podmiot1, podmiot1K: Podmiot
     const daneKontaktowe = generateDaneKontaktowe(getTable(podmiot1.DaneKontaktowe));
 
     if (daneKontaktowe.length) {
-      firstColumn.push(createHeader('Dane kontaktowe'));
+      firstColumn.push(createHeader(i18n.t('invoice.subject1K.contactDetails')));
       firstColumn.push(daneKontaktowe);
     }
   }
   if (podmiot1.StatusInfoPodatnika) {
-    const statusInfo: string = TAXPAYER_STATUS[getValue(podmiot1.StatusInfoPodatnika)!];
+    const statusInfo: string = translateMap(podmiot1.StatusInfoPodatnika, TAXPAYER_STATUS);
 
-    firstColumn.push(createLabelText('Status podatnika: ', statusInfo));
+    firstColumn.push(createLabelText(i18n.t('invoice.subject1K.taxpayerStatus'), statusInfo));
   }
   if (firstColumn.length) {
     result.push(firstColumn);
   }
-  firstColumn = generateCorrectedContent(podmiot1K, 'Treść korygowana');
-  secondColumn = generateCorrectedContent(podmiot1, 'Treść korygująca');
+  firstColumn = generateCorrectedContent(podmiot1K, i18n.t('invoice.subject1K.correctedContent'));
+  secondColumn = generateCorrectedContent(podmiot1, i18n.t('invoice.subject1K.correctiveContent'));
 
   if (podmiot1.AdresKoresp) {
     secondColumn.push(
-      formatText('Adres do korespondencji', [FormatTyp.Label, FormatTyp.LabelMargin]),
+      formatText(i18n.t('invoice.subject1K.mailingAddress'), [FormatTyp.Label, FormatTyp.LabelMargin]),
       generateAdres(podmiot1.AdresKoresp)
     );
   }
@@ -65,13 +69,16 @@ export function generateCorrectedContent(podmiot: Podmiot1 | Podmiot1K, header: 
   result.push(createHeader(header));
 
   if (podmiot.PrefiksPodatnika?._text) {
-    result.push(createLabelText('Prefiks VAT: ', podmiot.PrefiksPodatnika));
+    result.push(createLabelText(i18n.t('invoice.subject1K.vatPrefix'), podmiot.PrefiksPodatnika));
   }
   if (podmiot.DaneIdentyfikacyjne) {
     result.push(...generateDaneIdentyfikacyjneTPodmiot1Dto(podmiot.DaneIdentyfikacyjne));
   }
   if (podmiot.Adres) {
-    result.push(formatText('Adres', [FormatTyp.Label, FormatTyp.LabelMargin]), generateAdres(podmiot.Adres));
+    result.push(
+      formatText(i18n.t('invoice.subject1K.address'), [FormatTyp.Label, FormatTyp.LabelMargin]),
+      generateAdres(podmiot.Adres)
+    );
   }
   return result;
 }
