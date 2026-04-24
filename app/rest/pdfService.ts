@@ -1,20 +1,19 @@
-// src/server/pdfService.ts
-// WAŻNE: Import polyfills MUSI być PIERWSZY
-import "./browser-polyfills.js";
-
-import { generateInvoice, generateUPO } from "./ksef/index.js";
-import type { AdditionalDataTypes } from "./ksef/index.js";
+import { generateInvoice, generateUPO } from '../../src/lib-public/index';
+import type { AdditionalDataTypes } from '../../src/lib-public/types/common.types';
+import { parseXMLString } from '../../src/shared/XML-parser';
 
 /**
  * Generates invoice PDF from XML string
  * Uses the ORIGINAL KSeF library (with browser polyfills)
  */
-export async function generateInvoicePdf(xml: string, additionalData?: AdditionalDataTypes): Promise<Uint8Array> {
+export async function generateInvoicePdf(
+  xml: string,
+  additionalData?: AdditionalDataTypes
+): Promise<Uint8Array> {
   try {
     console.log(`[${new Date().toISOString()}] Generating invoice PDF (${xml.length} bytes)`);
 
-    // 1. Convert XML string to File (browser-compatible)
-    const file = new File([xml], "invoice.xml", { type: "text/xml" });
+    const parsedXml = await parseXMLString(xml);
 
     // 2. Additional data (KSeF number, QR code) z fallbackiem
     const defaultAdditionalData: AdditionalDataTypes = {
@@ -24,8 +23,15 @@ export async function generateInvoicePdf(xml: string, additionalData?: Additiona
 
     // Użyj przekazanych danych, ale sprawdź czy są niepuste
     const data: AdditionalDataTypes = {
-      nrKSeF: additionalData?.nrKSeF && additionalData.nrKSeF.trim() !== "" ? additionalData.nrKSeF : defaultAdditionalData.nrKSeF,
-      qrCode: additionalData?.qrCode && additionalData.qrCode.trim() !== "" ? additionalData.qrCode : defaultAdditionalData.qrCode,
+      nrKSeF:
+        additionalData?.nrKSeF && additionalData.nrKSeF.trim() !== ''
+          ? additionalData.nrKSeF
+          : defaultAdditionalData.nrKSeF,
+      qrCode:
+        additionalData?.qrCode && additionalData.qrCode.trim() !== ''
+          ? additionalData.qrCode
+          : defaultAdditionalData.qrCode,
+      qr2Code: additionalData?.qr2Code,
     };
 
     // const defaultAdditionalData: AdditionalDataTypes = {
@@ -37,11 +43,11 @@ export async function generateInvoicePdf(xml: string, additionalData?: Additiona
 
     // Log KSeF details
     console.log(`[${new Date().toISOString()}] Using KSeF data:`);
-    console.log(`  • nrKSeF: ${data.nrKSeF || "(not provided)"}`);
-    console.log(`  • qrCode: ${data.qrCode ? data.qrCode.substring(0, 60) + "..." : "(not provided)"}`);
+    console.log(`  • nrKSeF: ${data.nrKSeF || '(not provided)'}`);
+    console.log(`  • qrCode: ${data.qrCode ? data.qrCode.substring(0, 60) + '...' : '(not provided)'}`);
 
     // 3. Call ORIGINAL library function (same as frontend)
-    const blob = await generateInvoice(file, data, "blob");
+    const blob = await generateInvoice(parsedXml, data, 'blob');
 
     // 4. Convert Blob to Uint8Array
     const arrayBuffer = await blob.arrayBuffer();
@@ -50,7 +56,7 @@ export async function generateInvoicePdf(xml: string, additionalData?: Additiona
     console.log(`[${new Date().toISOString()}] Invoice PDF generated: ${pdfBytes.length} bytes`);
     return pdfBytes;
   } catch (err) {
-    console.error("Error generating invoice PDF:", err);
+    console.error('Error generating invoice PDF:', err);
     throw new Error(`Invoice PDF generation failed: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
@@ -62,8 +68,8 @@ export async function generateUpoPdf(xml: string): Promise<Uint8Array> {
   try {
     console.log(`[${new Date().toISOString()}] Generating UPO PDF (${xml.length} bytes)`);
 
-    const file = new File([xml], "upo.xml", { type: "text/xml" });
-    const blob = await generateUPO(file, "blob");
+    const parsedXml = await parseXMLString(xml);
+    const blob = await generateUPO(parsedXml, 'blob');
 
     const arrayBuffer = await blob.arrayBuffer();
     const pdfBytes = new Uint8Array(arrayBuffer);
@@ -71,7 +77,7 @@ export async function generateUpoPdf(xml: string): Promise<Uint8Array> {
     console.log(`[${new Date().toISOString()}] UPO PDF generated: ${pdfBytes.length} bytes`);
     return pdfBytes;
   } catch (err) {
-    console.error("Error generating UPO PDF:", err);
+    console.error('Error generating UPO PDF:', err);
     throw new Error(`UPO PDF generation failed: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
@@ -80,5 +86,5 @@ export async function generateUpoPdf(xml: string): Promise<Uint8Array> {
  * Stub - no cleanup needed
  */
 export async function closeBrowser(): Promise<void> {
-  console.log("No browser to close - using pdfMake");
+  console.log('No browser to close - using pdfMake');
 }

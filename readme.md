@@ -42,6 +42,66 @@ Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://
    npm run build
    ```
 
+## 2.2 Uruchomienie serwera HTTP (REST)
+
+Serwer REST korzysta bezposrednio z metod `generateInvoice` oraz `generateUPO`.
+
+1. Zbuduj serwer:
+   ```bash
+   npm run build:server
+   ```
+
+2. Uruchom serwer:
+   ```bash
+   npm run server:start
+   ```
+
+3. Tryb developerski (watch):
+   ```bash
+   npm run server:dev
+   ```
+
+Serwer uruchomi sie domyslnie pod adresem: [http://localhost:3000](http://localhost:3000)
+
+## 2.3 Uruchomienie serwera HTTP (REST) w wplaikacji Docker
+
+1. Zbuduj serwer:
+   ```bash
+    docker build -t ksef-pdf .
+   ```
+
+2. Uruchom serwer:
+   ```bash
+    docker run --detach --name ksef-pdf --hostname ksef-pdf --publish 3000:3000 --restart unless-stopped ksef-pdf
+   ```
+
+Serwer uruchomi sie domyslnie pod adresem: [http://localhost:3000](http://localhost:3000)
+
+### Endpointy
+
+1. Health check:
+   ```bash
+   curl http://localhost:3000/health
+   ```
+
+2. Generowanie PDF faktury z XML:
+   ```bash
+   curl -X POST http://localhost:3000/invoice \
+     -H "Content-Type: text/xml" \
+     -H "x-ksef-number: 1111111111-20251107-080080679C57-14" \
+     -H "x-ksef-qrcode: https://ksef-test.mf.gov.pl/invoice/..." \
+     --data-binary @assets/invoice.xml \
+     -o invoice.pdf
+   ```
+
+3. Generowanie PDF UPO z XML:
+   ```bash
+   curl -X POST http://localhost:3000/upo \
+     -H "Content-Type: text/xml" \
+     --data-binary @assets/upo.xml \
+     -o upo.pdf
+   ```
+
 ## 3. Jak wygenerować fakturę
 
 1. Po uruchomieniu aplikacji przejdź do **Wygeneruj wizualizacje faktury PDF**.

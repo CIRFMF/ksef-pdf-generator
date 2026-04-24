@@ -1,4 +1,4 @@
-FROM node:22.14.0 AS build
+FROM node:24.14.1 AS build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # --- Runtime stage ---
-FROM node:22.14.0-alpine
+FROM node:24.14.1-alpine
 
 WORKDIR /app
 
@@ -43,4 +43,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
 
 # Start server
-CMD ["node", "dist-server/server.js"]
+CMD ["node", "dist-server/server.cjs"]
