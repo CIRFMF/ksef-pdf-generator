@@ -9,6 +9,7 @@ import {
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { RachunekBankowy } from '../../types/FaRR.types';
+import i18n from 'i18next';
 
 export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: string): Content[] => {
   const result: Content[] = [];
@@ -25,15 +26,15 @@ export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: str
     );
 
     table.push([
-      formatText('Pełny numer rachunku', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.registers.fullAccountNumber'), FormatTyp.GrayBoldTitle),
       formatText(getValue(account.NrRB), FormatTyp.Default),
     ]);
     table.push([
-      formatText('Kod SWIFT', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.registers.swiftCode'), FormatTyp.GrayBoldTitle),
       formatText(getValue(account.SWIFT), FormatTyp.Default),
     ]);
     table.push([
-      formatText('Nazwa banku', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.registers.bankName'), FormatTyp.GrayBoldTitle),
       formatText(
         hasValue(account.NazwaBanku)
           ? makeBreakable(getValue(account.NazwaBanku), 20)
@@ -42,7 +43,7 @@ export const generujRachunekBankowy = (accounts?: RachunekBankowy[], title?: str
       ),
     ]);
     table.push([
-      formatText('Opis rachunku', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.registers.accountDescription'), FormatTyp.GrayBoldTitle),
       formatText(
         hasValue(account.OpisRachunku)
           ? makeBreakable(getValue(account.OpisRachunku), 20)

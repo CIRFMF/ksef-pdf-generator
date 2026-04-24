@@ -1,198 +1,199 @@
-import { Content } from 'pdfmake/interfaces';
+import {Content} from 'pdfmake/interfaces';
 import {
-  createHeader,
-  createLabelText,
-  createLabelTextArray,
-  createSection,
-  generateTwoColumns,
-  getContentTable,
-  getDifferentColumnsValue,
-  getTable,
-  getValue,
-  hasColumnsValue,
-  hasValue,
+    createHeader,
+    createLabelText,
+    createLabelTextArray,
+    createSection,
+    generateTwoColumns,
+    getContentTable,
+    getDifferentColumnsValue,
+    getTable,
+    getValue,
+    hasColumnsValue,
+    hasValue,
 } from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { TRodzajFaktury } from '../../../shared/consts/FA.const';
-import { Fa, ZaliczkaCzesciowa } from '../../types/fa3.types';
-import { ObjectKeysOfFP, TypesOfValues } from '../../../shared/types/universal.types';
+import {HeaderDefine} from '../../../shared/types/pdf-types';
+import {TRodzajFaktury} from '../../../shared/consts/FA.const';
+import {Fa, ZaliczkaCzesciowa} from '../../types/fa3.types';
+import {ObjectKeysOfFP, TypesOfValues} from '../../../shared/types/universal.types';
 import FormatTyp from '../../../shared/enums/common.enum';
-import { FA3FakturaZaliczkowaData } from '../../types/common.types';
-import { formatDateTime } from '@shared/generators/common/functions';
+import {FA3FakturaZaliczkowaData} from '../../types/common.types';
+import {formatDateTime} from '@shared/generators/common/functions';
+import i18n from "i18next";
 
 export function generateSzczegoly(faVat: Fa): Content[] {
-  const faWiersze = getTable(faVat.FaWiersz);
-  const zamowieniaWiersze = getTable(faVat.Zamowienie?.ZamowienieWiersz);
-  const LabelP_6 =
-    faVat.RodzajFaktury == TRodzajFaktury.ZAL || faVat.RodzajFaktury == TRodzajFaktury.KOR_ZAL
-      ? 'Data otrzymania zapłaty: '
-      : 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: ';
+    const faWiersze = getTable(faVat.FaWiersz);
+    const zamowieniaWiersze = getTable(faVat.Zamowienie?.ZamowienieWiersz);
+    const LabelP_6 =
+        faVat.RodzajFaktury == TRodzajFaktury.ZAL || faVat.RodzajFaktury == TRodzajFaktury.KOR_ZAL
+            ? i18n.t('invoice.details.getMoneyDate')
+            : i18n.t('invoice.details.deliveryOrServiceDate');
 
-  const P_6Scope: Content[] = generateP_6Scope(faVat.OkresFa?.P_6_Od, faVat.OkresFa?.P_6_Do);
+    const P_6Scope: Content[] = generateP_6Scope(faVat.OkresFa?.P_6_Od, faVat.OkresFa?.P_6_Do);
 
-  const cenyLabel1: Content[] = [];
-  const cenyLabel2: Content[] = [];
+    const cenyLabel1: Content[] = [];
+    const cenyLabel2: Content[] = [];
 
-  if (hasValue(faVat.KodWaluty)) {
-    cenyLabel2.push(createLabelText('Kod waluty: ', faVat.KodWaluty));
-  }
-
-  const P_12_XIILabel: Content[] = [];
-
-  if (hasColumnsValue('P_12_XII', faWiersze) || hasColumnsValue('P_12_XII', zamowieniaWiersze)) {
-    P_12_XIILabel.push(createLabelText('Procedura One Stop Shop', ' '));
-  }
-
-  const kodWalutyLabel1: Content[] = [];
-  const kodWalutyLabel2: Content[] = [];
-
-  if (hasValue(faVat.KodWaluty) && getValue(faVat.KodWaluty) != 'PLN') {
-    if (hasValue(faVat.KursWalutyZ)) {
-      kodWalutyLabel1.push(createLabelText('Kurs waluty wspólny dla wszystkich wierszy faktury', ' '));
-      kodWalutyLabel2.push(createLabelText('Kurs waluty: ', faVat.KursWalutyZ, FormatTyp.Currency6));
-    } else {
-      const Common_KursWaluty = getDifferentColumnsValue('KursWaluty', faWiersze);
-
-      if (Common_KursWaluty.length === 1) {
-        kodWalutyLabel1.push(createLabelText('Kurs waluty wspólny dla wszystkich wierszy faktury', ' '));
-        kodWalutyLabel2.push(
-          createLabelText('Kurs waluty: ', Common_KursWaluty[0].value, FormatTyp.Currency6)
-        );
-      }
+    if (hasValue(faVat.KodWaluty)) {
+        cenyLabel2.push(createLabelText(i18n.t('invoice.details.currencyCode'), faVat.KodWaluty));
     }
-  }
-  const tpLabel1: Content[] = [];
-  const tpLabel2: Content[] = [];
 
-  const forColumns = [
-    createLabelText(
-      'Data wystawienia, z zastrzeżeniem art. 106na ust. 1 ustawy: ',
-      faVat.P_1,
-      FormatTyp.Date
-    ),
-    createLabelText('Miejsce wystawienia: ', faVat.P_1M),
-    createLabelText('Okres, którego dotyczy rabat: ', faVat.OkresFaKorygowanej),
-    createLabelText(LabelP_6, faVat.P_6, FormatTyp.Date),
-    P_6Scope,
-    cenyLabel1,
-    cenyLabel2,
-    P_12_XIILabel,
-    kodWalutyLabel1,
-    kodWalutyLabel2,
-    tpLabel1,
-    tpLabel2,
-  ].filter((el) => el.length > 0);
-  const columns1: Content[] = [];
-  const columns2: Content[] = [];
+    const P_12_XIILabel: Content[] = [];
 
-  forColumns.forEach((tab, index) => {
-    if (index % 2) {
-      columns2.push(tab);
-    } else {
-      columns1.push(tab);
+    if (hasColumnsValue('P_12_XII', faWiersze) || hasColumnsValue('P_12_XII', zamowieniaWiersze)) {
+        P_12_XIILabel.push(createLabelText(i18n.t('invoice.details.ossProcedure'), ' '));
     }
-  });
-  const table: Content[] = [
-    ...createHeader('Szczegóły'),
-    generateTwoColumns(columns1, columns2),
-    ...generateZaliczkaCzesciowa(faVat.ZaliczkaCzesciowa),
-    ...generateFakturaZaliczkowa(faVat.FakturaZaliczkowa),
-  ];
 
-  return createSection(table, true);
+    const kodWalutyLabel1: Content[] = [];
+    const kodWalutyLabel2: Content[] = [];
+
+    if (hasValue(faVat.KodWaluty) && getValue(faVat.KodWaluty) != 'PLN') {
+        if (hasValue(faVat.KursWalutyZ)) {
+            kodWalutyLabel1.push(createLabelText(i18n.t('invoice.details.commonCurrencyRate'), ' '));
+            kodWalutyLabel2.push(createLabelText(i18n.t('invoice.details.currencyRate'), faVat.KursWalutyZ, FormatTyp.Currency6));
+        } else {
+            const Common_KursWaluty = getDifferentColumnsValue('KursWaluty', faWiersze);
+
+            if (Common_KursWaluty.length === 1) {
+                kodWalutyLabel1.push(createLabelText(i18n.t('invoice.details.commonCurrencyRate'), ' '));
+                kodWalutyLabel2.push(
+                    createLabelText(i18n.t('invoice.details.currencyRate'), Common_KursWaluty[0].value, FormatTyp.Currency6)
+                );
+            }
+        }
+    }
+    const tpLabel1: Content[] = [];
+    const tpLabel2: Content[] = [];
+
+    const forColumns = [
+        createLabelText(
+            i18n.t('invoice.details.issueDate'),
+            faVat.P_1,
+            FormatTyp.Date
+        ),
+        createLabelText(i18n.t('invoice.details.issuePlace'), faVat.P_1M),
+        createLabelText(i18n.t('invoice.details.discountPeriod'), faVat.OkresFaKorygowanej),
+        createLabelText(LabelP_6, faVat.P_6, FormatTyp.Date),
+        P_6Scope,
+        cenyLabel1,
+        cenyLabel2,
+        P_12_XIILabel,
+        kodWalutyLabel1,
+        kodWalutyLabel2,
+        tpLabel1,
+        tpLabel2,
+    ].filter((el) => el.length > 0);
+    const columns1: Content[] = [];
+    const columns2: Content[] = [];
+
+    forColumns.forEach((tab, index) => {
+        if (index % 2) {
+            columns2.push(tab);
+        } else {
+            columns1.push(tab);
+        }
+    });
+    const table: Content[] = [
+        ...createHeader(i18n.t('invoice.details.header')),
+        generateTwoColumns(columns1, columns2),
+        ...generateZaliczkaCzesciowa(faVat.ZaliczkaCzesciowa),
+        ...generateFakturaZaliczkowa(faVat.FakturaZaliczkowa),
+    ];
+
+    return createSection(table, true);
 }
 
 function generateP_6Scope(P_6_Od: TypesOfValues, P_6_Do: TypesOfValues): Content[] {
-  const table: Content[] = [];
+    const table: Content[] = [];
 
-  if (hasValue(P_6_Od) && hasValue(P_6_Do)) {
-    table.push(
-      createLabelTextArray([
-        {
-          value: 'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
-        },
-        { value: formatDateTime(getValue(P_6_Od) as string, true, true), formatTyp: FormatTyp.Value },
-        { value: ' do ' },
-        { value: formatDateTime(getValue(P_6_Do) as string, true, true), formatTyp: FormatTyp.Value },
-      ])
-    );
-  } else if (hasValue(P_6_Od)) {
-    table.push(
-      createLabelText(
-        'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: od ',
-        formatDateTime(getValue(P_6_Od) as string, true, true)
-      )
-    );
-  } else if (hasValue(P_6_Do)) {
-    table.push(
-      createLabelText(
-        'Data dokonania lub zakończenia dostawy towarów lub wykonania usługi: do ',
-        formatDateTime(getValue(P_6_Do) as string, true, true)
-      )
-    );
-  }
-  return table;
+    if (hasValue(P_6_Od) && hasValue(P_6_Do)) {
+        table.push(
+            createLabelTextArray([
+                {
+                    value: i18n.t('invoice.details.deliveryOrServiceDateFrom'),
+                },
+                {value: formatDateTime(getValue(P_6_Od) as string, true, true), formatTyp: FormatTyp.Value},
+                {value: i18n.t('invoice.details.to')},
+                {value: formatDateTime(getValue(P_6_Do) as string, true, true), formatTyp: FormatTyp.Value},
+            ])
+        );
+    } else if (hasValue(P_6_Od)) {
+        table.push(
+            createLabelText(
+                i18n.t('invoice.details.deliveryOrServiceDateFrom'),
+                formatDateTime(getValue(P_6_Od) as string, true, true)
+            )
+        );
+    } else if (hasValue(P_6_Do)) {
+        table.push(
+            createLabelText(
+                i18n.t('invoice.details.deliveryOrServiceDateTo'),
+                formatDateTime(getValue(P_6_Do) as string, true, true)
+            )
+        );
+    }
+    return table;
 }
 
 function generateZaliczkaCzesciowa(zaliczkaCzesciowaData: ZaliczkaCzesciowa[] | undefined): Content[] {
-  if (!zaliczkaCzesciowaData) {
-    return [];
-  }
-  const zaplataCzesciowa = getTable(zaliczkaCzesciowaData);
-  const table: Content[] = [];
+    if (!zaliczkaCzesciowaData) {
+        return [];
+    }
+    const zaplataCzesciowa = getTable(zaliczkaCzesciowaData);
+    const table: Content[] = [];
 
-  const zaplataCzesciowaHeader: HeaderDefine[] = [
-    { name: 'P_6Z', title: 'Data otrzymania płatności', format: FormatTyp.Date },
-    { name: 'P_15Z', title: 'Kwota płatności', format: FormatTyp.Default },
-    { name: 'KursWalutyZW', title: 'Kurs waluty', format: FormatTyp.Currency6 },
-  ];
+    const zaplataCzesciowaHeader: HeaderDefine[] = [
+        {name: 'P_6Z', title: i18n.t('invoice.details.getMoneyDate2'), format: FormatTyp.Date},
+        {name: 'P_15Z', title: i18n.t('invoice.details.costAmount'), format: FormatTyp.Default},
+        {name: 'KursWalutyZW', title: i18n.t('invoice.details.currencyRate2'), format: FormatTyp.Currency6},
+    ];
 
-  const tableZaliczkaCzesciowa = getContentTable<(typeof zaplataCzesciowa)[0]>(
-    zaplataCzesciowaHeader,
-    zaplataCzesciowa,
-    'auto'
-  );
+    const tableZaliczkaCzesciowa = getContentTable<(typeof zaplataCzesciowa)[0]>(
+        zaplataCzesciowaHeader,
+        zaplataCzesciowa,
+        'auto'
+    );
 
-  if (tableZaliczkaCzesciowa.content) {
-    table.push(tableZaliczkaCzesciowa.content);
-  }
-  return table;
+    if (tableZaliczkaCzesciowa.content) {
+        table.push(tableZaliczkaCzesciowa.content);
+    }
+    return table;
 }
 
 function generateFakturaZaliczkowa(fakturaZaliczkowaData: ObjectKeysOfFP[] | undefined): Content[] {
-  if (!fakturaZaliczkowaData) {
-    return [];
-  }
-  const fakturaZaliczkowa = getTable(fakturaZaliczkowaData) as unknown as FA3FakturaZaliczkowaData[];
-  const fakturaZaliczkowaMapped = fakturaZaliczkowa.map((item) => {
-    if ('NrFaZaliczkowej' in item && item.NrFaZaliczkowej) {
-      return { ...item, NrFaZaliczkowej: item.NrFaZaliczkowej };
+    if (!fakturaZaliczkowaData) {
+        return [];
     }
+    const fakturaZaliczkowa = getTable(fakturaZaliczkowaData) as unknown as FA3FakturaZaliczkowaData[];
+    const fakturaZaliczkowaMapped = fakturaZaliczkowa.map((item) => {
+        if ('NrFaZaliczkowej' in item && item.NrFaZaliczkowej) {
+            return {...item, NrFaZaliczkowej: item.NrFaZaliczkowej};
+        }
 
-    if ('NrKSeFFaZaliczkowej' in item && item.NrKSeFFaZaliczkowej) {
-      return { ...item, NrFaZaliczkowej: item.NrKSeFFaZaliczkowej };
+        if ('NrKSeFFaZaliczkowej' in item && item.NrKSeFFaZaliczkowej) {
+            return {...item, NrFaZaliczkowej: item.NrKSeFFaZaliczkowej};
+        }
+
+        return {...item, NrFaZaliczkowej: {_text: ''}};
+    });
+    const table: Content[] = [];
+    const fakturaZaliczkowaHeader: HeaderDefine[] = [
+        {
+            name: 'NrFaZaliczkowej',
+            title: i18n.t('invoice.details.advanceInvoiceNumbers'),
+            format: FormatTyp.Default,
+        },
+    ];
+
+    const tableFakturaZaliczkowa = getContentTable<(typeof fakturaZaliczkowa)[0]>(
+        fakturaZaliczkowaHeader,
+        fakturaZaliczkowaMapped,
+        'auto',
+        [0, 4, 0, 0]
+    );
+
+    if (tableFakturaZaliczkowa.content) {
+        table.push(tableFakturaZaliczkowa.content);
     }
-
-    return { ...item, NrFaZaliczkowej: { _text: '' } };
-  });
-  const table: Content[] = [];
-  const fakturaZaliczkowaHeader: HeaderDefine[] = [
-    {
-      name: 'NrFaZaliczkowej',
-      title: 'Numery wcześniejszych faktur zaliczkowych',
-      format: FormatTyp.Default,
-    },
-  ];
-
-  const tableFakturaZaliczkowa = getContentTable<(typeof fakturaZaliczkowa)[0]>(
-    fakturaZaliczkowaHeader,
-    fakturaZaliczkowaMapped,
-    'auto',
-    [0, 4, 0, 0]
-  );
-
-  if (tableFakturaZaliczkowa.content) {
-    table.push(tableFakturaZaliczkowa.content);
-  }
-  return table;
+    return table;
 }

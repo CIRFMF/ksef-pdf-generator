@@ -9,6 +9,7 @@ import { TCreatedPdf } from 'pdfmake/build/pdfmake';
 import { AdditionalDataTypes } from './types/common.types';
 import { generateFARR } from './FARR-generator';
 import { FaRR } from './types/FaRR.types';
+import { initI18next } from "./i18n/i18n-init";
 
 export async function generateInvoice(
   file: File,
@@ -29,6 +30,8 @@ export async function generateInvoice(
   const wersja: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
 
   let pdf: TCreatedPdf;
+
+  await initI18next();
 
   return new Promise((resolve): void => {
     switch (wersja) {

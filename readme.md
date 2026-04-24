@@ -94,6 +94,13 @@ Raport: /coverage/index.html
 
 ---
 
+### 6.Lokalizacja - i18next
+
+Biblioteka wspiera lokalizację, poprzez użycie biblioteki i18next. Pliki z tłumaczeniami należy umieścic w folderze
+** src/lib-public/i18n/lang **. Dokumentacja samej biblioteki i18next znajduje się pod adresem https://www.i18next.com/.
+
+---
+
 ### 1. Nazewnictwo zmiennych i metod
 
 - **Polsko-angielskie nazwy** stosowane w zmiennych, typach i metodach wynikają bezpośrednio ze struktury pliku schemy
