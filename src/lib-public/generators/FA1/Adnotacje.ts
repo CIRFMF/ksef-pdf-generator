@@ -10,6 +10,7 @@ import {
 import { Adnotacje } from '../../types/fa1.types';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
+import i18n from 'i18next';
 
 export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
   const result: Content[] = [];
@@ -22,7 +23,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
         firstColumn,
         secondColumn,
         {
-          text: 'Dostawa towarów lub świadczenie usług zwolnionych od podatku na podstawie art. 43 ust. 1, art. 113 ust. 1 i 9 albo przepisów wydanych na podstawie art. 82 ust. 3 lub na podstawie innych przepisów',
+          text: i18n.t('invoice.annotations.noTaxDelivery'),
         },
         true
       );
@@ -31,15 +32,15 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
           firstColumn,
           secondColumn,
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Przepis ustawy albo aktu wydanego na podstawie ustawy, na podstawie którego podatnik stosuje adnotacje od podatku'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument')
           ),
           true
         );
         addToColumn(
           firstColumn,
           secondColumn,
-          createLabelText('Przepis ustawy albo aktu wydanego na podstawie ustawy: ', adnotacje.P_19A._text),
+          createLabelText(i18n.t('invoice.annotations.law'), adnotacje.P_19A._text),
           true
         );
       }
@@ -48,15 +49,15 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
           firstColumn,
           secondColumn,
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Przepis dyrektywy 2006/112/WE, który zwalnia od podatku taką dostawę towarów lub takie świadczenie usług'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument2')
           ),
           true
         );
         addToColumn(
           firstColumn,
           secondColumn,
-          createLabelText('Przepis dyrektywy: ', adnotacje.P_19B._text),
+          createLabelText(i18n.t('invoice.annotations.directiveLaw'), adnotacje.P_19B._text),
           true
         );
       }
@@ -65,56 +66,59 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
           firstColumn,
           secondColumn,
           createLabelText(
-            'Podstawa zwolnienia od podatku: ',
-            'Inna podstawa prawna wskazującą na to, że dostawa towarów lub świadczenie usług korzysta ze zwolnienia'
+            i18n.t('invoice.annotations.noTaxBase'),
+            i18n.t('invoice.annotations.noTaxBaseDocument3')
           ),
           true
         );
         addToColumn(
           firstColumn,
           secondColumn,
-          createLabelText('Inna podstawa prawna: ', adnotacje.P_19C._text),
+          createLabelText(i18n.t('invoice.annotations.otherLaw'), adnotacje.P_19C._text),
           true
         );
       }
     }
 
     if (adnotacje.P_18A?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: 'Mechanizm podzielonej płatności' });
+      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.partialPayMechanism') });
     }
     if (adnotacje.P_16?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: 'Metoda kasowa' });
+      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.cashMethod') });
     }
     if (adnotacje.P_18?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: 'Odwrotne obciążenie' });
+      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.reverseTax') });
     }
     if (adnotacje.P_23?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: 'Procedura trójstronna uproszczona' });
+      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.threePartsSimplerMethod') });
     }
 
     if (adnotacje.P_PMarzy?._text === '1') {
       let valueMarzy = '';
 
       if (adnotacje.P_PMarzy_3_1?._text === '1') {
-        valueMarzy = 'towary używane';
+        valueMarzy = i18n.t('invoice.annotations.usedGoods');
       } else if (adnotacje.P_PMarzy_3_2?._text === '1') {
-        valueMarzy = 'dzieła sztuki';
+        valueMarzy = i18n.t('invoice.annotations.artPieces');
       } else if (adnotacje.P_PMarzy_2?._text === '1') {
-        valueMarzy = 'biura podróży';
+        valueMarzy = i18n.t('invoice.annotations.travelAgencies');
       } else if (adnotacje.P_PMarzy_3_3?._text === '1') {
-        valueMarzy = 'przedmioty kolekcjonerskie i antyki';
+        valueMarzy = i18n.t('invoice.annotations.antiques');
       }
-      addToColumn(firstColumn, secondColumn, createLabelText('Procedura marży: ', valueMarzy));
+      addToColumn(
+        firstColumn,
+        secondColumn,
+        createLabelText(i18n.t('invoice.annotations.marginProcedure'), valueMarzy)
+      );
     }
 
     if (adnotacje.P_17?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: 'Samofakturowanie' });
+      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.selfInvoice') });
     }
 
     if (adnotacje.P_22?._text === '1') {
       let obowiazekVAT: Content[] = [];
-
-      obowiazekVAT = [...createLabelText('Wewnątrzwspólnotowe dostawy nowych środków transportu', ' ')];
+      obowiazekVAT = [...createLabelText(i18n.t('invoice.annotations.newTransportsDelivery'), ' ')];
       if (obowiazekVAT) {
         firstColumn = [firstColumn, ...obowiazekVAT];
       }
@@ -126,7 +130,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
 
     if (result.length) {
       result.unshift(verticalSpacing(1));
-      result.unshift(createHeader('Adnotacje'));
+      result.unshift(createHeader(i18n.t('invoice.annotations.header')));
       result.unshift(verticalSpacing(1));
       result.push(verticalSpacing(1));
     }
@@ -153,121 +157,112 @@ export function generateDostawy(adnotacje: Adnotacje): Content[] {
 
   if (hasValue(adnotacje.P_22A)) {
     table.push([
-      formatText('Data dopuszczenia nowego środka transportu do użytku', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportApprovalDate'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22A?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(adnotacje.P_22BMK)) {
     table.push([
-      formatText('Marka nowego środka transportu', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportBrand'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22BMK?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(adnotacje.P_22BMD)) {
     table.push([
-      formatText('Model nowego środka transportu', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportModel'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22BMD?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(adnotacje.P_22BK)) {
     table.push([
-      formatText('Kolor nowego środka transportu', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportColor'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22BK?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(adnotacje.P_22BNR)) {
     table.push([
-      formatText('Numer rejestracyjny nowego środka transportu', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportRegistrationNumber'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22BNR?._text, FormatTyp.Default),
     ]);
   }
   if (hasValue(adnotacje.P_22BRP)) {
     table.push([
-      formatText('Rok produkcji nowego środka transportu', FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.transportProductionYear'), FormatTyp.GrayBoldTitle),
       formatText(adnotacje.P_22BRP?._text, FormatTyp.Default),
     ]);
   }
   if (anyP22B) {
     table.push([
-      formatText('Rodzaj pojazdu', FormatTyp.GrayBoldTitle),
-      formatText(
-        'Dostawa dotyczy pojazdów lądowych, o których mowa w art. 2 pkt 10 lit. a ustawy',
-        FormatTyp.Default
-      ),
+      formatText(i18n.t('invoice.annotations.transportType'), FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.landDelivery'), FormatTyp.Default),
     ]);
     if (hasValue(adnotacje.P_22B)) {
       table.push([
-        formatText('Przebieg pojazdu', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.transportMileage'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22B?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22B1)) {
       table.push([
-        formatText('Numer VIN', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.vin'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22B1?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22B2)) {
       table.push([
-        formatText('Numer nadwozia', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.bodyNumber'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22B2?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22B3)) {
       table.push([
-        formatText('Numer podwozia', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.chassisNumber'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22B3?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22B4)) {
       table.push([
-        formatText('Numer ramy', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.frameNumber'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22B4?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22BT)) {
       table.push([
-        formatText('Typ nowego środka transportu', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.newTransportType'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22BT?._text, FormatTyp.Default),
       ]);
     }
   } else if (anyP22C) {
     table.push([
-      formatText('Rodzaj pojazdu', FormatTyp.GrayBoldTitle),
-      formatText(
-        'Dostawa dotyczy jednostek pływających, o których mowa w art. 2 pkt 10 lit. b ustawy',
-        FormatTyp.Default
-      ),
+      formatText(i18n.t('invoice.annotations.transportType'), FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.boatDelivery'), FormatTyp.Default),
     ]);
     if (hasValue(adnotacje.P_22C)) {
       table.push([
-        formatText('Przebieg pojazdu', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.transportMileage'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22C?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22C1)) {
       table.push([
-        formatText('Numer kadłuba nowego środka transportu', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.hullNumber'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22C1?._text, FormatTyp.Default),
       ]);
     }
   } else if (anyP22D) {
     table.push([
-      formatText('Rodzaj pojazdu', FormatTyp.GrayBoldTitle),
-      formatText(
-        'Dostawa dotyczy statków powietrznych, o których mowa w art. 2 pkt 10 lit. c ustawy',
-        FormatTyp.Default
-      ),
+      formatText(i18n.t('invoice.annotations.transportType'), FormatTyp.GrayBoldTitle),
+      formatText(i18n.t('invoice.annotations.airDelivery'), FormatTyp.Default),
     ]);
     if (hasValue(adnotacje.P_22D)) {
       table.push([
-        formatText('Przebieg pojazdu', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.transportMileage'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22D?._text, FormatTyp.Default),
       ]);
     }
     if (hasValue(adnotacje.P_22D1)) {
       table.push([
-        formatText('Numer fabryczny nowego środka transportu<', FormatTyp.GrayBoldTitle),
+        formatText(i18n.t('invoice.annotations.factoryNumber'), FormatTyp.GrayBoldTitle),
         formatText(adnotacje.P_22D1?._text, FormatTyp.Default),
       ]);
     }

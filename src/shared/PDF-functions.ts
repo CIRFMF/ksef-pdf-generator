@@ -215,12 +215,14 @@ export function createLabelTextArray(data: CreateLabelTextData[]): Content[] {
   ];
 }
 
-export function addThousandSeparator(value: string, thousandSeparator = ' ', decimalSeparator = ','): string {
+export function addThousandSeparator(
+  value: string,
+  thousandSeparator: string = ' ',
+  decimalSeparator: string = ','
+): string {
   const splitRegex = /\B(?=(\d{3})+(?!\d))/g;
-
   if (value.includes(decimalSeparator)) {
     const splitValue = value.split(decimalSeparator);
-
     return `${splitValue[0].replace(splitRegex, thousandSeparator)}${decimalSeparator}${splitValue[1]}`;
   } else {
     return value.replace(splitRegex, thousandSeparator);
@@ -471,7 +473,7 @@ export function getContentTable<T>(
 
       return formatText(
         makeBreakable(
-          header.mappingData && value ? header.mappingData[value] : (value ?? ''),
+          header.mappingData && value ? translateMap(value, header.mappingData) : (value ?? ''),
           wordBreak ?? 40
         ),
         header.format ?? FormatTyp.Default,
@@ -568,7 +570,7 @@ export function getTStawkaPodatku(code: string, version: 1 | 2 | 3 | 'RR', P_PMa
   }
 
   if (TStawkaPodatkuVersioned[code]) {
-    return TStawkaPodatkuVersioned[code];
+    return translateMap(TStawkaPodatkuVersioned[code], TStawkaPodatkuVersioned);
   }
   return code;
 }

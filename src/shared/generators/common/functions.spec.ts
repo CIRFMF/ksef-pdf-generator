@@ -14,6 +14,7 @@ import {
   getDateTimeWithoutSeconds,
   translateMap,
 } from '@shared/generators/common/functions';
+import i18n from 'i18next';
 
 vi.unmock('@shared/generators/common/functions');
 
@@ -25,23 +26,26 @@ describe('translateMap RolaPodmimotu', () => {
 
   it('returns correct string for FA=1', () => {
     const key = Object.keys(FA1RolaPodmiotu3)[0];
-    const expected = FA1RolaPodmiotu3[key as keyof typeof FA1RolaPodmiotu3];
+    const expectedKey = FA1RolaPodmiotu3[key as keyof typeof FA1RolaPodmiotu3];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, FA1RolaPodmiotu3)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA1RolaPodmiotu3)).toBe(expectedTranslation);
   });
 
   it('returns correct string for FA=2', () => {
     const key = Object.keys(FA2RolaPodmiotu3)[0];
-    const expected = FA2RolaPodmiotu3[key as keyof typeof FA2RolaPodmiotu3];
+    const expectedKey = FA2RolaPodmiotu3[key as keyof typeof FA2RolaPodmiotu3];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, FA2RolaPodmiotu3)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA2RolaPodmiotu3)).toBe(expectedTranslation);
   });
 
   it('returns correct string for FA=3', () => {
     const key = Object.keys(FA3RolaPodmiotu3)[0];
-    const expected = FA3RolaPodmiotu3[key as keyof typeof FA3RolaPodmiotu3];
+    const expectedKey = FA3RolaPodmiotu3[key as keyof typeof FA3RolaPodmiotu3];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, FA3RolaPodmiotu3)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FA3RolaPodmiotu3)).toBe(expectedTranslation);
   });
 });
 
@@ -52,9 +56,10 @@ describe('FormaPlatnosci', () => {
 
   it('returns correct string for known key', () => {
     const key = Object.keys(FormaPlatnosci)[0];
-    const expected = FormaPlatnosci[key as keyof typeof FormaPlatnosci];
+    const expectedKey = FormaPlatnosci[key as keyof typeof FormaPlatnosci];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, FormaPlatnosci)).toBe(expected);
+    expect(translateMap({ _text: key } as any, FormaPlatnosci)).toBe(expectedTranslation);
   });
 });
 
@@ -65,9 +70,10 @@ describe('getRodzajTransportuString', () => {
 
   it('returns correct string for known key', () => {
     const key = Object.keys(RodzajTransportu)[0];
-    const expected = RodzajTransportu[key as keyof typeof RodzajTransportu];
+    const expectedKey = RodzajTransportu[key as keyof typeof RodzajTransportu];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, RodzajTransportu)).toBe(expected);
+    expect(translateMap({ _text: key } as any, RodzajTransportu)).toBe(expectedTranslation);
   });
 });
 
@@ -78,9 +84,10 @@ describe('getTypRachunkowWlasnych', () => {
 
   it('returns correct string for known key', () => {
     const key = Object.keys(TypRachunkowWlasnych)[0];
-    const expected = TypRachunkowWlasnych[key as keyof typeof TypRachunkowWlasnych];
+    const expectedKey = TypRachunkowWlasnych[key as keyof typeof TypRachunkowWlasnych];
+    const expectedTranslation = i18n.t(expectedKey);
 
-    expect(translateMap({ _text: key } as any, TypRachunkowWlasnych)).toBe(expected);
+    expect(translateMap({ _text: key } as any, TypRachunkowWlasnych)).toBe(expectedTranslation);
   });
 });
 

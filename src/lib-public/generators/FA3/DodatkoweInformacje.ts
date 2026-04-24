@@ -1,97 +1,98 @@
-import { Content } from 'pdfmake/interfaces';
+import {Content} from 'pdfmake/interfaces';
 import {
-  createHeader,
-  createSection,
-  createSubHeader,
-  formatText,
-  getContentTable,
-  getTable,
-  getValue,
+    createHeader,
+    createSection,
+    createSubHeader,
+    formatText,
+    getContentTable,
+    getTable,
+    getValue,
 } from '../../../shared/PDF-functions';
-import { HeaderDefine } from '../../../shared/types/pdf-types';
-import { DodatkowyOpi, Fa } from '../../types/fa3.types';
+import {HeaderDefine} from '../../../shared/types/pdf-types';
+import {DodatkowyOpi, Fa} from '../../types/fa3.types';
 import FormatTyp from '../../../shared/enums/common.enum';
+import i18n from "i18next";
 
 export function generateDodatkoweInformacje(faVat: Fa): Content[] {
-  const tpLabel: Content[] = [];
+    const tpLabel: Content[] = [];
 
-  if (getValue(faVat.TP) === '1') {
-    tpLabel.push(
-      formatText('- Istniejące powiązania między nabywcą a dokonującym dostawy towarów lub usługodawcą')
-    );
-  }
+    if (getValue(faVat.TP) === '1') {
+        tpLabel.push(
+            formatText(i18n.t('invoice.additionalInformation.tpLabel'))
+        );
+    }
 
-  const fpLabel: Content[] = [];
-  
-  if (getValue(faVat.FP) === '1') {
-    fpLabel.push(formatText('- Faktura, o której mowa w art. 109 ust. 3d ustawy'));
-  }
+    const fpLabel: Content[] = [];
 
-  const zwrotAkcyzyLabel: Content[] = [];
+    if (getValue(faVat.FP) === '1') {
+        fpLabel.push(formatText(i18n.t('invoice.additionalInformation.fpLabel')));
+    }
 
-  if (getValue(faVat.ZwrotAkcyzy) === '1') {
-    zwrotAkcyzyLabel.push(
-      formatText(
-        '- Informacja dodatkowa związana ze zwrotem podatku akcyzowego zawartego w cenie oleju napędowego'
-      )
-    );
-  }
+    const zwrotAkcyzyLabel: Content[] = [];
 
-  const labels = [tpLabel, fpLabel, zwrotAkcyzyLabel].filter((el) => el.length > 0);
-  const table: Content[] = [
-    ...createHeader('Dodatkowe informacje'),
-    ...labels,
-    ...generateDodatkowyOpis(faVat.DodatkowyOpis),
-  ];
+    if (getValue(faVat.ZwrotAkcyzy) === '1') {
+        zwrotAkcyzyLabel.push(
+            formatText(
+                i18n.t('invoice.additionalInformation.exciseTaxRefund')
+            )
+        );
+    }
 
-  return table.length > 1 ? createSection(table, true) : [];
+    const labels = [tpLabel, fpLabel, zwrotAkcyzyLabel].filter((el) => el.length > 0);
+    const table: Content[] = [
+        ...createHeader(i18n.t('invoice.additionalInformation.additionalInformationLabel')),
+        ...labels,
+        ...generateDodatkowyOpis(faVat.DodatkowyOpis),
+    ];
+
+    return table.length > 1 ? createSection(table, true) : [];
 }
 
 function generateDodatkowyOpis(fakturaZaliczkowaData: DodatkowyOpi[] | undefined): Content[] {
-  if (!fakturaZaliczkowaData) {
-    return [];
-  }
-  const fakturaZaliczkowa = getTable(fakturaZaliczkowaData)?.map((item, index) => ({
-    ...item,
-    lp: { _text: index + 1 },
-  }));
-  const table: Content[] = createSubHeader('Dodatkowy opis');
+    if (!fakturaZaliczkowaData) {
+        return [];
+    }
+    const fakturaZaliczkowa = getTable(fakturaZaliczkowaData)?.map((item, index) => ({
+        ...item,
+        lp: {_text: index + 1},
+    }));
+    const table: Content[] = createSubHeader(i18n.t('invoice.additionalInformation.additionalDescription'));
 
-  const fakturaZaliczkowaHeader: HeaderDefine[] = [
-    {
-      name: 'lp',
-      title: 'Lp.',
-      format: FormatTyp.Default,
-      width: 'auto',
-    },
-    {
-      name: 'NrWiersza',
-      title: 'Numer wiersza',
-      format: FormatTyp.Default,
-      width: 'auto',
-    },
-    {
-      name: 'Klucz',
-      title: 'Rodzaj informacji',
-      format: FormatTyp.Default,
-      width: 'auto',
-    },
-    {
-      name: 'Wartosc',
-      title: 'Treść informacji',
-      format: FormatTyp.Default,
-      width: '*',
-    },
-  ];
-  const tableFakturaZaliczkowa = getContentTable<(typeof fakturaZaliczkowa)[0]>(
-    fakturaZaliczkowaHeader,
-    fakturaZaliczkowa,
-    '*',
-    [0, 0, 0, 0]
-  );
+    const fakturaZaliczkowaHeader: HeaderDefine[] = [
+        {
+            name: 'lp',
+            title: i18n.t('invoice.additionalInformation.ordinalNumber'),
+            format: FormatTyp.Default,
+            width: 'auto',
+        },
+        {
+            name: 'NrWiersza',
+            title: i18n.t('invoice.additionalInformation.rowNumber'),
+            format: FormatTyp.Default,
+            width: 'auto',
+        },
+        {
+            name: 'Klucz',
+            title: i18n.t('invoice.additionalInformation.infoType'),
+            format: FormatTyp.Default,
+            width: 'auto',
+        },
+        {
+            name: 'Wartosc',
+            title: i18n.t('invoice.additionalInformation.infoContent'),
+            format: FormatTyp.Default,
+            width: '*',
+        },
+    ];
+    const tableFakturaZaliczkowa = getContentTable<(typeof fakturaZaliczkowa)[0]>(
+        fakturaZaliczkowaHeader,
+        fakturaZaliczkowa,
+        '*',
+        [0, 0, 0, 0]
+    );
 
-  if (tableFakturaZaliczkowa.content) {
-    table.push(tableFakturaZaliczkowa.content);
-  }
-  return table;
+    if (tableFakturaZaliczkowa.content) {
+        table.push(tableFakturaZaliczkowa.content);
+    }
+    return table;
 }

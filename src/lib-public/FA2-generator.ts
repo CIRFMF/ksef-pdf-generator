@@ -21,6 +21,7 @@ import { generateRozliczenie } from './generators/common/Rozliczenie';
 import { generateStopka } from './generators/common/Stopka';
 import { AdditionalDataTypes } from './types/common.types';
 import { Faktura } from './types/fa2.types';
+import { generateWatermark } from '@shared/consts/watermark';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -29,7 +30,7 @@ export function generateFA2(invoice: Faktura, additionalData: AdditionalDataType
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
   const docDefinition: TDocumentDefinitions = {
-    watermark: additionalData?.watermark,
+    ...generateWatermark(additionalData?.watermark),
     content: [
       ...generateNaglowek(invoice.Fa, additionalData),
       generateDaneFaKorygowanej(invoice.Fa),

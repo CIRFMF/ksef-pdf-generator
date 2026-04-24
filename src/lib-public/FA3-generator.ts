@@ -21,6 +21,7 @@ import { Faktura } from './types/fa3.types';
 import { ZamowienieKorekta } from './enums/invoice.enums';
 import { AdditionalDataTypes } from './types/common.types';
 import { Position } from '../shared/enums/common.enum';
+import { generateWatermark } from '@shared/consts/watermark';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -29,7 +30,7 @@ export function generateFA3(invoice: Faktura, additionalData: AdditionalDataType
     invoice.Fa?.RodzajFaktury?._text == TRodzajFaktury.KOR && hasValue(invoice.Fa?.OkresFaKorygowanej);
   const rabatOrRowsInvoice: Content = isKOR_RABAT ? generateRabat(invoice.Fa!) : generateWiersze(invoice.Fa!);
   const docDefinition: TDocumentDefinitions = {
-    watermark: additionalData?.watermark,
+    ...generateWatermark(additionalData?.watermark),
     content: [
       ...generateNaglowek(invoice.Fa, additionalData, invoice.Zalacznik),
       generateDaneFaKorygowanej(invoice.Fa),

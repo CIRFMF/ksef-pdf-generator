@@ -14,6 +14,7 @@ import { FP, Zamowienie } from '../../types/fa2.types';
 import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
 import { ZamowienieKorekta } from '../../enums/invoice.enums';
+import i18n from 'i18next';
 
 export function generateZamowienie(
   orderData: Zamowienie | undefined,
@@ -36,42 +37,67 @@ export function generateZamowienie(
     return el;
   });
   const definedHeaderLp: HeaderDefine[] = [
-    { name: 'NrWierszaZam', title: 'Lp.', format: FormatTyp.Default, width: 'auto' },
+    { name: 'NrWierszaZam', title: i18n.t('invoice.order.lp'), format: FormatTyp.Default, width: 'auto' },
   ];
   const definedHeader1: HeaderDefine[] = [
-    { name: 'UU_ID', title: 'Unikalny numer wiersza', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_7Z', title: 'Nazwa towaru lub usługi', format: FormatTyp.Default, width: '*' },
     {
-      name: 'P_9AZ',
-      title: 'Cena jedn. netto',
-      format: formatAbs,
-      width: 'auto',
-    },
-    { name: 'P_8BZ', title: 'Ilość', format: FormatTyp.Right, width: 'auto' },
-    { name: 'P_8AZ', title: 'Miara', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12Z', title: 'Stawka podatku', format: FormatTyp.Default, width: 'auto' },
-    { name: 'P_12Z_XII', title: 'Stawka podatku OSS', format: FormatTyp.Percentage, width: 'auto' },
-    {
-      name: 'P_12Z_Zal_15',
-      title: 'Znacznik dla towaru lub usługi z zał. nr 15 do ustawy',
+      name: 'UU_ID',
+      title: i18n.t('invoice.order.uniqueRowNumber'),
       format: FormatTyp.Default,
       width: 'auto',
     },
-    { name: 'P_11NettoZ', title: 'Wartość sprzedaży netto', format: formatAbs, width: 'auto' },
-    { name: 'P_11VatZ', title: 'Kwota podatku', format: formatAbs, width: 'auto' },
+    { name: 'P_7Z', title: i18n.t('invoice.order.productName'), format: FormatTyp.Default, width: '*' },
+    {
+      name: 'P_9AZ',
+      title: i18n.t('invoice.order.netUnitPrice'),
+      format: formatAbs,
+      width: 'auto',
+    },
+    { name: 'P_8BZ', title: i18n.t('invoice.order.quantity'), format: FormatTyp.Right, width: 'auto' },
+    { name: 'P_8AZ', title: i18n.t('invoice.order.unit'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_12Z', title: i18n.t('invoice.order.taxRate'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'P_12Z_XII',
+      title: i18n.t('invoice.order.ossTaxRate'),
+      format: FormatTyp.Percentage,
+      width: 'auto',
+    },
+    {
+      name: 'P_12Z_Zal_15',
+      title: i18n.t('invoice.order.productMarker'),
+      format: FormatTyp.Default,
+      width: 'auto',
+    },
+    { name: 'P_11NettoZ', title: i18n.t('invoice.order.netSalesValue'), format: formatAbs, width: 'auto' },
+    { name: 'P_11VatZ', title: i18n.t('invoice.order.taxAmount'), format: formatAbs, width: 'auto' },
   ];
 
   const definedHeader2: HeaderDefine[] = [
-    { name: 'UU_IDZ', title: 'Numer umowy / Zamów.', format: FormatTyp.Default, width: 'auto' },
-    { name: 'GTINZ', title: 'GTIN', format: FormatTyp.Default, width: 'auto' },
-    { name: 'PKWiUZ', title: 'PKWiU', format: FormatTyp.Default, width: 'auto' },
-    { name: 'CNZ', title: 'CN', format: FormatTyp.Default, width: 'auto' },
-    { name: 'PKOBZ', title: 'PKOB', format: FormatTyp.Default, width: 'auto' },
-    { name: 'KwotaAkcyzyZ', title: 'Kwota podatku akcyzowego', format: FormatTyp.Currency, width: 'auto' },
-    { name: 'GTUZ', title: 'GTU', format: FormatTyp.Default, width: 'auto' },
-    { name: 'ProceduraZ', title: 'Oznaczenia dotyczące procedur', format: FormatTyp.Default, width: '*' },
-    { name: 'IndeksZ', title: 'Indeks', format: FormatTyp.Default, width: 'auto' },
-    { name: 'StanPrzedZ', title: 'Stan przed', format: FormatTyp.Boolean, width: 'auto' },
+    { name: 'UU_IDZ', title: i18n.t('invoice.order.orderNumber'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'GTINZ', title: i18n.t('invoice.order.gtin'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'PKWiUZ', title: i18n.t('invoice.order.pkwiu'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'CNZ', title: i18n.t('invoice.order.cn'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'PKOBZ', title: i18n.t('invoice.order.pkob'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'KwotaAkcyzyZ',
+      title: i18n.t('invoice.order.exciseTaxAmount'),
+      format: FormatTyp.Currency,
+      width: 'auto',
+    },
+    { name: 'GTUZ', title: i18n.t('invoice.order.gtu'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'ProceduraZ',
+      title: i18n.t('invoice.order.procedureMarkings'),
+      format: FormatTyp.Default,
+      width: '*',
+    },
+    { name: 'IndeksZ', title: i18n.t('invoice.order.index'), format: FormatTyp.Default, width: 'auto' },
+    {
+      name: 'StanPrzedZ',
+      title: i18n.t('invoice.order.stateBefore'),
+      format: FormatTyp.Boolean,
+      width: 'auto',
+    },
   ];
 
   let content: TableWithFields = getContentTable<(typeof orderTable)[0]>(
@@ -103,13 +129,13 @@ export function generateZamowienie(
       table.push(content.content);
     }
   }
-  const ceny = `Faktura wystawiona w walucie ${KodWaluty}`;
+  const ceny = i18n.t('invoice.order.issuedInCurrency', { currency: KodWaluty });
   let opis: Content = '';
 
   if (Number(p_15) > 0 && rodzajFaktury == TRodzajFaktury.ZAL) {
     opis = {
       stack: createLabelTextArray([
-        { value: 'Kwota zapłaty (zaliczki) dokumentowana fakturą: ', formatTyp: FormatTyp.LabelGreater },
+        { value: i18n.t('invoice.order.advancePaymentAmount'), formatTyp: FormatTyp.LabelGreater },
         { value: p_15, formatTyp: FormatTyp.CurrencyGreater },
       ]),
       alignment: Position.RIGHT,
@@ -117,13 +143,12 @@ export function generateZamowienie(
     };
   } else if (
     zamowienieKorekta !== ZamowienieKorekta.BeforeCorrection &&
-    rodzajFaktury == TRodzajFaktury.KOR_ZAL &&
-    Number(p_15) >= 0
+    rodzajFaktury == TRodzajFaktury.KOR_ZAL
   ) {
     opis = {
       stack: createLabelTextArray([
         {
-          value: 'Korekta kwoty zapłaty (zaliczki) dokumentowana fakturą: ',
+          value: i18n.t('invoice.order.advancePaymentAmountCorrection'),
           formatTyp: FormatTyp.LabelGreater,
         },
         { value: p_15, formatTyp: FormatTyp.CurrencyGreater },
@@ -139,7 +164,7 @@ export function generateZamowienie(
         ceny,
         {
           text: [
-            'Wartość zamówienia lub umowy z uwzględnieniem kwoty podatku: ',
+            i18n.t('invoice.order.orderValueWithTax'),
             formatText(orderData.WartoscZamowienia?._text, FormatTyp.Currency),
           ],
           marginBottom: 4,

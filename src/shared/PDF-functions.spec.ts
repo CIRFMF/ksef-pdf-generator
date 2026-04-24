@@ -141,8 +141,8 @@ describe('generateQRCode', () => {
 });
 
 describe('getKraj', () => {
-  it('returns country name if code exists, else returns input code', () => {
-    expect(getKraj('PL')).toBe('Polska');
+  it('returns country name translation key if code exists, else returns input code', () => {
+    expect(getKraj('PL')).toBe('const.countries.PL');
     expect(getKraj('XYZ')).toBe('XYZ');
   });
 });
