@@ -15,18 +15,18 @@ import FormatTyp from '../../../shared/enums/common.enum';
 import { TableWithFields, TerminPlatnosciContent } from '../../types/fa1-additional-types';
 import { translateMap } from '@shared/generators/common/functions';
 import { FormaPlatnosci } from '@shared/consts/FA.const';
+import i18n from 'i18next';
 
 export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (!platnosc) {
     return [];
   }
-
   const terminPlatnosci: TerminyPlatnosci[] = getTable(platnosc.TerminyPlatnosci);
 
   const zaplataCzesciowaHeader: HeaderDefine[] = [
     {
       name: 'TerminPlatnosci',
-      title: 'Termin płatności',
+      title: i18n.t('invoice.payment.maturityDate'),
       format: FormatTyp.Date,
     },
   ];
@@ -34,7 +34,7 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   if (terminPlatnosci.some((termin: TerminyPlatnosci): FP | undefined => termin.TerminPlatnosciOpis)) {
     zaplataCzesciowaHeader.push({
       name: 'TerminPlatnosciOpis',
-      title: 'Opis płatności',
+      title: i18n.t('invoice.payment.paymentDescription'),
       format: FormatTyp.Date,
     });
   }
@@ -42,30 +42,30 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   const zaplataCzesciowaNaglowek: HeaderDefine[] = [
     {
       name: 'DataZaplatyCzesciowej',
-      title: 'Data zapłaty częściowej',
+      title: i18n.t('invoice.payment.partialPaymentDate'),
       format: FormatTyp.Date,
     },
-    { name: 'KwotaZaplatyCzesciowej', title: 'Kwota zapłaty częściowej', format: FormatTyp.Currency },
-    { name: 'FormaPlatnosci', title: 'Forma płatności', format: FormatTyp.FormOfPayment },
+    { name: 'KwotaZaplatyCzesciowej', title: i18n.t('invoice.payment.partialPaymentAmount'), format: FormatTyp.Currency },
+    { name: 'FormaPlatnosci', title: i18n.t('invoice.payment.paymentMethod'), format: FormatTyp.FormOfPayment },
   ];
 
-  const table: Content[] = [generateLine(), ...createHeader('Płatność')];
+  const table: Content[] = [generateLine(), ...createHeader(i18n.t('invoice.payment.payment'))];
 
   if (platnosc.Zaplacono?._text === '1') {
-    table.push(createLabelText('Informacja o płatności: ', 'Zapłacono'));
-    table.push(createLabelText('Data zapłaty: ', platnosc.DataZaplaty, FormatTyp.Date));
+    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.paidStatus')));
+    table.push(createLabelText(i18n.t('invoice.payment.paymentDate'), platnosc.DataZaplaty, FormatTyp.Date));
   } else if (platnosc.ZaplataCzesciowa?._text === '1') {
-    table.push(createLabelText('Informacja o płatności: ', 'Zapłata częściowa'));
+    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.partialPayment')));
   } else {
-    table.push(createLabelText('Informacja o płatności: ', 'Brak zapłaty'));
+    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.noPayment')));
   }
 
   if (hasValue(platnosc.FormaPlatnosci)) {
-    table.push(createLabelText('Forma płatności: ', translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)));
+    table.push(createLabelText(i18n.t('invoice.payment.paymentMethod2'), translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)));
   } else {
     if (platnosc.OpisPlatnosci?._text) {
-      table.push(createLabelText('Forma płatności: ', 'Płatność inna'));
-      table.push(createLabelText('Opis płatności innej: ', platnosc.OpisPlatnosci));
+      table.push(createLabelText(i18n.t('invoice.payment.paymentMethod2'), i18n.t('invoice.payment.paymentDifferent')));
+      table.push(createLabelText(i18n.t('invoice.payment.otherPaymentDescription'), platnosc.OpisPlatnosci));
     }
   }
 
@@ -107,17 +107,17 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     );
   } else if (terminPlatnosci.length > 0) {
     if (tableTerminPlatnosci.content) {
-      table.push(generateTwoColumns([], tableTerminPlatnosci.content));
+      table.push(generateTwoColumns(tableTerminPlatnosci.content, []));
     }
   } else if (zaplataCzesciowa.length > 0 && tableZaplataCzesciowa.content) {
     table.push(tableZaplataCzesciowa.content);
   }
 
   const rachunekBankowy: Content[][] = getTable(platnosc.RachunekBankowy).map((rachunek) =>
-    generujRachunekBankowy([rachunek], 'Numer rachunku bankowego')
+    generujRachunekBankowy([rachunek], i18n.t('invoice.payment.bankAccountNumber'))
   );
   const rachunekBankowyFaktora: Content[][] = getTable(platnosc.RachunekBankowyFaktora).map((rachunek) =>
-    generujRachunekBankowy([rachunek], 'Numer rachunku bankowego faktora')
+    generujRachunekBankowy([rachunek], i18n.t('invoice.payment.factorsBankAccountNumber'))
   );
   const rachunkiBankowe: Content[][] = [...rachunekBankowy, ...rachunekBankowyFaktora];
 
@@ -130,9 +130,9 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
   }
 
   if (platnosc.Skonto) {
-    table.push(createHeader('Skonto', [0, 0]));
-    table.push(createLabelText('Warunki skonta: ', platnosc.Skonto.WarunkiSkonta));
-    table.push(createLabelText('Wysokość skonta: ', platnosc.Skonto.WysokoscSkonta));
+    table.push(createHeader(i18n.t('invoice.payment.conditionalDiscount'), [0, 0]));
+    table.push(createLabelText(i18n.t('invoice.payment.discountConditions'), platnosc.Skonto.WarunkiSkonta));
+    table.push(createLabelText(i18n.t('invoice.payment.discountAmount'), platnosc.Skonto.WysokoscSkonta));
   }
   return table;
 }
