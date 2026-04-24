@@ -14,6 +14,7 @@ import { FP, Umowy, WarunkiTransakcji, Zamowienia } from '../../types/fa1.types'
 import { generateTransport } from './Transport';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { FormContentState } from '../../../shared/types/additional-data.types';
+import i18n from 'i18next';
 
 export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji | undefined): Content {
   if (!warunkiTransakcji) {
@@ -25,24 +26,24 @@ export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji |
   const zamowienia: Zamowienia[] = getTable(warunkiTransakcji?.Zamowienia);
   const partiaTowaru: FP[] = getTable(warunkiTransakcji?.NrPartiiTowaru);
   const definedHeaderUmowy: HeaderDefine[] = [
-    { name: 'DataUmowy', title: 'Data umowy', format: FormatTyp.Date },
-    { name: 'NrUmowy', title: 'Numer umowy', format: FormatTyp.Default },
+    { name: 'DataUmowy', title: i18n.t('invoice.transaction.contractDate'), format: FormatTyp.Date },
+    { name: 'NrUmowy', title: i18n.t('invoice.transaction.contractNumber'), format: FormatTyp.Default },
   ];
   const definedHeaderZamowienia: HeaderDefine[] = [
-    { name: 'DataZamowienia', title: 'Data zamówienia', format: FormatTyp.Date },
-    { name: 'NrZamowienia', title: 'Numer zamówienia', format: FormatTyp.Default },
+    { name: 'DataZamowienia', title: i18n.t('invoice.transaction.orderDate'), format: FormatTyp.Date },
+    { name: 'NrZamowienia', title: i18n.t('invoice.transaction.orderNumber'), format: FormatTyp.Default },
   ];
   const definedHeaderPartiaTowaru: HeaderDefine[] = [
-    { name: '', title: 'Numer partii towaru', format: FormatTyp.Default },
+    { name: '', title: i18n.t('invoice.transaction.batchNumber'), format: FormatTyp.Default },
   ];
 
-  table.push(createHeader('Warunki transakcji', [0, 8, 0, 4]));
+  table.push(createHeader(i18n.t('invoice.transaction.header'), [0, 8, 0, 4]));
 
   if (umowy.length > 0) {
     const tabUmowy: FormContentState = getContentTable<(typeof umowy)[0]>(definedHeaderUmowy, umowy, '*');
 
     if (tabUmowy.content) {
-      Kolumny.umowy = [createSubHeader('Umowa'), tabUmowy.content];
+      Kolumny.umowy = [createSubHeader(i18n.t('invoice.transaction.contract')), tabUmowy.content];
     }
   }
   if (zamowienia.length > 0) {
@@ -53,18 +54,18 @@ export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji |
     );
 
     if (tabZamowienia.content && tabZamowienia.fieldsWithValue.length > 0) {
-      Kolumny.zamowienia = [createSubHeader('Zamówienie'), tabZamowienia.content];
+      Kolumny.zamowienia = [createSubHeader(i18n.t('invoice.transaction.order')), tabZamowienia.content];
     }
   }
 
   if (Kolumny.zamowienia.length > 0 || Kolumny.umowy.length > 0) {
-    table.push(generateTwoColumns(Kolumny.umowy, Kolumny.zamowienia));
+    table.push(generateTwoColumns(Kolumny.umowy, Kolumny.zamowienia, 0, false));
   }
   if (warunkiTransakcji.WalutaUmowna?._text || warunkiTransakcji.KursUmowny?._text) {
-    table.push(createHeader('Waluta umowna i kurs umowny', [0, 8, 0, 4]));
+    table.push(createHeader(i18n.t('invoice.transaction.currencyAndRate'), [0, 8, 0, 4]));
 
-    table.push(createLabelText('Waluta umowna: ', warunkiTransakcji.WalutaUmowna));
-    table.push(createLabelText('Kurs umowny: ', warunkiTransakcji.KursUmowny));
+    table.push(createLabelText(i18n.t('invoice.transaction.currency'), warunkiTransakcji.WalutaUmowna));
+    table.push(createLabelText(i18n.t('invoice.transaction.rate'), warunkiTransakcji.KursUmowny));
   }
 
   if (partiaTowaru.length > 0) {
@@ -76,20 +77,21 @@ export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji |
     );
 
     if (tabPartiaTowaru.content) {
-      table.push(generateTwoColumns(tabPartiaTowaru.content, ' '));
+      table.push(generateTwoColumns(tabPartiaTowaru.content, '', 0, false));
     }
   }
 
   table.push(
-    createLabelText('Warunki dostawy towarów: ', warunkiTransakcji.WarunkiDostawy, FormatTyp.MarginTop4)
+    createLabelText(
+      i18n.t('invoice.transaction.deliveryTerms'),
+      warunkiTransakcji.WarunkiDostawy,
+      FormatTyp.MarginTop4
+    )
   );
 
   if (warunkiTransakcji.PodmiotPosredniczacy?._text === '1') {
     table.push(
-      formatText(
-        'Dostawa dokonana przez podmiot, o którym mowa w art. 22 ust. 2d ustawy. Pole dotyczy sytuacji, w której podmiot uczestniczy w transakcji łańcuchowej innej niż procedura trójstronna uproszczona, o której mowa w art. 135 ust. 1 pkt 4 ustawy',
-        [FormatTyp.Label, FormatTyp.MarginTop4]
-      )
+      formatText(i18n.t('invoice.transaction.intermediaryDelivery'), [FormatTyp.Label, FormatTyp.MarginTop4])
     );
   }
 

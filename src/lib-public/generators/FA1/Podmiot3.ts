@@ -16,47 +16,48 @@ import { generateDaneIdentyfikacyjne } from './PodmiotDaneIdentyfikacyjne';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';
 import { translateMap } from '@shared/generators/common/functions';
 import { FA1RolaPodmiotu3 } from '../../../shared/consts/FA.const';
+import i18n from 'i18next';
 
 export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const result: Content[] = [];
 
   const column1: Content[] = [
-    ...createHeader(`Podmiot inny ${index + 1}`),
-    createLabelText('Numer EORI: ', podmiot.NrEORI),
+    ...createHeader(i18n.t('invoice.subject3.otherEntity', { index: index + 1 })),
+    createLabelText(i18n.t('invoice.subject3.eori'), podmiot.NrEORI),
   ];
 
   if (hasValue(podmiot.DaneIdentyfikacyjne?.NrID)) {
-    column1.push(createLabelText('Identyfikator podatkowy inny: ', podmiot.DaneIdentyfikacyjne?.NrID));
+    column1.push(createLabelText(i18n.t('invoice.subject3.otherTaxId'), podmiot.DaneIdentyfikacyjne?.NrID));
   }
   if (getValue(podmiot.DaneIdentyfikacyjne?.BrakID) === '1') {
-    column1.push(createLabelText('Brak identyfikatora ', ' '));
+    column1.push(createLabelText(i18n.t('invoice.subject3.noTaxId'), ' '));
   }
   if (podmiot.DaneIdentyfikacyjne) {
     column1.push(...generateDaneIdentyfikacyjne(podmiot.DaneIdentyfikacyjne));
   }
   column1.push([
-    createLabelText('Rola: ', translateMap(podmiot.Rola, FA1RolaPodmiotu3)),
-    createLabelText('Rola inna: ', podmiot.OpisRoli),
-    createLabelText('Udział: ', podmiot.Udzial, [FormatTyp.Percentage]),
+    createLabelText(i18n.t('invoice.subject3.role'), translateMap(podmiot.Rola, FA1RolaPodmiotu3)),
+    createLabelText(i18n.t('invoice.subject3.otherRole'), podmiot.OpisRoli),
+    createLabelText(i18n.t('invoice.subject3.share'), podmiot.Udzial, [FormatTyp.Percentage]),
   ]);
   const column2: Content[] = [];
 
   if (podmiot.Adres) {
-    column2.push(generatePodmiotAdres(podmiot.Adres, 'Adres', true, [0, 12, 0, 1.3]));
+    column2.push(generatePodmiotAdres(podmiot.Adres, i18n.t('invoice.subject3.address'), true, [0, 12, 0, 1.3]));
   }
   if (podmiot.AdresKoresp) {
     column2.push(
-      ...generatePodmiotAdres(podmiot.AdresKoresp, 'Adres do korespondencji', true, [0, 12, 0, 1.3])
+      ...generatePodmiotAdres(podmiot.AdresKoresp, i18n.t('invoice.subject3.correspondenceAddress'), true, [0, 12, 0, 1.3])
     );
   }
   if (podmiot.Email || podmiot.Telefon) {
     column2.push(
-      formatText('Dane kontaktowe', [FormatTyp.Label, FormatTyp.LabelMargin]),
+      formatText(i18n.t('invoice.subject3.contactData'), [FormatTyp.Label, FormatTyp.LabelMargin]),
       ...generateDaneKontaktowe(podmiot.Email, getTable(podmiot.Telefon))
     );
   }
   if (podmiot.NrKlienta) {
-    column2.push(createLabelText('Numer klienta: ', podmiot.NrKlienta));
+    column2.push(createLabelText(i18n.t('invoice.subject3.clientNumber'), podmiot.NrKlienta));
   }
   result.push(generateTwoColumns(column1, column2));
   return createSection(result, true);
