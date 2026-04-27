@@ -7,6 +7,7 @@ export async function initI18next(): Promise<void> {
     await i18next.init({
       lng: 'pl',
       debug: false,
+      showSupportNotice: false,
       resources: {
         en: { translation: en },
         pl: { translation: pl },
