@@ -24,10 +24,11 @@ import i18n from 'i18next';
 export function generateSzczegoly(faVat: Fa): Content[] {
   const faWiersze: Record<string, FP>[] = getTable(faVat.FaWiersze?.FaWiersz);
   const zamowieniaWiersze: Record<string, FP>[] = getTable(faVat.Zamowienie?.ZamowienieWiersz);
-  const LabelP_6: string =
-    faVat.RodzajFaktury == TRodzajFaktury.ZAL || faVat.RodzajFaktury == TRodzajFaktury.KOR_ZAL
-      ? i18n.t('invoice.details.paymentReceivedDate')
-      : i18n.t('invoice.details.deliveryOrServiceDate');
+  const LabelP_6: string = [TRodzajFaktury.ZAL, TRodzajFaktury.KOR_ZAL].includes(
+    getValue(faVat.RodzajFaktury) as string
+  )
+    ? i18n.t('invoice.details.paymentReceivedDate')
+    : i18n.t('invoice.details.deliveryOrServiceDate');
 
   const P_6Scope: Content[] = generateP_6Scope(faVat.OkresFa?.P_6_Od, faVat.OkresFa?.P_6_Do, i18n);
 
@@ -57,7 +58,11 @@ export function generateSzczegoly(faVat: Fa): Content[] {
       if (Common_KursWaluty.length === 1) {
         kodWalutyLabel1.push(createLabelText(i18n.t('invoice.details.commonCurrencyRate'), ' '));
         kodWalutyLabel2.push(
-          createLabelText(i18n.t('invoice.details.currencyRate'), Common_KursWaluty[0].value, FormatTyp.Currency6)
+          createLabelText(
+            i18n.t('invoice.details.currencyRate'),
+            Common_KursWaluty[0].value,
+            FormatTyp.Currency6
+          )
         );
       }
     } else {
@@ -66,7 +71,11 @@ export function generateSzczegoly(faVat: Fa): Content[] {
       if (Common_KursWaluty.length === 1) {
         kodWalutyLabel1.push(createLabelText(i18n.t('invoice.details.commonCurrencyRate'), ' '));
         kodWalutyLabel2.push(
-          createLabelText(i18n.t('invoice.details.currencyRate'), Common_KursWaluty[0].value, FormatTyp.Currency6)
+          createLabelText(
+            i18n.t('invoice.details.currencyRate'),
+            Common_KursWaluty[0].value,
+            FormatTyp.Currency6
+          )
         );
       }
     }
@@ -123,13 +132,17 @@ function generateP_6Scope(P_6_Od: TypesOfValues, P_6_Do: TypesOfValues, i18n: an
       ])
     );
   } else if (hasValue(P_6_Od)) {
-    table.push(createLabelText(i18n.t('invoice.details.deliveryOrServiceDateFrom'),
-        formatDateTime(getValue(P_6_Od)as string, true, true)
+    table.push(
+      createLabelText(
+        i18n.t('invoice.details.deliveryOrServiceDateFrom'),
+        formatDateTime(getValue(P_6_Od) as string, true, true)
       )
     );
   } else if (hasValue(P_6_Do)) {
-    table.push(createLabelText(i18n.t('invoice.details.deliveryOrServiceDateTo'),
-        formatDateTime(getValue(P_6_Do)as string, true, true)
+    table.push(
+      createLabelText(
+        i18n.t('invoice.details.deliveryOrServiceDateTo'),
+        formatDateTime(getValue(P_6_Do) as string, true, true)
       )
     );
   }

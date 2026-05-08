@@ -26,10 +26,11 @@ import i18n from 'i18next';
 export function generateSzczegoly(faVat: Fa): Content[] {
   const faWiersze: Record<string, FP>[] = getTable(faVat.FaWiersz);
   const zamowieniaWiersze: Record<string, FP>[] = getTable(faVat.Zamowienie?.ZamowienieWiersz);
-  const LabelP_6: string =
-    faVat.RodzajFaktury == TRodzajFaktury.ZAL || faVat.RodzajFaktury == TRodzajFaktury.KOR_ZAL
-      ? i18n.t('invoice.details.getMoneyDate')
-      : i18n.t('invoice.details.deliveryOrServiceDate');
+  const LabelP_6: string = [TRodzajFaktury.ZAL, TRodzajFaktury.KOR_ZAL].includes(
+    getValue(faVat.RodzajFaktury) as string
+  )
+    ? i18n.t('invoice.details.getMoneyDate')
+    : i18n.t('invoice.details.deliveryOrServiceDate');
 
   const P_6Scope: Content[] = generateP_6Scope(faVat.OkresFa?.P_6_Od, faVat.OkresFa?.P_6_Do);
 

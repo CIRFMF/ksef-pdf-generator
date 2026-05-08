@@ -884,7 +884,8 @@
       "upoPage": "ExampleText",
       "upoPageTotal": "ExampleText",
       "vendorNIP": "ExampleText",
-      "xsdFileLogicName": "ExampleText"
+      "xsdFileLogicName": "ExampleText",
+      "nip": "ExampleText"
     },
     "wz": {
       "documentsHeader": "ExampleText",

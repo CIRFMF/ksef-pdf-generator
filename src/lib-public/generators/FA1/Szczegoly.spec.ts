@@ -65,6 +65,16 @@ describe(generateSzczegoly.name, () => {
   });
 
   describe('P_6 label', () => {
+    beforeEach(() => {
+      vi.mocked(PDFFunctions.getValue).mockImplementation((item: any) => {
+        if (typeof item === 'object') {
+          return item._text;
+        }
+
+        return item;
+      });
+    });
+
     it('uses "Data otrzymania zapłaty" for ZAL', () => {
       generateSzczegoly({ ...mockFaVat, RodzajFaktury: TRodzajFaktury.ZAL } as any);
       expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(

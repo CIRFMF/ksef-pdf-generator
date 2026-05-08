@@ -570,7 +570,7 @@ export function getTStawkaPodatku(code: string, version: 1 | 2 | 3 | 'RR', P_PMa
   }
 
   if (TStawkaPodatkuVersioned[code]) {
-    return translateMap(TStawkaPodatkuVersioned[code], TStawkaPodatkuVersioned);
+    return translateMap(code, TStawkaPodatkuVersioned);
   }
   return code;
 }
