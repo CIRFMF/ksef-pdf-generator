@@ -884,7 +884,8 @@
       "upoPage": "Strona dokumentu UPO: ",
       "upoPageTotal": "Całkowita liczba stron dokumentu UPO: ",
       "vendorNIP": "NIP sprzedawcy",
-      "xsdFileLogicName": "Nazwa pliku XSD struktury logicznej dotycząca przesłanego dokumentu:"
+      "xsdFileLogicName": "Nazwa pliku XSD struktury logicznej dotycząca przesłanego dokumentu:",
+      "nip": "NIP"
     },
     "wz": {
       "documentsHeader": "Numery dokumentów magazynowych WZ",
