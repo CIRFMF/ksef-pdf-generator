@@ -75,7 +75,7 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
     }
 
     if (hasValue(idKontekstu.Nip)) {
-      typKontekstu = i18n.t('invoice.subjectIdentificationData.nip');
+      typKontekstu = i18n.t('invoice.upo.nip');
       id = getValue(idKontekstu.Nip);
     }
 

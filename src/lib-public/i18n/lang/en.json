@@ -864,6 +864,7 @@
       "type": "Transport type: "
     },
     "upo": {
+<<<<<<< en
       "authorizationDocumentShortcut": "Authorization document hash: ",
       "complexId": "Complex ID",
       "contextAuthorizationId": "Authorization context ID: ",
@@ -885,6 +886,30 @@
       "upoPageTotal": "Total number of UPO pages: ",
       "vendorNIP": "Seller NIP",
       "xsdFileLogicName": "XSD schema file name:"
+=======
+      "authorizationDocumentShortcut": "ExampleText",
+      "complexId": "ExampleText",
+      "contextAuthorizationId": "ExampleText",
+      "contextType": "ExampleText",
+      "documentInfo": "ExampleText",
+      "documentRangeFrom": "ExampleText",
+      "documentRangeTo": "ExampleText",
+      "documentsTotal": "ExampleText",
+      "eDocumentFormCode": "ExampleText",
+      "entityFullName": "ExampleText",
+      "functionValueShortcut": "ExampleText",
+      "internalId": "ExampleText",
+      "peppolId": "ExampleText",
+      "registeredInMF": "ExampleText",
+      "sendMethod": "ExampleText",
+      "sessionReferenceNumber": "ExampleText",
+      "upoKsef": "ExampleText",
+      "upoPage": "ExampleText",
+      "upoPageTotal": "ExampleText",
+      "vendorNIP": "ExampleText",
+      "xsdFileLogicName": "ExampleText",
+      "nip": "ExampleText"
+>>>>>>> main
     },
     "wz": {
       "documentsHeader": "WZ warehouse document numbers",
