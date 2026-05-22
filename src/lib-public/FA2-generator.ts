@@ -23,7 +23,7 @@ import { AdditionalDataTypes } from './types/common.types';
 import { Faktura } from './types/fa2.types';
 import { generateWatermark } from '@shared/consts/watermark';
 
-pdfMake.vfs = pdfFonts.vfs;
+pdfMake.addVirtualFileSystem(pdfFonts);
 
 export function generateFA2(invoice: Faktura, additionalData: AdditionalDataTypes): TCreatedPdf {
   const isKOR_RABAT: boolean =

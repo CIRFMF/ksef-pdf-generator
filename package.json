@@ -30,7 +30,7 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@types/pdfmake": "^0.2.11",
+    "@types/pdfmake": "^0.3.2",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
     "@vitest/coverage-v8": "^3.2.4",
@@ -53,7 +53,7 @@
     "i18next": "^25.8.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
-    "pdfmake": "^0.2.20",
+    "pdfmake": "^0.3.7",
     "xml-js": "^1.6.11"
   }
 }
