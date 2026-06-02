@@ -208,7 +208,7 @@ describe(generateZamowienie.name, () => {
 
         expect(PDFFunctions.createLabelTextArray).toHaveBeenCalledWith([
           { value: 'Otrzymana kwota zapłaty (zaliczki): ', formatTyp: FormatTyp.LabelGreater },
-          { value: '100', formatTyp: FormatTyp.CurrencyGreater },
+          { value: '100', formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
         ]);
       });
 
@@ -233,7 +233,7 @@ describe(generateZamowienie.name, () => {
 
         expect(PDFFunctions.createLabelTextArray).toHaveBeenCalledWith([
           { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
-          { value: '150', formatTyp: FormatTyp.CurrencyGreater },
+          { value: '150', formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
         ]);
       });
     });

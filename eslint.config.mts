@@ -9,11 +9,13 @@ module.exports = tseslint.config({
     'package.json',
     'node_modules',
     'package-lock.json',
-    'dist',
     'angular.json',
     'tsconfig.json',
     'tsconfig.app.json',
     'tsconfig.spec.json',
+    'src/lib-public/types/**',
+    '**/*.spec.ts',
+    'dist/**',
     'src/types**/*.ts',
   ],
   files: ['**/*.ts'],
@@ -32,6 +34,13 @@ module.exports = tseslint.config({
       'error',
       {
         endOfLine: 'auto',
+      },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
       },
     ],
     '@typescript-eslint/explicit-member-accessibility': [

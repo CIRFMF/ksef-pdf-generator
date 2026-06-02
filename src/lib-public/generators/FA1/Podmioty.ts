@@ -73,7 +73,7 @@ function getPodmiot3Podmiot2KDto(podmioty2K: Podmiot2K[], podmioty3: Podmiot3[])
     podmioty2K.length > 1 &&
     podmioty3.filter((p: Podmiot3): boolean => getValue(p.Rola) === '4').length > 0
   ) {
-    let idx: number = 1;
+    let idx = 1;
 
     podmioty3.forEach((podmiot3) => {
       if (getValue(podmiot3.Rola) === '4') {

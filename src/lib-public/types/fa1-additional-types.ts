@@ -5,22 +5,22 @@ export interface Podmiot3Podmiot2KDto {
   podmiot2KDto?: Podmiot2K;
   fakturaPodmiotNDto: Podmiot3;
 }
-export type FakturaZaliczkowa = {
+export interface FakturaZaliczkowa {
   lp: {
     _text: number;
   };
   Klucz?: FP;
   Wartosc?: FP;
-};
+}
 
-export type TableWithFields = {
+export interface TableWithFields {
   content: ContentTable | null;
   fieldsWithValue: string[];
-};
+}
 
-export type TerminPlatnosciContent = {
+export interface TerminPlatnosciContent {
   TerminPlatnosciOpis: {
     key: string;
   };
   TerminPlatnosci?: FP;
-};
+}

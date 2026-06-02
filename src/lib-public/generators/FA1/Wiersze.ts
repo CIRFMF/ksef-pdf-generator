@@ -93,7 +93,7 @@ export function generateWiersze(faVat: Fa): Content {
     {
       name: 'KwotaAkcyzy',
       title: i18n.t('invoice.rows.exciseTaxAmount'),
-      format: FormatTyp.Default,
+      format: FormatTyp.Currency,
       width: 'auto',
     },
     { name: 'GTU', title: i18n.t('invoice.rows.gtu'), format: FormatTyp.Default, width: 'auto' },
@@ -148,7 +148,7 @@ export function generateWiersze(faVat: Fa): Content {
           { value: i18n.t('invoice.rows.totalAmountDue'), formatTyp: FormatTyp.LabelGreater },
           {
             value: p_15,
-            formatTyp: [FormatTyp.CurrencyGreater],
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator],
             currency: getValue(faVat.KodWaluty)?.toString() ?? '',
           },
         ]),

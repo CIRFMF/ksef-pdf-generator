@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generateDaneIdentyfikacyjneTPodmiot3Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot3Dto';
-import { createLabelText, createLabelTextArray, hasValue } from '../../../shared/PDF-functions';
+import { createLabelText, hasValue } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Podmiot3DaneIdentyfikacyjne } from '../../types/FaRR.types';
 
@@ -28,11 +28,13 @@ describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
 
   it('returns empty array when daneIdentyfikacyjne is undefined', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(undefined);
+
     expect(result).toEqual([]);
   });
 
   it('uses NIP when provided', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(baseData);
+
     expect(hasValue).toHaveBeenCalledWith(baseData.NIP);
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', baseData.NIP, FormatTyp.Default);
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', baseData.Nazwa, FormatTyp.Default);
@@ -44,8 +46,10 @@ describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
       IDWew: { _text: 'INT-001' },
       Nazwa: { _text: 'Internal' },
     };
+
     (hasValue as any).mockImplementation((val: any) => Boolean(val && val._text));
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(data);
+
     expect(createLabelText).toHaveBeenCalledWith('Identyfikator wewnętrzny: ', data.IDWew, FormatTyp.Default);
     expect(result.some((r) => (r as any).text.includes('Identyfikator wewnętrzny'))).toBe(true);
   });
@@ -55,16 +59,20 @@ describe(generateDaneIdentyfikacyjneTPodmiot3Dto.name, () => {
       BrakID: { _text: '1' },
       Nazwa: { _text: 'Missing ID' },
     };
+
     (hasValue as any).mockReturnValue(false);
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(data);
+
     expect(createLabelText).toHaveBeenCalledWith('Brak identyfikatora', ' ', FormatTyp.Default);
     expect(result.some((r) => (r as any).text.includes('Brak identyfikatora'))).toBe(true);
   });
 
   it('adds Nazwa when present', () => {
     const data: Podmiot3DaneIdentyfikacyjne = { Nazwa: { _text: 'Only Name' } } as any;
+
     (hasValue as any).mockImplementation((val: any) => Boolean(val && val._text));
     const result = generateDaneIdentyfikacyjneTPodmiot3Dto(data);
+
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', data.Nazwa, FormatTyp.Default);
     expect(result.some((r) => (r as any).text.includes('Nazwa: Only Name'))).toBe(true);
   });

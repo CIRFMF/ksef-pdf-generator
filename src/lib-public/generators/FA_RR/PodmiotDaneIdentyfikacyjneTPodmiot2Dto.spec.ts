@@ -19,6 +19,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
 
   it('always includes NIP and Nazwa', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(baseData);
+
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', baseData.NIP);
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', baseData.Nazwa);
     expect(result).toContainEqual({ text: 'NIP: 1234567890' });

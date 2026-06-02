@@ -43,9 +43,12 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     } as any;
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
 
     expect(result[1][0]).toHaveProperty('text');
     expect(result[1][0]).toHaveProperty('style');
@@ -102,9 +105,11 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
 
     expect(result.length).toBeGreaterThan(3);
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
 
     expect(result[2]).toHaveProperty('columns');
     expect(Array.isArray(result[2].columns[0])).toBe(true);

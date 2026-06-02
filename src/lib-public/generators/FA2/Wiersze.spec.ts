@@ -222,7 +222,7 @@ describe(generateWiersze.name, () => {
           { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
           {
             value: '200',
-            formatTyp: [FormatTyp.CurrencyGreater, FormatTyp.HeaderContent, FormatTyp.Value],
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
             currency: 'PLN',
           },
         ]);
@@ -237,7 +237,7 @@ describe(generateWiersze.name, () => {
           { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
           {
             value: '300',
-            formatTyp: [FormatTyp.CurrencyGreater, FormatTyp.HeaderContent, FormatTyp.Value],
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
             currency: 'USD',
           },
         ]);

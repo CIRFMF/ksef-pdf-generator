@@ -53,7 +53,9 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   const columns1: Content[] = [...createSubHeader(i18n.t('invoice.subject3k.correctedContent'))];
 
   if (hasValue(podmiot1K?.DaneIdentyfikacyjne?.NrID)) {
-    columns1.push(createLabelText(i18n.t('invoice.subject3k.otherTaxId'), podmiot1K?.DaneIdentyfikacyjne?.NrID));
+    columns1.push(
+      createLabelText(i18n.t('invoice.subject3k.otherTaxId'), podmiot1K?.DaneIdentyfikacyjne?.NrID)
+    );
   }
   if (getValue(podmiot1K?.DaneIdentyfikacyjne?.BrakID) === '1') {
     columns1.push(createLabelText(i18n.t('invoice.subject3k.noTaxId'), ' '));
@@ -68,7 +70,9 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   const columns2: Content[] = [...createSubHeader(i18n.t('invoice.subject3k.correctiveContent'))];
 
   if (hasValue(podmiot1.DaneIdentyfikacyjne?.NrID)) {
-    columns2.push(createLabelText(i18n.t('invoice.subject3k.otherTaxId'), podmiot1.DaneIdentyfikacyjne?.NrID));
+    columns2.push(
+      createLabelText(i18n.t('invoice.subject3k.otherTaxId'), podmiot1.DaneIdentyfikacyjne?.NrID)
+    );
   }
   if (getValue(podmiot1.DaneIdentyfikacyjne?.BrakID) === '1') {
     columns2.push(createLabelText(i18n.t('invoice.subject3k.noTaxId'), ' '));
@@ -82,7 +86,9 @@ export function generateDaneIdentyfikacyjneTPodmiot3Dto(
   }
 
   if (podmiot1.AdresKoresp != null) {
-    columns2.push(generatePodmiotAdres(podmiot1.AdresKoresp, i18n.t('invoice.subject3k.correspondenceAddress'), true));
+    columns2.push(
+      generatePodmiotAdres(podmiot1.AdresKoresp, i18n.t('invoice.subject3k.correspondenceAddress'), true)
+    );
   }
   result.push(generateTwoColumns(columns1, columns2));
   return result;

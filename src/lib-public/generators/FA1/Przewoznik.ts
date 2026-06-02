@@ -14,7 +14,12 @@ export function generatePrzewoznik(przewoznik: Przewoznik | undefined): Content 
     [
       generateTwoColumns(
         generateDaneIdentyfikacyjne(przewoznik.DaneIdentyfikacyjne as any),
-        generatePodmiotAdres(przewoznik.AdresPrzewoznika, i18n.t('invoice.carrier.carrierAddress'), true, [0, 0, 0, 0]),
+        generatePodmiotAdres(
+          przewoznik.AdresPrzewoznika,
+          i18n.t('invoice.carrier.carrierAddress'),
+          true,
+          [0, 0, 0, 0]
+        ),
         [0, 0, 0, 8]
       ),
     ],

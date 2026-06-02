@@ -13,9 +13,9 @@ import { Dokument, IDKontekstu, Potwierdzenie } from '../../types/upo-v4_2.types
 import FormatTyp from '../../../shared/enums/common.enum';
 import { FormContentState } from '../../../shared/types/additional-data.types';
 import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
-import i18n from "i18next";
+import i18n from 'i18next';
 
-export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
+export function generateDokumentUPO(potwierdzenie: Potwierdzenie): Content[] {
   const dokumenty: Dokument[] = getTable(potwierdzenie.Dokument);
 
   const result: Content[] = [];
@@ -24,8 +24,7 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   result.push(verticalSpacing(4));
   result.push(generateLine());
   result.push(verticalSpacing(8));
-  result.push(
-      formatText(i18n.t('invoice.upo.upoKsef'), FormatTyp.HeaderPosition));
+  result.push(formatText(i18n.t('invoice.upo.upoKsef'), FormatTyp.HeaderPosition));
   result.push(verticalSpacing(8));
   if (hasValue(potwierdzenie.NumerReferencyjnySesji)) {
     table.push([
@@ -66,7 +65,7 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   const idKontekstu: IDKontekstu | undefined = potwierdzenie?.Uwierzytelnienie?.IdKontekstu;
 
   if (idKontekstu) {
-    let typKontekstu: string = '';
+    let typKontekstu = '';
     let id: string | number | undefined;
 
     if (hasValue(idKontekstu.IdDostawcyUslugPeppol)) {
@@ -105,10 +104,7 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   }
   if (hasValue(potwierdzenie.NazwaStrukturyLogicznej)) {
     table.push([
-      formatText(
-          i18n.t('invoice.upo.xsdFileLogicName'),
-        FormatTyp.GrayBoldTitle
-      ),
+      formatText(i18n.t('invoice.upo.xsdFileLogicName'), FormatTyp.GrayBoldTitle),
       formatText(potwierdzenie.NazwaStrukturyLogicznej?._text, FormatTyp.Default),
     ]);
   }
@@ -130,13 +126,13 @@ export function generateDokumnetUPO(potwierdzenie: Potwierdzenie): Content[] {
   ]);
   result.push(verticalSpacing(8));
   const definedHeader: HeaderDefine[] = [
-    { name: 'lp', title:  i18n.t('invoice.additionalInformation.ordinalNumber'), format: FormatTyp.Default },
+    { name: 'lp', title: i18n.t('invoice.additionalInformation.ordinalNumber'), format: FormatTyp.Default },
     {
       name: 'NumerKSeFDokumentu',
       title: i18n.t('invoice.additionalInformation.ksefDocumentNumber'),
       format: FormatTyp.Default,
     },
-    { name: 'NumerFaktury', title:  i18n.t('invoice.details.invoiceNumber'), format: FormatTyp.Default },
+    { name: 'NumerFaktury', title: i18n.t('invoice.details.invoiceNumber'), format: FormatTyp.Default },
     { name: 'NipSprzedawcy', title: i18n.t('invoice.upo.vendorNIP'), format: FormatTyp.Default },
     {
       name: 'DataWystawieniaFaktury',

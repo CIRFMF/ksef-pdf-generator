@@ -35,11 +35,18 @@ export function generatePodmiot2(podmiot2: Podmiot2): Content[] {
   }
 
   if (podmiot2.Adres) {
-    result.push(generatePodmiotAdres(podmiot2.Adres, i18n.t('invoice.subject2.address'), true, [0, 12, 0, 1.3]));
+    result.push(
+      generatePodmiotAdres(podmiot2.Adres, i18n.t('invoice.subject2.address'), true, [0, 12, 0, 1.3])
+    );
   }
   if (podmiot2.AdresKoresp) {
     result.push(
-      ...generatePodmiotAdres(podmiot2.AdresKoresp, i18n.t('invoice.subject2.mailingAddress'), true, [0, 12, 0, 1.3])
+      ...generatePodmiotAdres(
+        podmiot2.AdresKoresp,
+        i18n.t('invoice.subject2.mailingAddress'),
+        true,
+        [0, 12, 0, 1.3]
+      )
     );
   }
   if (podmiot2.Email || podmiot2.Telefon) {

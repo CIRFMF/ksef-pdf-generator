@@ -18,9 +18,7 @@ export function generateDodatkoweInformacje(faVat: Fa): Content[] {
   const tpLabel: Content[] = [];
 
   if (getValue(faVat.TP) === '1') {
-    tpLabel.push(
-      formatText(i18n.t('invoice.additionalInformation.tpLabel'))
-    );
+    tpLabel.push(formatText(i18n.t('invoice.additionalInformation.tpLabel')));
   }
 
   const fpLabel: Content[] = [];
@@ -32,11 +30,7 @@ export function generateDodatkoweInformacje(faVat: Fa): Content[] {
   const zwrotAkcyzyLabel: Content[] = [];
 
   if (getValue(faVat.ZwrotAkcyzy) === '1') {
-    zwrotAkcyzyLabel.push(
-      formatText(
-          i18n.t('invoice.additionalInformation.exciseTaxRefund')
-      )
-    );
+    zwrotAkcyzyLabel.push(formatText(i18n.t('invoice.additionalInformation.exciseTaxRefund')));
   }
 
   const labels: Content[][] = [tpLabel, fpLabel, zwrotAkcyzyLabel].filter((el) => el.length > 0);

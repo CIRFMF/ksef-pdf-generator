@@ -9,6 +9,7 @@ import {
   TypRachunkowWlasnych,
 } from '../../consts/FA.const';
 import {
+  createVersionLabel,
   formatDateTime,
   formatDateTimePl,
   getDateTimeWithoutSeconds,
@@ -147,5 +148,18 @@ describe('formatDateTimePl', () => {
     expect(formatDateTimePl('ABC', true)).toBe('ABC');
     expect(formatDateTimePl(undefined as any, true)).toBe('');
     expect(formatDateTimePl('', true)).toBe('');
+  });
+});
+
+describe('createVersionLabel', () => {
+  it('should create version label', () => {
+    const versionLabel = createVersionLabel();
+    const version = versionLabel
+      .substring(0, versionLabel.length - 1)
+      .split(' ')
+      .pop();
+    expect(versionLabel).toContain('Aplikacja Podatnika KSeF');
+    expect(versionLabel).toContain('ksef-pdf-generator');
+    expect(version).toMatch(/^\d+\.\d+\.\d+(-[A-Za-z0-9]+)?$/);
   });
 });

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Potwierdzenie } from '../../types/upo-v4_2.types';
-import { generateDokumnetUPO } from './Dokumenty';
+import { generateDokumentUPO } from './Dokumenty';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   verticalSpacing: vi.fn(),
 }));
 
-describe(generateDokumnetUPO.name, () => {
+describe(generateDokumentUPO.name, () => {
   let mockPotwierdzenie: Potwierdzenie;
 
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe(generateDokumnetUPO.name, () => {
   });
 
   it('should generate basic UPO structure', () => {
-    const result = generateDokumnetUPO(mockPotwierdzenie);
+    const result = generateDokumentUPO(mockPotwierdzenie);
 
     expect(result[0]).toBe('space4');
     expect(result[1]).toBe('line');
@@ -73,7 +73,7 @@ describe(generateDokumnetUPO.name, () => {
   });
 
   it('should include all UPO fields when hasValue returns true', () => {
-    generateDokumnetUPO(mockPotwierdzenie);
+    generateDokumentUPO(mockPotwierdzenie);
 
     expect(PDFFunctions.formatText).toHaveBeenCalledWith(
       'Numer referencyjny sesji: ',
@@ -111,12 +111,13 @@ describe(generateDokumnetUPO.name, () => {
 
   it('should not add document table if getContentTable.content is null', () => {
     vi.mocked(PDFFunctions.getContentTable).mockReturnValue({ content: null, fieldsWithValue: [] });
-    const result = generateDokumnetUPO(mockPotwierdzenie);
+    const result = generateDokumentUPO(mockPotwierdzenie);
+
     expect(result).not.toContain('null');
   });
 
   it('should call getTable with Dokument', () => {
-    generateDokumnetUPO(mockPotwierdzenie);
+    generateDokumentUPO(mockPotwierdzenie);
     expect(PDFFunctions.getTable).toHaveBeenCalledWith(mockPotwierdzenie.Dokument);
   });
 });

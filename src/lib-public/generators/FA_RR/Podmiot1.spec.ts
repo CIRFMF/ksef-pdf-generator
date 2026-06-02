@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generatePodmiot1 } from './Podmiot1';
 import type { Podmiot1Class } from '../../types/FaRR.types';
 import type { Content } from 'pdfmake/interfaces';
-import { createLabelText, formatText } from '../../../shared/PDF-functions';
+import { formatText } from '../../../shared/PDF-functions';
 import { generateAdres } from './Adres';
 import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
 import { generateDaneKontaktowe } from './PodmiotDaneKontaktowe';

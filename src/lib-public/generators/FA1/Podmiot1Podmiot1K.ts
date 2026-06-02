@@ -5,7 +5,6 @@ import {
   createSubHeader,
   generateColumns,
   getTable,
-  getValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import { Podmiot1, Podmiot1K } from '../../types/fa1.types';

@@ -22,6 +22,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
 
   it('always includes NIP and Nazwa', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(baseData);
+
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', baseData.NIP);
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', baseData.Nazwa);
     expect(result).toContainEqual({ text: 'NIP: 1234567890' });
@@ -35,6 +36,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
       KodUE: { _text: 'PL' },
     };
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(data);
+
     expect(createLabelTextArray).toHaveBeenCalledWith([
       { value: 'Numer VAT-UE: ', formatTyp: FormatTyp.Label },
       { value: data.KodUE, formatTyp: FormatTyp.Value },
@@ -50,6 +52,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
       NrID: { _text: '999999' },
     };
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(data);
+
     expect(createLabelTextArray).toHaveBeenCalledWith([
       { value: 'Identyfikator podatkowy inny: ', formatTyp: FormatTyp.Label },
       { value: '', formatTyp: FormatTyp.Value },
@@ -66,6 +69,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
       NrID: { _text: '999999' },
     };
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(data);
+
     expect(createLabelTextArray).toHaveBeenCalledWith([
       { value: 'Identyfikator podatkowy inny: ', formatTyp: FormatTyp.Label },
       { value: data.KodKraju, formatTyp: FormatTyp.Value },
@@ -81,12 +85,14 @@ describe(generateDaneIdentyfikacyjneTPodmiot2Dto.name, () => {
       BrakID: { _text: '1' },
     };
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(data);
+
     expect(formatText).toHaveBeenCalledWith('Brak identyfikatora', FormatTyp.Label);
     expect(result.some((r) => (r as any).text === 'Brak identyfikatora')).toBe(true);
   });
 
   it('does not add extra sections when optional fields are missing', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot2Dto(baseData);
+
     expect(createLabelTextArray).not.toHaveBeenCalled();
     expect(formatText).not.toHaveBeenCalled();
     expect(result).toHaveLength(2);

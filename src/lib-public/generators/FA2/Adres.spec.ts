@@ -1,14 +1,13 @@
-import { describe, it, expect, vi, beforeEach, test } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { generateAdres } from './Adres';
 import FormatTyp from '../../../shared/enums/common.enum';
+import { createLabelText, formatText } from '../../../shared/PDF-functions';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, style: string) => ({ text, style })),
   getKraj: vi.fn((code: string) => `Kraj: ${code}`),
   createLabelText: vi.fn((label: string, value: any) => [{ text: `${label}${value ?? ''}` }]),
 }));
-
-import { formatText, createLabelText } from '../../../shared/PDF-functions';
 
 describe(generateAdres.name, () => {
   beforeEach(() => {
@@ -38,6 +37,7 @@ describe(generateAdres.name, () => {
   it('zwraca tylko GLN gdy brak innych pól', () => {
     const adres = { GLN: '1234567890' };
     const result = generateAdres(adres as any);
+
     expect(formatText).not.toHaveBeenCalled();
     expect(createLabelText).toHaveBeenCalledWith('GLN: ', '1234567890');
     expect(result).toHaveLength(1);

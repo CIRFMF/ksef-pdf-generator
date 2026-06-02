@@ -26,14 +26,21 @@ export function generateTransport(transport: Transport, index?: number | null): 
   };
 
   table.push(
-    createHeader(index ? `${i18n.t('invoice.transport.header')} ${index}` : i18n.t('invoice.transport.header'))
+    createHeader(
+      index ? `${i18n.t('invoice.transport.header')} ${index}` : i18n.t('invoice.transport.header')
+    )
   );
   if (transport.RodzajTransportu?._text) {
     columns.transport.push(
-      createLabelText(i18n.t('invoice.transport.type'), translateMap(transport.RodzajTransportu, RodzajTransportu))
+      createLabelText(
+        i18n.t('invoice.transport.type'),
+        translateMap(transport.RodzajTransportu, RodzajTransportu)
+      )
     );
   } else if (transport.TransportInny?._text == '1' && transport.OpisInnegoTransportu?._text) {
-    columns.transport.push(createLabelText(i18n.t('invoice.transport.type'), i18n.t('invoice.transport.otherType')));
+    columns.transport.push(
+      createLabelText(i18n.t('invoice.transport.type'), i18n.t('invoice.transport.otherType'))
+    );
     columns.transport.push(
       createLabelText(i18n.t('invoice.transport.otherTypeDescription'), transport.OpisInnegoTransportu)
     );

@@ -18,6 +18,7 @@ describe(generateDostawy.name, () => {
   it('returns empty array when no values', () => {
     const adnotacje: Adnotacje = {};
     const result = generateDostawy(adnotacje);
+
     expect(result).toEqual([]);
   });
 
@@ -31,13 +32,16 @@ describe(generateDostawy.name, () => {
       P_22BRP: { _text: '2023' },
     };
     const result = generateDostawy(adnotacje);
+
     expect(result).toHaveLength(1);
   });
 
   it('does not create table when no valid values found', () => {
     const adnotacje: Adnotacje = { P_22D: { _text: '' } };
+
     hasValue.mockReturnValue(false);
     const result = generateDostawy(adnotacje);
+
     expect(result).toEqual([]);
   });
 });

@@ -9,12 +9,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "rootDir": "./src",
+    "baseUrl": "./src",
     "paths": {
-      "@lib-public/*": ["./src/lib-public/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@lib-public/*": ["lib-public/*"],
+      "@lib-private/*": ["lib-private/*"]
     },
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
+    "include": ["src"]
+  }
 }

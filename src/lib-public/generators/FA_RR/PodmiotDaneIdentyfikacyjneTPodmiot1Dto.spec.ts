@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Podmiot1KDaneIdentyfikacyjne, FP } from '../../types/FaRR.types';
+import type { FP, Podmiot1KDaneIdentyfikacyjne } from '../../types/FaRR.types';
 import { createLabelText } from '../../../shared/PDF-functions';
 import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
 
@@ -19,6 +19,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot1Dto.name, () => {
 
   it('calls createLabelText twice with correct arguments', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot1Dto(mockData);
+
     expect(createLabelText).toHaveBeenCalledTimes(2);
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', mockData.NIP);
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', mockData.Nazwa);
@@ -30,6 +31,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot1Dto.name, () => {
       NIP: { _text: '' },
       Nazwa: { _text: '' },
     } as Podmiot1KDaneIdentyfikacyjne);
+
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', { _text: '' });
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', { _text: '' });
     expect(result).toEqual([{ text: 'NIP: ' }, { text: 'Nazwa: ' }]);

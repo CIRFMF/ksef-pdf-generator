@@ -5,7 +5,6 @@ import {
   formatText,
   generateColumns,
   getTable,
-  getValue,
   hasValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';

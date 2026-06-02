@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generatePodmiotAdres } from './PodmiotAdres';
 import { createHeader, createSubHeader } from '../../../shared/PDF-functions';
 import { generateAdres } from './Adres';
@@ -28,6 +28,7 @@ describe(generatePodmiotAdres.name, () => {
 
   it('returns an empty array when podmiotAdres is undefined', () => {
     const result = generatePodmiotAdres(undefined);
+
     expect(result).toEqual([]);
     expect(createHeader).not.toHaveBeenCalled();
     expect(createSubHeader).not.toHaveBeenCalled();
@@ -36,6 +37,7 @@ describe(generatePodmiotAdres.name, () => {
 
   it('uses createHeader when isSubheader is false by default', () => {
     const result = generatePodmiotAdres(mockAdres);
+
     expect(createHeader).toHaveBeenCalledWith('Adres', undefined);
     expect(createSubHeader).not.toHaveBeenCalled();
     expect(generateAdres).toHaveBeenCalledWith(mockAdres);
@@ -44,6 +46,7 @@ describe(generatePodmiotAdres.name, () => {
 
   it('uses createSubHeader when isSubheader is true', () => {
     const result = generatePodmiotAdres(mockAdres, 'Location', true);
+
     expect(createSubHeader).toHaveBeenCalledWith('Location', undefined);
     expect(createHeader).not.toHaveBeenCalled();
     expect(generateAdres).toHaveBeenCalledWith(mockAdres);
@@ -52,12 +55,14 @@ describe(generatePodmiotAdres.name, () => {
 
   it('passes headerMargin to createHeader', () => {
     const mockMargin: Margins = [10, 20, 30, 40];
+
     generatePodmiotAdres(mockAdres, 'Adres', false, mockMargin);
     expect(createHeader).toHaveBeenCalledWith('Adres', mockMargin);
   });
 
   it('passes headerMargin to createSubHeader', () => {
     const mockMargin: Margins = [5, 5, 5, 5];
+
     generatePodmiotAdres(mockAdres, 'Header', true, mockMargin);
     expect(createSubHeader).toHaveBeenCalledWith('Header', mockMargin);
   });

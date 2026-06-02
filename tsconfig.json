@@ -1,16 +1,17 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "noEmit": true,
-    "esModuleInterop": true,
+    "target": "es2016",
+    "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
-
+    "resolveJsonModule": true,
     "strict": true,
     "skipLibCheck": true,
-
-    "types": ["node"],
+    "extends": "./tsconfig.base.json",
+    "include": ["src"],
+    "baseUrl": ".",
+    "paths": {
+      "@shared/*": ["src/shared/*"]
+    },
+    "allowSyntheticDefaultImports": true
   }
 }

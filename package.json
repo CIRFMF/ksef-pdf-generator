@@ -1,18 +1,18 @@
 {
   "name": "@akmf/ksef-fe-invoice-converter",
-  "version": "1.1.11",
+  "version": "1.1.16-HF1",
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
+    "type": "tsc -p src/app-public/tsconfig.json --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:ci": "vitest run --coverage",
     "build:exe": "npx esbuild app/ksef-pdf/KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node24-win-x64 --compress Zstd --output KSeF-PDFGen.exe",
     "build:elf": "npx esbuild app/ksef-pdf/KSeF-PDFGen.ts --bundle --platform=node --minify --outfile=dist/bundle.js && npx pkg dist/bundle.js --targets node24-lin-x64 --compress Zstd --output KSeF-PDFGen",
     "build:server": "npx esbuild app/rest/index.ts --bundle --platform=node --format=cjs --packages=external --outfile=dist-server/server.cjs",
     "server:start": "node dist-server/server.cjs",
-    "server:dev": "npm run build:server && node --watch dist-server/server.cjs",
-    "type": "tsc -p src/app-public/tsconfig.json --noEmit",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:ci": "vitest run --coverage"
+    "server:dev": "npm run build:server && node --watch dist-server/server.cjs"
   },
   "main": "./ksef-fe-invoice-converter.umd.cjs",
   "module": "./ksef-fe-invoice-converter.js",
@@ -35,14 +35,11 @@
   "devDependencies": {
     "@eslint/js": "^9.33.0",
     "@stylistic/eslint-plugin": "^5.2.3",
-    "@types/body-parser": "^1.19.6",
-    "@types/express": "^5.0.6",
-    "@types/node": "^25.6.0",
-    "@types/pdfmake": "^0.2.13",
+    "@types/pdfmake": "^0.3.2",
     "@typescript-eslint/eslint-plugin": "^8.40.0",
     "@typescript-eslint/parser": "^8.40.0",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.2.4",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-no-relative-import-paths": "^1.6.1",
@@ -51,27 +48,22 @@
     "jiti": "^2.5.1",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
-    "svelte": "^5.55.4",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.40.0",
     "vite": "^7.0.6",
     "vite-plugin-dts": "^4.5.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.8"
   },
   "dependencies": {
     "i18next": "^25.8.4",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-http-backend": "^3.0.2",
+    "pdfmake": "0.3.7",
+    "xml-js": "^1.6.11",
     "@yao-pkg/pkg": "^6.18.2",
-    "express": "^5.2.1",
     "body-parser": "^1.20.3",
     "buffer": "^6.0.3",
-    "formdata-node": "^6.0.3",
-    "node-fetch": "^3.3.2",
-    "pdfmake": "^0.2.20",
     "pdfmake-html-renderer": "^0.4.0",
-    "xml-js": "^1.6.11"
+    "express": "^5.2.1"
   }
 }

@@ -32,6 +32,7 @@ describe(generatePodmiot1Podmiot1K.name, () => {
     };
     const podmiot1K: Podmiot1KClass = {} as any;
     const result: any = generatePodmiot1Podmiot1K(podmiot1, podmiot1K);
+
     expect(result[0]).toEqual({ text: 'Sprzedawca', style: 'header' });
 
     expect(result[1]).toHaveProperty('columns');
@@ -50,6 +51,7 @@ describe(generatePodmiot1Podmiot1K.name, () => {
   it('calls generateAdres if AdresKoresp exists', () => {
     const podmiot1: Podmiot1Class = { AdresKoresp: { AdresL1: { _text: 'Ulica Testowa 1' } } };
     const podmiot1K: Podmiot1KClass = {};
+
     generatePodmiot1Podmiot1K(podmiot1, podmiot1K);
     expect(generateAdres).toHaveBeenCalledWith(podmiot1.AdresKoresp);
   });

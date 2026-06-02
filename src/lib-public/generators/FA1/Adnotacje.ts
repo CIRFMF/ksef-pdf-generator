@@ -118,6 +118,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
 
     if (adnotacje.P_22?._text === '1') {
       let obowiazekVAT: Content[] = [];
+
       obowiazekVAT = [...createLabelText(i18n.t('invoice.annotations.newTransportsDelivery'), ' ')];
       if (obowiazekVAT) {
         firstColumn = [firstColumn, ...obowiazekVAT];

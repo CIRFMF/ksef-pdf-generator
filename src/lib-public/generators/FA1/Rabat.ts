@@ -32,7 +32,10 @@ export function generateRabat(invoice: Fa): Content[] {
       alignment: Position.RIGHT,
     }),
     generateTwoColumns(
-      formatText(i18n.t(isNrWierszaFa ? 'invoice.discount.notAll' : 'invoice.discount.all'), FormatTyp.Default),
+      formatText(
+        i18n.t(isNrWierszaFa ? 'invoice.discount.notAll' : 'invoice.discount.all'),
+        FormatTyp.Default
+      ),
       ''
     )
   );

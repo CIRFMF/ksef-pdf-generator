@@ -28,6 +28,7 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
   it('returns empty array if no values in Fa', () => {
     const invoice: Faktura = { Fa: {} } as any;
     const result = generatePodsumowanieStawekPodatkuVat(invoice);
+
     expect(result).toEqual([]);
   });
 
@@ -87,6 +88,7 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
 
   it('calls helper functions correctly', () => {
     const fa: Fa = { P_13_1: 100, P_14_1: 23, P_14_1W: 23 } as any;
+
     getSummaryTaxRate(fa);
     expect(hasValue).toHaveBeenCalled();
     expect(getValue).toHaveBeenCalled();
@@ -103,6 +105,7 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
     const invoice: Faktura = { Fa: faData } as any;
     const result = generatePodsumowanieStawekPodatkuVat(invoice) as any;
     const table = result.content[1];
+
     expect(table.table.body[0][0]).toEqual({ text: 'Lp.', style: FormatTyp.GrayBoldTitle });
     expect(table.table.body[1][0]).toEqual(1);
   });
@@ -141,7 +144,9 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
     expect(summary[2].taxRateString).toBe('5%');
     expect(summary[3].taxRateString).toBe('4% lub 3%');
     expect(summary[4].taxRateString).toBe('');
-    expect(summary[5].taxRateString).toBe('0% w przypadku sprzedaży towarów i świadczenia usług na terytorium kraju (z wyłączeniem WDT i eksportu)');
+    expect(summary[5].taxRateString).toBe(
+      '0% w przypadku sprzedaży towarów i świadczenia usług na terytorium kraju (z wyłączeniem WDT i eksportu)'
+    );
     expect(summary[6].taxRateString).toBe('0% w przypadku wewnątrzwspólnotowej dostawy towarów (WDT)');
     expect(summary[7].taxRateString).toBe('0% w przypadku eksportu towarów');
     expect(summary[8].taxRateString).toBe('zwolnione od podatku');
@@ -157,6 +162,7 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
     } as any;
 
     const summary = getSummaryTaxRate(fa);
+
     expect(summary).toHaveLength(2);
     expect(summary[0].taxRateString).toBe('odwrotne obciążenie');
     expect(summary[1].taxRateString).toBe('marża');

@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import { TypKorekty } from '../../../shared/consts/FA.const';
 import { generateDaneFaKorygowanej } from './DaneFaKorygowanej';
-import { translateMap } from '@shared/generators/common/functions';
 import i18n from 'i18next';
 
 describe('generateDaneFaKorygowanej', () => {

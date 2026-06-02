@@ -84,6 +84,7 @@ describe(generateWarunkiTransakcji.name, () => {
 
     it('should return result from createSection', () => {
       const mockSection = { section: 'test' };
+
       vi.mocked(PDFFunctions.createSection).mockReturnValue(mockSection as any);
 
       const result = generateWarunkiTransakcji(mockWarunkiTransakcji);
@@ -99,13 +100,14 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Umowy)
+          if (field === data.Umowy) {
             return [
               {
                 DataUmowy: { _text: '2024-01-01' },
                 NrUmowy: { _text: 'U001' },
               },
             ] as any;
+          }
           return [];
         });
 
@@ -147,13 +149,14 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Zamowienia)
+          if (field === data.Zamowienia) {
             return [
               {
                 DataZamowienia: { _text: '2024-01-02' },
                 NrZamowienia: { _text: 'Z001' },
               },
             ] as any;
+          }
           return [];
         });
 
@@ -193,7 +196,9 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Zamowienia) return [{ DataZamowienia: { _text: '' } }] as any;
+          if (field === data.Zamowienia) {
+            return [{ DataZamowienia: { _text: '' } }] as any;
+          }
           return [];
         });
 
@@ -216,7 +221,9 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Umowy) return [{ DataUmowy: { _text: '2024-01-01' } }] as any;
+          if (field === data.Umowy) {
+            return [{ DataUmowy: { _text: '2024-01-01' } }] as any;
+          }
           return [];
         });
 
@@ -245,7 +252,9 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Zamowienia) return [{ DataZamowienia: { _text: '2024-01-02' } }] as any;
+          if (field === data.Zamowienia) {
+            return [{ DataZamowienia: { _text: '2024-01-02' } }] as any;
+          }
           return [];
         });
 
@@ -327,7 +336,9 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.NrPartiiTowaru) return [{ _text: 'BATCH001' }] as any;
+          if (field === data.NrPartiiTowaru) {
+            return [{ _text: 'BATCH001' }] as any;
+          }
           return [];
         });
 
@@ -491,10 +502,18 @@ describe(generateWarunkiTransakcji.name, () => {
         } as any;
 
         vi.mocked(PDFFunctions.getTable).mockImplementation((field: any) => {
-          if (field === data.Umowy) return [{ DataUmowy: { _text: '2024-01-01' } }] as any;
-          if (field === data.Zamowienia) return [{ DataZamowienia: { _text: '2024-01-02' } }] as any;
-          if (field === data.NrPartiiTowaru) return [{ _text: 'BATCH001' }] as any;
-          if (field === data.Transport) return [{ RodzajTransportu: { _text: 'Road' } }] as any;
+          if (field === data.Umowy) {
+            return [{ DataUmowy: { _text: '2024-01-01' } }] as any;
+          }
+          if (field === data.Zamowienia) {
+            return [{ DataZamowienia: { _text: '2024-01-02' } }] as any;
+          }
+          if (field === data.NrPartiiTowaru) {
+            return [{ _text: 'BATCH001' }] as any;
+          }
+          if (field === data.Transport) {
+            return [{ RodzajTransportu: { _text: 'Road' } }] as any;
+          }
           return [];
         });
 

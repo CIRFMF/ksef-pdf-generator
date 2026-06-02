@@ -1,5 +1,5 @@
 import { beforeAll, vi } from 'vitest';
-import { initI18next } from "../../lib-public/i18n/i18n-init";
+import { i18nReady } from '../../lib-public/i18n/i18n-init';
 
 vi.mock('@shared/generators/common/functions.ts', async (importOriginal) => {
   const original = await importOriginal<any>();
@@ -14,5 +14,5 @@ vi.mock('@shared/generators/common/functions.ts', async (importOriginal) => {
 });
 
 beforeAll(async () => {
-  await initI18next();
+  await i18nReady;
 });

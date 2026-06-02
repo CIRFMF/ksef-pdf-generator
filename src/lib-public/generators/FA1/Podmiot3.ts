@@ -43,11 +43,18 @@ export function generatePodmiot3(podmiot: Podmiot3, index: number): Content[] {
   const column2: Content[] = [];
 
   if (podmiot.Adres) {
-    column2.push(generatePodmiotAdres(podmiot.Adres, i18n.t('invoice.subject3.address'), true, [0, 12, 0, 1.3]));
+    column2.push(
+      generatePodmiotAdres(podmiot.Adres, i18n.t('invoice.subject3.address'), true, [0, 12, 0, 1.3])
+    );
   }
   if (podmiot.AdresKoresp) {
     column2.push(
-      ...generatePodmiotAdres(podmiot.AdresKoresp, i18n.t('invoice.subject3.correspondenceAddress'), true, [0, 12, 0, 1.3])
+      ...generatePodmiotAdres(
+        podmiot.AdresKoresp,
+        i18n.t('invoice.subject3.correspondenceAddress'),
+        true,
+        [0, 12, 0, 1.3]
+      )
     );
   }
   if (podmiot.Email || podmiot.Telefon) {

@@ -52,6 +52,7 @@ describe(generateRabat.name, () => {
 
   it('should call createSection and return result', () => {
     const mockSection = 'section';
+
     vi.mocked(PDFFunctions.createSection).mockReturnValue(mockSection as any);
 
     const result = generateRabat(mockInvoice);
@@ -133,6 +134,7 @@ describe(generateRabat.name, () => {
   describe('table content', () => {
     it('should add table content when fieldsWithValue is not empty and content exists', () => {
       const mockTable = { table: 'mock-table' };
+
       vi.mocked(PDFFunctions.getContentTable).mockReturnValue({
         content: mockTable as any,
         fieldsWithValue: ['P_7', 'P_8B'],
@@ -141,11 +143,13 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall).toContain(mockTable);
     });
 
     it('should not add table content when fieldsWithValue is empty', () => {
       const mockTable = { table: 'mock-table' };
+
       vi.mocked(PDFFunctions.getContentTable).mockReturnValue({
         content: mockTable as any,
         fieldsWithValue: [],
@@ -154,6 +158,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall).not.toContain(mockTable);
     });
 
@@ -166,6 +171,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall.every((item: any) => item !== null)).toBe(true);
     });
 
@@ -178,6 +184,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall.length).toBeGreaterThan(0);
     });
   });
@@ -189,6 +196,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall).toContain('header-content');
     });
 
@@ -198,6 +206,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall).toContain('label-content');
     });
 
@@ -207,6 +216,7 @@ describe(generateRabat.name, () => {
       generateRabat(mockInvoice);
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall).toContain('columns-content');
     });
   });
@@ -214,6 +224,7 @@ describe(generateRabat.name, () => {
   describe('complete integration', () => {
     it('should generate complete structure with all elements', () => {
       const mockTable = { table: 'mock-table' };
+
       vi.mocked(PDFFunctions.getContentTable).mockReturnValue({
         content: mockTable as any,
         fieldsWithValue: ['NrWierszaFa', 'P_7'],
@@ -233,6 +244,7 @@ describe(generateRabat.name, () => {
       expect(PDFFunctions.createSection).toHaveBeenCalled();
 
       const sectionCall = vi.mocked(PDFFunctions.createSection).mock.calls[0][0] as any[];
+
       expect(sectionCall.length).toBeGreaterThan(3);
     });
   });

@@ -37,6 +37,7 @@ describe(generateAdres.name, () => {
   it('zwraca tylko GLN gdy brak innych pól', () => {
     const adres = { GLN: '1234567890' };
     const result = generateAdres(adres as any);
+
     expect(formatText).not.toHaveBeenCalled();
     expect(createLabelText).toHaveBeenCalledWith('GLN: ', '1234567890');
     expect(result).toHaveLength(1);

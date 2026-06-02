@@ -98,9 +98,9 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
     const summary = getSummaryTaxRate(faktura.Fa);
 
     tableBody = summary.map((item) => {
-      const data: Content[] = [];
+      const data = [];
 
-      data.push(item.no);
+      data.push(item.no ?? '');
       if (AnyP13P14_5Diff0) {
         if (item.taxRateString) {
           data.push(item.taxRateString);
@@ -118,7 +118,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       if (AnyP13P14_5Diff0) {
         data.push(formatText(item.tax, FormatTyp.Currency));
       } else if (hasValue(faktura.Fa?.P_14_5)) {
-        data.push(formatText(getValue(faktura.Fa?.P_14_5), FormatTyp.Currency));
+        data.push(getValue(faktura.Fa?.P_14_5) ?? '');
       }
       if (AnyP13) {
         data.push(formatText(item.gross, FormatTyp.Currency));
@@ -126,7 +126,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       if (AnyP_14xW) {
         data.push(formatText(item.taxPLN, FormatTyp.Currency));
       }
-      return data.filter((v) => v !== undefined);
+      return data;
     });
   }
   table.table.body = [[...definedHeader], ...tableBody] as TableCell[][];

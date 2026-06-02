@@ -1,12 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@shared/*": ["../../src/shared/*"],
-      "@lib-public": ["../../src/lib-public"],
+      "@lib-public": ["../../src/lib-public/*"],
       "@lib-public/*": ["../../src/lib-public/*"]
     },
-    "rootDir": "../../",
+    "baseUrl": "../..",
+    "rootDir": "../..",
     "noImplicitAny": false,
     "sourceMap": false,
 
@@ -14,7 +16,7 @@
     "module": "esnext",
     "allowJs": false,
     "strict": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,

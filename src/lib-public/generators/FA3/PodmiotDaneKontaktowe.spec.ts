@@ -20,6 +20,7 @@ describe(generateDaneKontaktowe.name, () => {
 
   it('returns mapped Content array when daneKontaktowe is provided', () => {
     const result = generateDaneKontaktowe(mockData);
+
     expect(getTable).toHaveBeenCalledWith(mockData);
     expect(createLabelText).toHaveBeenCalledWith('E-mail: ', mockData[0].Email);
     expect(createLabelText).toHaveBeenCalledWith('Tel.: ', mockData[0].Telefon);
@@ -31,12 +32,14 @@ describe(generateDaneKontaktowe.name, () => {
   it('returns undefined when getTable returns undefined', () => {
     (getTable as any).mockReturnValueOnce(undefined);
     const result = generateDaneKontaktowe(mockData);
+
     expect(result).toBeUndefined();
     expect(createLabelText).not.toHaveBeenCalled();
   });
 
   it('handles empty daneKontaktowe array', () => {
     const result = generateDaneKontaktowe([]);
+
     expect(getTable).toHaveBeenCalledWith([]);
     expect(result).toEqual([]);
   });

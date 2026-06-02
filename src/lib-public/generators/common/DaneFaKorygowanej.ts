@@ -41,8 +41,12 @@ export function generateDaneFaKorygowanej(invoice?: Fa1 | Fa2 | Fa3 | FaRR): Con
         getValue(invoice?.RodzajFaktury) as string
       );
       const typKorekty = getValue(invoice.TypKorekty) as string;
+
       firstColumn.push(
-        createLabelText(i18n.t('invoice.correctedInvoice.correctionEffectType'), i18n.t(isFaRR ? FARRTypKorekty[typKorekty] : TypKorekty[typKorekty]))
+        createLabelText(
+          i18n.t('invoice.correctedInvoice.correctionEffectType'),
+          i18n.t(isFaRR ? FARRTypKorekty[typKorekty] : TypKorekty[typKorekty])
+        )
       );
     }
 

@@ -61,7 +61,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
       adnotacje.NoweSrodkiTransportu?.P_42_5?._text === '2'
     ) {
       let obowiazekVAT: Content[] = [];
-      let value: string = ' ';
+      let value = ' ';
 
       if (adnotacje.NoweSrodkiTransportu.P_42_5?._text === '1') {
         value = i18n.t('invoice.annotations.vat22DocumentRequired');
@@ -89,7 +89,7 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
       secondColumn.push({ text: i18n.t('invoice.annotations.threePartsSimplerMethod') });
     }
     if (adnotacje.PMarzy?.P_PMarzy?._text === '1') {
-      let valueMarzy: string = '';
+      let valueMarzy = '';
 
       if (adnotacje.PMarzy.P_PMarzy_3_1?._text === '1') {
         valueMarzy = i18n.t('invoice.annotations.usedGoods');

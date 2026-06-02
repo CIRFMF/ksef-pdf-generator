@@ -7,7 +7,7 @@ import { Kraj, TypLadunku } from '../../../shared/consts/FA.const';
 import * as PrzewoznikModule from './Przewoznik';
 import * as CommonFunctions from '@shared/generators/common/functions';
 import { translateMap } from '@shared/generators/common/functions';
-import i18n from "i18next";
+import i18n from 'i18next';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn(),

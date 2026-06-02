@@ -1,5 +1,12 @@
-import { describe, it, expect, vi, beforeEach, test } from 'vitest';
+import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { generateDodatkoweInformacje } from './DodatkoweInformacje';
+import {
+  createSection,
+  createSubHeader,
+  formatText,
+  getContentTable,
+  getTable,
+} from '../../../shared/PDF-functions';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => [{ text, style: 'header' }]),
@@ -10,14 +17,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getTable: vi.fn((data: any) => data ?? []),
   getContentTable: vi.fn(() => ({ content: { text: 'mockTable' } })),
 }));
-
-import {
-  createSection,
-  createSubHeader,
-  formatText,
-  getTable,
-  getContentTable,
-} from '../../../shared/PDF-functions';
 
 describe(generateDodatkoweInformacje.name, () => {
   beforeEach(() => {
@@ -30,6 +29,7 @@ describe(generateDodatkoweInformacje.name, () => {
     [{ TP: { _text: '0' }, ZwrotAkcyzy: { _text: '0' } }, false],
   ])('dla danych %o', (faVat, shouldHaveContent) => {
     const result = generateDodatkoweInformacje(faVat as any);
+
     if (shouldHaveContent) {
       expect(result.length).toBeGreaterThan(0);
     } else {
@@ -57,6 +57,7 @@ describe(generateDodatkoweInformacje.name, () => {
 
   it('zwraca pustą tablicę gdy brak danych wejściowych', () => {
     const result = generateDodatkoweInformacje({} as any);
+
     expect(result).toEqual([]);
   });
 
@@ -77,15 +78,13 @@ describe(generateDodatkoweInformacje.name, () => {
     expect(result.length).toBeGreaterThan(0);
   });
 
-    it('poprawnie dodaje sekcję FP', () => {
+  it('poprawnie dodaje sekcję FP', () => {
     const faVat = {
       FP: { _text: '1' },
     };
     const result = generateDodatkoweInformacje(faVat as any);
 
-    expect(formatText).toHaveBeenCalledWith(
-      '- Faktura, o której mowa w art. 109 ust. 3d ustawy'
-    );
+    expect(formatText).toHaveBeenCalledWith('- Faktura, o której mowa w art. 109 ust. 3d ustawy');
     expect(createSection).toHaveBeenCalled();
     expect(result.length).toBeGreaterThan(0);
   });

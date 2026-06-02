@@ -5,7 +5,6 @@ import {
   formatText,
   generateColumns,
   getTable,
-  getValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';

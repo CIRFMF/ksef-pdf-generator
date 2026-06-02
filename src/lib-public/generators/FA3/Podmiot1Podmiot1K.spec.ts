@@ -20,6 +20,7 @@ vi.mock('./Adres', () => ({
 
 vi.mock('./PodmiotDaneIdentyfikacyjneTPodmiot1Dto', async () => {
   const actual = await vi.importActual('./PodmiotDaneIdentyfikacyjneTPodmiot1Dto');
+
   return {
     ...actual,
     generateDaneIdentyfikacyjneTPodmiot1Dto: vi.fn((data: any): Content[] => [
@@ -34,6 +35,7 @@ vi.mock('./PodmiotDaneKontaktowe', () => ({
 
 vi.mock('./Podmiot1Podmiot1K', async () => {
   const original: any = await vi.importActual('./Podmiot1Podmiot1K');
+
   return {
     ...original,
     generateCorrectedContent: vi.fn((podmiot: any): Content[] => [
@@ -67,6 +69,7 @@ describe(generatePodmiot1Podmiot1K.name, () => {
   it('calls generateAdres if AdresKoresp exists', () => {
     const podmiot1: Podmiot1 = { NrEORI: '123', AdresKoresp: { Ulica: 'Test' } } as any;
     const podmiot1K: Podmiot1K = {} as any;
+
     generatePodmiot1Podmiot1K(podmiot1, podmiot1K);
     expect(generateAdres).toHaveBeenCalledWith(podmiot1.AdresKoresp);
   });

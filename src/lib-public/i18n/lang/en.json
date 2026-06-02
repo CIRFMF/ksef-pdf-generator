@@ -516,7 +516,10 @@
     },
     "footer": {
       "generatedIn": "ExampleText",
-      "margin": "ExampleText"
+      "margin": "ExampleText",
+      "pagesTotal": "ExampleText",
+      "version": "ExampleText",
+      "appName": "ExampleText"
     },
     "header": {
       "advance": "ExampleText",

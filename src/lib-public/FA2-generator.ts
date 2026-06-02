@@ -1,7 +1,5 @@
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
-import { generateStyle, getValue, hasValue } from '../shared/PDF-functions';
-import { TRodzajFaktury } from '../shared/consts/FA.const';
-import { Position } from '../shared/enums/common.enum';
+import { generateStyle, getValue, hasValue } from '@shared/PDF-functions';
 import { ZamowienieKorekta } from './enums/invoice.enums';
 import { generateAdnotacje } from './generators/FA2/Adnotacje';
 import { generateDodatkoweInformacje } from './generators/FA2/DodatkoweInformacje';
@@ -20,6 +18,9 @@ import { generateStopka } from './generators/common/Stopka';
 import { AdditionalDataTypes } from './types/common.types';
 import { Faktura } from './types/fa2.types';
 import { generateWatermark } from '@shared/consts/watermark';
+import { TRodzajFaktury } from '@shared/consts/FA.const';
+import { Position } from '@shared/enums/common.enum';
+import i18n from 'i18next';
 
 export function generateFA2(invoice: Faktura, additionalData: AdditionalDataTypes): TDocumentDefinitions {
   const isKOR_RABAT: boolean =
@@ -51,7 +52,7 @@ export function generateFA2(invoice: Faktura, additionalData: AdditionalDataType
     ],
     footer: (currentPage, pageCount) => {
       return {
-        text: currentPage.toString() + ' z ' + pageCount,
+        text: `${currentPage.toString()} ${i18n.t('invoice.footer.pagesTotal')} ${pageCount}`,
         alignment: Position.RIGHT,
         margin: [0, 0, 40, 0],
       };

@@ -27,7 +27,10 @@ export function generatePodmiotUpowazniony(podmiot: PodmiotUpowazniony | undefin
 
   if (hasValue(podmiot.RolaPU)) {
     columnLeft.push(
-      createLabelText(i18n.t('invoice.authorizedSubject.role'), translateMap(podmiot.RolaPU, TRolaPodmiotuUpowaznionegoFA1))
+      createLabelText(
+        i18n.t('invoice.authorizedSubject.role'),
+        translateMap(podmiot.RolaPU, TRolaPodmiotuUpowaznionegoFA1)
+      )
     );
   }
   if (hasValue(podmiot.NrEORI)) {
@@ -50,7 +53,11 @@ export function generatePodmiotUpowazniony(podmiot: PodmiotUpowazniony | undefin
   }
   if (podmiot.AdresKoresp) {
     columnRight.push(
-      generatePodmiotAdres(podmiot.AdresKoresp, i18n.t('invoice.authorizedSubject.correspondenceAddress'), true)
+      generatePodmiotAdres(
+        podmiot.AdresKoresp,
+        i18n.t('invoice.authorizedSubject.correspondenceAddress'),
+        true
+      )
     );
   }
   if (podmiot.EmailPU || podmiot.TelefonPU) {

@@ -43,9 +43,11 @@ describe('generatePodmiot2Podmiot2K', () => {
     const podmiot2K: Podmiot2K = {};
     const result: Content[] = generatePodmiot2Podmiot2K(podmiot2, podmiot2K);
 
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
     expect(
       result.some((r: Content) => {
         if (hasColumns(r)) {

@@ -24,7 +24,10 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
   let firstColumn: Content[] = [];
   let secondColumn: Content[] = [];
 
-  firstColumn.push(createSubHeader(i18n.t('invoice.subject2k.identificationData')), createLabelText(i18n.t('invoice.subject2k.eori'), podmiot2.NrEORI));
+  firstColumn.push(
+    createSubHeader(i18n.t('invoice.subject2k.identificationData')),
+    createLabelText(i18n.t('invoice.subject2k.eori'), podmiot2.NrEORI)
+  );
   if (podmiot2.DaneIdentyfikacyjne) {
     firstColumn.push(...generateDaneIdentyfikacyjne(podmiot2.DaneIdentyfikacyjne));
   }
@@ -48,7 +51,12 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
 
   if (podmiot2.AdresKoresp) {
     secondColumn.push(
-      generatePodmiotAdres(podmiot2.AdresKoresp, i18n.t('invoice.subject2.mailingAddress'), true, [0, 12, 0, 1.3])
+      generatePodmiotAdres(
+        podmiot2.AdresKoresp,
+        i18n.t('invoice.subject2.mailingAddress'),
+        true,
+        [0, 12, 0, 1.3]
+      )
     );
   }
 
@@ -79,7 +87,9 @@ export function generateCorrectedContent(podmiot: Podmiot2 | Podmiot2K, headerTe
     result.push(...generateDaneIdentyfikacyjne(podmiot.DaneIdentyfikacyjne));
   }
   if (podmiot.Adres) {
-    result.push(generatePodmiotAdres(podmiot.Adres, i18n.t('invoice.subject2.address'), true, [0, 12, 0, 1.3]));
+    result.push(
+      generatePodmiotAdres(podmiot.Adres, i18n.t('invoice.subject2.address'), true, [0, 12, 0, 1.3])
+    );
   }
   return result;
 }

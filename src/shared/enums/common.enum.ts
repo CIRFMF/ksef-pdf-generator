@@ -14,6 +14,7 @@ export enum FormatTyp {
   Currency = 'Currency',
   CurrencyAbs = 'CurrencyAbs',
   CurrencyGreater = 'CurrencyGreater',
+  CurrencyGreaterWithSeparator = 'CurrencyGreaterWithSeparator',
   Currency6 = 'Currency6',
   Default = 'Default',
   Description = 'Description',
@@ -40,6 +41,7 @@ export enum FormatTyp {
   Date = 'Date',
   Time = 'Time',
   FormOfPayment = 'FormOfPayment',
+  AccountNumber = 'AccountNumber',
   Percentage = 'Percentage',
   Number = 'Number',
 }

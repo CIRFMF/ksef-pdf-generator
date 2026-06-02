@@ -1,7 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generatePodmiotUpowaznionyDaneKontaktowe } from './PodmiotUpowaznionyDaneKontaktowe';
 import type { PodmiotUpowaznionyDaneKontaktowe } from '../../types/fa2.types';
 import FormatTyp from '../../../shared/enums/common.enum';
+import {
+  createLabelText,
+  formatText,
+  getTable,
+  hasValue,
+  verticalSpacing,
+} from '../../../shared/PDF-functions';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   formatText: vi.fn((text: string, type: FormatTyp) => ({ text, type })),
@@ -10,14 +17,6 @@ vi.mock('../../../shared/PDF-functions', () => ({
   createLabelText: vi.fn((label: string, value: any) => ({ text: `${label}${value?._text ?? value}` })),
   verticalSpacing: vi.fn((amount: number) => ({ verticalSpacing: amount })),
 }));
-
-import {
-  formatText,
-  getTable,
-  hasValue,
-  createLabelText,
-  verticalSpacing,
-} from '../../../shared/PDF-functions';
 
 describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
   const mockData: PodmiotUpowaznionyDaneKontaktowe[] = [
@@ -31,17 +30,20 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
 
   it('returns empty array when daneKontaktoweSource is undefined', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(undefined);
+
     expect(result).toEqual([]);
   });
 
   it('adds formatted header for contact data', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(formatText).toHaveBeenCalledWith('Dane kontaktowe', FormatTyp.Description);
     expect(result[0]).toEqual({ text: 'Dane kontaktowe', type: FormatTyp.Description });
   });
 
   it('maps each contact with EmailPU and TelefonPU', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(getTable).toHaveBeenCalledWith(mockData);
     expect(hasValue).toHaveBeenCalledWith(mockData[0].EmailPU);
     expect(hasValue).toHaveBeenCalledWith(mockData[0].TelefonPU);
@@ -55,6 +57,7 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
   it('returns empty array when getTable returns empty array', () => {
     (getTable as any).mockReturnValueOnce([]);
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(result).toEqual([]);
     expect(createLabelText).not.toHaveBeenCalled();
   });
@@ -63,8 +66,10 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
     const data: PodmiotUpowaznionyDaneKontaktowe[] = [
       { EmailPU: undefined, TelefonPU: { _text: '111111111' } },
     ] as any;
+
     (hasValue as any).mockImplementation((val: any) => Boolean(val && val._text));
     const result = generatePodmiotUpowaznionyDaneKontaktowe(data);
+
     expect(createLabelText).toHaveBeenCalledWith('Tel.: ', data[0].TelefonPU);
     expect(createLabelText).not.toHaveBeenCalledWith('E-mail: ', undefined);
     expect(result.flat().some((c) => (c as any)?.text?.includes('E-mail'))).toBeFalsy();

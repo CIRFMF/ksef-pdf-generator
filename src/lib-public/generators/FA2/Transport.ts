@@ -85,7 +85,9 @@ export function generateTransport(transport: Transport, index?: number | null): 
     columns.wysylkaZ.push(createSubHeader(i18n.t('invoice.transport.shipFrom'), [0, 0, 0, 0]));
     columns.wysylkaZ.push(formatText(transport.WysylkaZ?.AdresL1?._text, FormatTyp.Default));
     columns.wysylkaZ.push(formatText(transport.WysylkaZ?.AdresL2?._text, FormatTyp.Default));
-    columns.wysylkaZ.push(formatText(i18n.t(Kraj[transport.WysylkaZ?.KodKraju?._text ?? '']), FormatTyp.Default));
+    columns.wysylkaZ.push(
+      formatText(i18n.t(Kraj[transport.WysylkaZ?.KodKraju?._text ?? '']), FormatTyp.Default)
+    );
     columns.wysylkaZ.push(createLabelText(i18n.t('invoice.transport.gln'), transport.WysylkaZ?.GLN?._text));
   }
 
@@ -93,7 +95,9 @@ export function generateTransport(transport: Transport, index?: number | null): 
     columns.wysylkaDo.push(createSubHeader(i18n.t('invoice.transport.shipTo'), [0, 0, 0, 0]));
     columns.wysylkaDo.push(formatText(transport.WysylkaDo?.AdresL1?._text, FormatTyp.Default));
     columns.wysylkaDo.push(formatText(transport.WysylkaDo?.AdresL2?._text, FormatTyp.Default));
-    columns.wysylkaDo.push(formatText(i18n.t(Kraj[transport.WysylkaDo?.KodKraju?._text ?? '']), FormatTyp.Default));
+    columns.wysylkaDo.push(
+      formatText(i18n.t(Kraj[transport.WysylkaDo?.KodKraju?._text ?? '']), FormatTyp.Default)
+    );
     columns.wysylkaDo.push(createLabelText(i18n.t('invoice.transport.gln'), transport.WysylkaDo?.GLN?._text));
   }
 

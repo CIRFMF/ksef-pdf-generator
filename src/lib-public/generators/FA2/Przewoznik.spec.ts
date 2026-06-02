@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generatePrzewoznik } from './Przewoznik';
 import * as PDFFunctions from '../../../shared/PDF-functions';
 import { Przewoznik } from '../../types/fa2.types';

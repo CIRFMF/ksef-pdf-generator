@@ -45,26 +45,47 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
       title: i18n.t('invoice.payment.partialPaymentDate'),
       format: FormatTyp.Date,
     },
-    { name: 'KwotaZaplatyCzesciowej', title: i18n.t('invoice.payment.partialPaymentAmount'), format: FormatTyp.Currency },
-    { name: 'FormaPlatnosci', title: i18n.t('invoice.payment.paymentMethod'), format: FormatTyp.FormOfPayment },
+    {
+      name: 'KwotaZaplatyCzesciowej',
+      title: i18n.t('invoice.payment.partialPaymentAmount'),
+      format: FormatTyp.Currency,
+    },
+    {
+      name: 'FormaPlatnosci',
+      title: i18n.t('invoice.payment.paymentMethod'),
+      format: FormatTyp.FormOfPayment,
+    },
   ];
 
   const table: Content[] = [generateLine(), ...createHeader(i18n.t('invoice.payment.payment'))];
 
   if (platnosc.Zaplacono?._text === '1') {
-    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.paidStatus')));
+    table.push(
+      createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.paidStatus'))
+    );
     table.push(createLabelText(i18n.t('invoice.payment.paymentDate'), platnosc.DataZaplaty, FormatTyp.Date));
   } else if (platnosc.ZaplataCzesciowa?._text === '1') {
-    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.partialPayment')));
+    table.push(
+      createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.partialPayment'))
+    );
   } else {
-    table.push(createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.noPayment')));
+    table.push(
+      createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.noPayment'))
+    );
   }
 
   if (hasValue(platnosc.FormaPlatnosci)) {
-    table.push(createLabelText(i18n.t('invoice.payment.paymentMethod2'), translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)));
+    table.push(
+      createLabelText(
+        i18n.t('invoice.payment.paymentMethod2'),
+        translateMap(platnosc.FormaPlatnosci, FormaPlatnosci)
+      )
+    );
   } else {
     if (platnosc.OpisPlatnosci?._text) {
-      table.push(createLabelText(i18n.t('invoice.payment.paymentMethod2'), i18n.t('invoice.payment.paymentDifferent')));
+      table.push(
+        createLabelText(i18n.t('invoice.payment.paymentMethod2'), i18n.t('invoice.payment.paymentDifferent'))
+      );
       table.push(createLabelText(i18n.t('invoice.payment.otherPaymentDescription'), platnosc.OpisPlatnosci));
     }
   }

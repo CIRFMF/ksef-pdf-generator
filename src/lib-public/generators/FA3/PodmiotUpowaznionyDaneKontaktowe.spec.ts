@@ -30,17 +30,20 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
 
   it('returns empty array when daneKontaktoweSource is undefined', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(undefined);
+
     expect(result).toEqual([]);
   });
 
   it('adds formatted header for contact data', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(formatText).toHaveBeenCalledWith('Dane kontaktowe', FormatTyp.Description);
     expect(result[0]).toEqual({ text: 'Dane kontaktowe', type: FormatTyp.Description });
   });
 
   it('maps each contact with EmailPU and TelefonPU', () => {
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(getTable).toHaveBeenCalledWith(mockData);
     expect(hasValue).toHaveBeenCalledWith(mockData[0].EmailPU);
     expect(hasValue).toHaveBeenCalledWith(mockData[0].TelefonPU);
@@ -54,6 +57,7 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
   it('returns empty array when getTable returns empty array', () => {
     (getTable as any).mockReturnValueOnce([]);
     const result = generatePodmiotUpowaznionyDaneKontaktowe(mockData);
+
     expect(result).toEqual([]);
     expect(createLabelText).not.toHaveBeenCalled();
   });
@@ -62,8 +66,10 @@ describe(generatePodmiotUpowaznionyDaneKontaktowe.name, () => {
     const data: PodmiotUpowaznionyDaneKontaktowe[] = [
       { EmailPU: undefined, TelefonPU: { _text: '111111111' } },
     ] as any;
+
     (hasValue as any).mockImplementation((val: any) => Boolean(val && val._text));
     const result = generatePodmiotUpowaznionyDaneKontaktowe(data);
+
     expect(createLabelText).toHaveBeenCalledWith('Tel.: ', data[0].TelefonPU);
     expect(createLabelText).not.toHaveBeenCalledWith('E-mail: ', undefined);
     expect(result.flat().some((c) => (c as any)?.text?.includes('E-mail'))).toBeFalsy();

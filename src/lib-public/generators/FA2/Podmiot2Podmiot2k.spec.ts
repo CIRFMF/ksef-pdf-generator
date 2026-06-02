@@ -42,9 +42,12 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     } as any;
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
 
     expect(result[1][0]).toHaveProperty('text');
     expect(result[1][0]).toHaveProperty('style');
@@ -66,6 +69,7 @@ describe(generatePodmiot2Podmiot2K.name, () => {
   it('calls generateAdres if AdresKoresp exists', () => {
     const podmiot2: Podmiot2 = { NrEORI: 'EORI123', AdresKoresp: { Ulica: 'Test' } } as any;
     const podmiot2K: Podmiot2K = {} as any;
+
     generatePodmiot2Podmiot2K(podmiot2, podmiot2K);
     expect(generateAdres).toHaveBeenCalledWith(podmiot2.AdresKoresp);
   });
@@ -74,6 +78,7 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     const podmiot2: Podmiot2 = { NrEORI: 'EORI123' } as any;
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
+
     expect(Array.isArray(result[2].columns[0])).toBe(true);
     expect(Array.isArray(result[2].columns[1])).toBe(true);
     expect(result[2].columns[0].length).toBeGreaterThanOrEqual(0);
@@ -97,10 +102,13 @@ describe(generatePodmiot2Podmiot2K.name, () => {
     } as any;
     const podmiot2K: Podmiot2K = { IDNabywcy: 'ID123' } as any;
     const result = generatePodmiot2Podmiot2K(podmiot2, podmiot2K) as any;
+
     expect(result.length).toBeGreaterThan(3);
-    expect(result[0]).toEqual([{
-      "line": true,
-    }]);
+    expect(result[0]).toEqual([
+      {
+        line: true,
+      },
+    ]);
 
     expect(result[2]).toHaveProperty('columns');
     expect(Array.isArray(result[2].columns[0])).toBe(true);

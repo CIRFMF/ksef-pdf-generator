@@ -1,6 +1,5 @@
 node_modules/
 dist/
-dist-server/
 *.log
 *.lock
 .DS_Store
@@ -17,10 +16,14 @@ out
 .vscode
 *.swp
 
-ksef-exe-fa-*.pdf
-ksef-exe-upo.pdf
-ksef-exe-fa-*.html
-ksef-exe-upo.html
+dist-server/
 
+ksef-exe-fa-offline.html
+ksef-exe-fa-offline.pdf
+ksef-exe-fa-online.html
+ksef-exe-fa-online.pdf
+ksef-exe-upo.html
+ksef-exe-upo.pdf
 KSeF-PDFGen
-KSeF-PDFGen.exe
+ksef-rest-invoice.pdf
+ksef-rest-upo.pdf

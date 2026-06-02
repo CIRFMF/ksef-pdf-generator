@@ -516,7 +516,10 @@
     },
     "footer": {
       "generatedIn": "Wytworzona w: ",
-      "margin": "marża"
+      "margin": "marża",
+      "pagesTotal": "z",
+      "version": "wersja",
+      "appName": "Aplikacja Podatnika KSeF"
     },
     "header": {
       "advance": "Faktura zaliczkowa",

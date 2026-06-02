@@ -1,25 +1,26 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { generateUPO } from './UPO-generator';
+import { generatePDFUPO } from './UPO-generator';
 
-describe('generateUPO', () => {
+import * as XMLParser from '@shared//XML-parser';
+
+describe('generatePDFUPO', () => {
+  const dummyFile = new File(['dummy'], 'dummy.xml', { type: 'text/xml' });
   const dummyUpo = {
     Potwierdzenie: {
       field1: 'value1',
       field2: 'value2',
-      NazwaPodmiotuPrzyjmujacego: 'nazwa',
     },
   };
 
   beforeEach(() => {
+    vi.spyOn(XMLParser, 'parseXML').mockResolvedValue(dummyUpo);
+
+    const mockBlob = new Blob(['pdf content'], { type: 'application/pdf' });
     vi.spyOn(pdfMake, 'createPdf').mockImplementation(
       () =>
         ({
-          getBlob: (callback: (blob: Blob | null) => void) => {
-            const blob = new Blob(['PDF content'], { type: 'application/pdf' });
-
-            callback(blob);
-          },
+          getBlob: vi.fn(() => Promise.resolve(mockBlob)),
         }) as any
     );
   });
@@ -29,7 +30,7 @@ describe('generateUPO', () => {
   });
 
   it('successfully generates a PDF blob', async () => {
-    const blob = await generateUPO(dummyUpo, 'blob');
+    const blob = await generatePDFUPO(dummyFile);
 
     expect(blob).toBeInstanceOf(Blob);
     const text = await new Promise<string>((resolve, reject) => {
@@ -40,16 +41,13 @@ describe('generateUPO', () => {
       reader.readAsText(blob);
     });
 
-    expect(text).toContain('PDF content');
+    expect(text).toContain('pdf content');
   });
 
-  it('rejects promise if pdfMake returns null blob', async () => {
-    vi.spyOn(pdfMake, 'createPdf').mockReturnValue({
-      getBlob: (callback: (blob: Blob | null) => void) => {
-        callback(null);
-      },
-    } as any);
+  it('calls parseXML with the input file', async () => {
+    const parseXMLSpy = vi.spyOn(XMLParser, 'parseXML');
 
-    await expect(generateUPO(dummyUpo, 'blob')).rejects.toEqual('Error');
+    await generatePDFUPO(dummyFile);
+    expect(parseXMLSpy).toHaveBeenCalledWith(dummyFile);
   });
 });

@@ -19,6 +19,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot1Dto.name, () => {
 
   it('calls createLabelText twice with correct arguments', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot1Dto(mockData);
+
     expect(createLabelText).toHaveBeenCalledTimes(2);
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', '1234567890');
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', 'Test Company');
@@ -27,6 +28,7 @@ describe(generateDaneIdentyfikacyjneTPodmiot1Dto.name, () => {
 
   it('handles empty values correctly', () => {
     const result = generateDaneIdentyfikacyjneTPodmiot1Dto({ NIP: '', Nazwa: '' } as DaneIdentyfikacyjne);
+
     expect(createLabelText).toHaveBeenCalledWith('NIP: ', '');
     expect(createLabelText).toHaveBeenCalledWith('Nazwa: ', '');
     expect(result).toEqual([{ text: 'NIP: ' }, { text: 'Nazwa: ' }]);

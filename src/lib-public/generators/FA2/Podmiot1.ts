@@ -1,5 +1,5 @@
 import { Content } from 'pdfmake/interfaces';
-import { createHeader, createLabelText, formatText, getValue, hasValue } from '../../../shared/PDF-functions';
+import { createHeader, createLabelText, formatText, hasValue } from '@shared/PDF-functions';
 import { Podmiot1 } from '../../types/fa2.types';
 import { generateAdres } from './Adres';
 import { generateDaneIdentyfikacyjneTPodmiot1Dto } from './PodmiotDaneIdentyfikacyjneTPodmiot1Dto';
