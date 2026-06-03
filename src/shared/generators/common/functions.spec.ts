@@ -160,6 +160,6 @@ describe('createVersionLabel', () => {
       .pop();
     expect(versionLabel).toContain('Aplikacja Podatnika KSeF');
     expect(versionLabel).toContain('ksef-pdf-generator');
-    expect(version).toMatch(/^\d+\.\d+\.\d+(-[A-Za-z0-9]+)?$/);
+    expect(version).toMatch(/^(\d+\.)?(\d+\.)?(\*|\d+)$/);
   });
 });

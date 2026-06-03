@@ -674,6 +674,7 @@
       "stateBefore": "ExampleText",
       "taxRate": "ExampleText",
       "totalAmountDue": "ExampleText",
+      "totalAmountDueCorrection": "ExampleText",
       "uniqueRowNumber": "ExampleText",
       "unit": "ExampleText",
       "unitPrice": "ExampleText",
@@ -690,7 +691,8 @@
       "toPay": "ExampleText",
       "toSettle": "ExampleText",
       "totalCharges": "ExampleText",
-      "totalDeductions": "ExampleText"
+      "totalDeductions": "ExampleText",
+      "amount": "ExampleText"
     },
     "subject1": {
       "address": "ExampleText",

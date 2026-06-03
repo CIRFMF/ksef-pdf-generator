@@ -43,7 +43,6 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
 
   const table: Content[] = [generateLine(), ...createHeader(i18n.t('invoice.payment.payment'))];
 
-  //  TODO: Add to FA2 and FA1? (KSEF20-15289)
   if (getValue(platnosc.Zaplacono) === '1') {
     table.push(
       createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.paidStatus'))
@@ -63,10 +62,6 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
           ? i18n.t('invoice.payment.paidInPart')
           : i18n.t('invoice.payment.paidAllInParts')
       )
-    );
-  } else {
-    table.push(
-      createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.noPayment'))
     );
   }
 

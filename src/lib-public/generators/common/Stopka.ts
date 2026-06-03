@@ -50,7 +50,10 @@ export function generateStopka(
     createSection(
       [
         {
-          stack: createLabelText(i18n.t('invoice.footer.generatedIn'), createVersionLabel()),
+          stack: createLabelText(
+            i18n.t('invoice.footer.generatedIn'),
+            createVersionLabel(naglowek?.SystemInfo?._text)
+          ),
           margin: [0, 8, 0, 0],
         },
       ],

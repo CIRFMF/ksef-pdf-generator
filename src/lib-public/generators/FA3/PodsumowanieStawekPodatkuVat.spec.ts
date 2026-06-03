@@ -91,7 +91,6 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
 
     getSummaryTaxRate(fa);
     expect(hasValue).toHaveBeenCalled();
-    expect(getValue).toHaveBeenCalled();
     expect(getNumberRounded).toHaveBeenCalled();
     expect(formatText).not.toHaveBeenCalled();
   });

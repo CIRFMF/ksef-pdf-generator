@@ -33,7 +33,7 @@ export const generujRachunekBankowy: (accounts?: Record<string, FP>[], title?: s
 
     table.push([
       formatText(i18n.t('invoice.registers.fullAccountNumber'), FormatTyp.GrayBoldTitle),
-      formatText(getValue(account.NrRB), FormatTyp.AccountNumber),
+      formatText(getValue(account.NrRB), FormatTyp.Default),
     ]);
     table.push([
       formatText(i18n.t('invoice.registers.swiftCode'), FormatTyp.GrayBoldTitle),

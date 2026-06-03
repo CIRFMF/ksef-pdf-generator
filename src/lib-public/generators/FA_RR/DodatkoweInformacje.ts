@@ -13,7 +13,7 @@ import i18n from 'i18next';
 
 export function generateDodatkoweInformacje(fa: Fa): Content[] {
   const table: Content[] = [
-    ...createHeader('invoice.additionalInformation.additionalInformationLabel'),
+    ...createHeader(i18n.t('invoice.additionalInformation.additionalInformationLabel')),
     ...generateDokumentyZaplaty(fa.DokumentZaplaty),
     ...generateDodatkowyOpis(fa.DodatkowyOpis),
   ];

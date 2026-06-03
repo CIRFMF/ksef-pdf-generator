@@ -49,13 +49,6 @@ describe('generatePlatnosc', () => {
     );
   });
 
-  it('handles case: not paid', () => {
-    const p: Platnosc = {};
-    const result = generatePlatnosc(p);
-
-    expect(result).toEqual(expect.arrayContaining([{ text: 'LABEL:Informacja o płatności: Brak zapłaty' }]));
-  });
-
   it('adds "Forma płatności" with getFormaPlatnosciString when present', () => {
     const p: Platnosc = { FormaPlatnosci: { _text: '6' } };
     const result = generatePlatnosc(p);
@@ -69,7 +62,6 @@ describe('generatePlatnosc', () => {
 
     expect(result).toEqual(
       expect.arrayContaining([
-        { text: 'LABEL:Informacja o płatności: Brak zapłaty' },
         { text: 'LABEL:Forma płatności: Płatność inna' },
         { text: 'LABEL:Opis płatności innej: Gotówka przy odbiorze' },
       ])

@@ -68,10 +68,6 @@ export function generatePlatnosc(platnosc: Platnosc | undefined): Content {
     table.push(
       createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.partialPayment'))
     );
-  } else {
-    table.push(
-      createLabelText(i18n.t('invoice.payment.paymentInformation'), i18n.t('invoice.payment.noPayment'))
-    );
   }
 
   if (hasValue(platnosc.FormaPlatnosci)) {

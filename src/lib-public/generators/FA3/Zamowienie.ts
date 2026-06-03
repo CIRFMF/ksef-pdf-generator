@@ -134,7 +134,7 @@ export function generateZamowienie(
     opis = {
       stack: createLabelTextArray([
         { value: i18n.t('invoice.order.advancePaymentAmount'), formatTyp: FormatTyp.LabelGreater },
-        { value: p_15, formatTyp: FormatTyp.CurrencyGreater },
+        { value: p_15, formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
       ]),
       alignment: Position.RIGHT,
       margin: [0, 8, 0, 0],
@@ -146,7 +146,7 @@ export function generateZamowienie(
     opis = {
       stack: createLabelTextArray([
         { value: i18n.t('invoice.order.advancePaymentAmountCorrection'), formatTyp: FormatTyp.LabelGreater },
-        { value: p_15, formatTyp: FormatTyp.CurrencyGreater },
+        { value: p_15, formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
       ]),
       alignment: Position.RIGHT,
       margin: [0, 8, 0, 0],

@@ -8,45 +8,45 @@ import {
   hasValue,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
-import { Fa, Faktura, FP } from '../../types/fa2.types';
+import { Fa, Faktura } from '../../types/fa2.types';
 import { TaxSummaryTypes } from '../../types/tax-summary.types';
 import { DEFAULT_TABLE_LAYOUT } from '../../../shared/consts/FA.const';
 import i18n from 'i18next';
 
 export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[] {
-  const AnyP13P14_5Diff0: boolean =
-    hasValue(faktura.Fa?.P_13_1) ||
-    hasValue(faktura.Fa?.P_13_2) ||
-    hasValue(faktura.Fa?.P_13_3) ||
-    hasValue(faktura.Fa?.P_13_4) ||
-    (hasValue(faktura.Fa?.P_13_5) && (!hasValue(faktura.Fa?.P_14_5) || getValue(faktura.Fa?.P_14_5) == 0)) ||
-    hasValue(faktura.Fa?.P_13_6_1) ||
-    hasValue(faktura.Fa?.P_13_6_2) ||
-    hasValue(faktura.Fa?.P_13_6_3) ||
-    hasValue(faktura.Fa?.P_13_7) ||
-    hasValue(faktura.Fa?.P_13_8) ||
-    hasValue(faktura.Fa?.P_13_9) ||
-    hasValue(faktura.Fa?.P_13_10) ||
-    hasValue(faktura.Fa?.P_13_11);
+  const AnyP13P14_5: boolean =
+    hasValue(faktura.Fa?.P_13_1, false) ||
+    hasValue(faktura.Fa?.P_13_2, false) ||
+    hasValue(faktura.Fa?.P_13_3, false) ||
+    hasValue(faktura.Fa?.P_13_4, false) ||
+    (hasValue(faktura.Fa?.P_13_5, false) && !hasValue(faktura.Fa?.P_14_5, false)) ||
+    hasValue(faktura.Fa?.P_13_6_1, false) ||
+    hasValue(faktura.Fa?.P_13_6_2, false) ||
+    hasValue(faktura.Fa?.P_13_6_3, false) ||
+    hasValue(faktura.Fa?.P_13_7, false) ||
+    hasValue(faktura.Fa?.P_13_8, false) ||
+    hasValue(faktura.Fa?.P_13_9, false) ||
+    hasValue(faktura.Fa?.P_13_10, false) ||
+    hasValue(faktura.Fa?.P_13_11, false);
   const AnyP13: boolean =
-    hasValue(faktura.Fa?.P_13_1) ||
-    hasValue(faktura.Fa?.P_13_2) ||
-    hasValue(faktura.Fa?.P_13_3) ||
-    hasValue(faktura.Fa?.P_13_4) ||
-    hasValue(faktura.Fa?.P_13_5) ||
-    hasValue(faktura.Fa?.P_13_6_1) ||
-    hasValue(faktura.Fa?.P_13_6_2) ||
-    hasValue(faktura.Fa?.P_13_6_3) ||
-    hasValue(faktura.Fa?.P_13_7) ||
-    hasValue(faktura.Fa?.P_13_8) ||
-    hasValue(faktura.Fa?.P_13_9) ||
-    hasValue(faktura.Fa?.P_13_10) ||
-    hasValue(faktura.Fa?.P_13_11);
+    hasValue(faktura.Fa?.P_13_1, false) ||
+    hasValue(faktura.Fa?.P_13_2, false) ||
+    hasValue(faktura.Fa?.P_13_3, false) ||
+    hasValue(faktura.Fa?.P_13_4, false) ||
+    hasValue(faktura.Fa?.P_13_5, false) ||
+    hasValue(faktura.Fa?.P_13_6_1, false) ||
+    hasValue(faktura.Fa?.P_13_6_2, false) ||
+    hasValue(faktura.Fa?.P_13_6_3, false) ||
+    hasValue(faktura.Fa?.P_13_7, false) ||
+    hasValue(faktura.Fa?.P_13_8, false) ||
+    hasValue(faktura.Fa?.P_13_9, false) ||
+    hasValue(faktura.Fa?.P_13_10, false) ||
+    hasValue(faktura.Fa?.P_13_11, false);
   const AnyP_14xW: boolean =
-    hasValue(faktura.Fa?.P_14_1W) ||
-    hasValue(faktura.Fa?.P_14_2W) ||
-    hasValue(faktura.Fa?.P_14_3W) ||
-    hasValue(faktura.Fa?.P_14_4W);
+    hasValue(faktura.Fa?.P_14_1W, false) ||
+    hasValue(faktura.Fa?.P_14_2W, false) ||
+    hasValue(faktura.Fa?.P_14_3W, false) ||
+    hasValue(faktura.Fa?.P_14_4W, false);
 
   let tableBody: TableCell[] = [];
   const table: ContentTable = {
@@ -60,7 +60,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
 
   const definedHeader: Content[] = [
     ...[{ text: i18n.t('invoice.summary.lp'), style: FormatTyp.GrayBoldTitle }],
-    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)
+    ...(AnyP13P14_5 || hasValue(faktura.Fa?.P_14_5, false)
       ? [
           {
             text: i18n.t('invoice.summary.taxRate'),
@@ -69,7 +69,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
         ]
       : []),
     ...(AnyP13 ? [{ text: i18n.t('invoice.summary.netAmount'), style: FormatTyp.GrayBoldTitle }] : []),
-    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5)
+    ...(AnyP13P14_5 || hasValue(faktura.Fa?.P_14_5, false)
       ? [
           {
             text: i18n.t('invoice.summary.taxAmount'),
@@ -83,9 +83,9 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
 
   const widths: Content[] = [
     ...['auto'],
-    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5) ? ['*'] : []),
+    ...(AnyP13P14_5 || hasValue(faktura.Fa?.P_14_5, false) ? ['*'] : []),
     ...(AnyP13 ? ['*'] : []),
-    ...(AnyP13P14_5Diff0 || hasValue(faktura.Fa?.P_14_5) ? ['*'] : []),
+    ...(AnyP13P14_5 || hasValue(faktura.Fa?.P_14_5, false) ? ['*'] : []),
     ...(AnyP13 ? ['*'] : []),
     ...(AnyP_14xW ? ['*'] : []),
   ];
@@ -97,7 +97,7 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       const data = [];
 
       data.push(item.no ?? '');
-      if (AnyP13P14_5Diff0) {
+      if (AnyP13P14_5) {
         if (item.taxRateString) {
           data.push(item.taxRateString);
         } else if (getValue(faktura.Fa?.P_13_5)) {
@@ -105,15 +105,15 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
         } else {
           data.push('');
         }
-      } else if (hasValue(faktura.Fa?.P_14_5)) {
+      } else if (hasValue(faktura.Fa?.P_14_5, false)) {
         data.push(i18n.t('invoice.summary.oss'));
       }
       if (AnyP13) {
         data.push(formatText(item.net, FormatTyp.Currency));
       }
-      if (AnyP13P14_5Diff0) {
+      if (AnyP13P14_5) {
         data.push(formatText(item.tax, FormatTyp.Currency));
-      } else if (hasValue(faktura.Fa?.P_14_5)) {
+      } else if (hasValue(faktura.Fa?.P_14_5, false)) {
         data.push(getValue(faktura.Fa?.P_14_5) ?? '');
       }
       if (AnyP13) {
@@ -136,26 +136,26 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
 export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   const summary: TaxSummaryTypes[] = [];
 
-  const AnyP13_1P14_1P14_1WDiff0: boolean =
-    hasValueAndDiff0(fa?.P_13_1) || hasValueAndDiff0(fa?.P_14_1) || hasValueAndDiff0(fa?.P_14_1W);
-  const AnyP13_2P14_2P14_2WDiff0: boolean =
-    hasValueAndDiff0(fa?.P_13_2) || hasValueAndDiff0(fa?.P_14_2) || hasValueAndDiff0(fa?.P_14_2W);
-  const AnyP13_3P14_3P14_3WDiff0: boolean =
-    hasValueAndDiff0(fa?.P_13_3) || hasValueAndDiff0(fa?.P_14_3) || hasValueAndDiff0(fa?.P_14_3W);
-  const AnyP13_4P14_4P14_4WDiff0: boolean =
-    hasValueAndDiff0(fa?.P_13_4) || hasValueAndDiff0(fa?.P_14_4) || hasValueAndDiff0(fa?.P_14_4W);
-  const AnyP13_5P14_5Diff0: boolean = hasValueAndDiff0(fa?.P_13_5) || hasValueAndDiff0(fa?.P_14_5);
-  const AnyP13_6_1Diff0: boolean = hasValueAndDiff0(fa?.P_13_6_1);
-  const AnyP13_6_2Diff0: boolean = hasValueAndDiff0(fa?.P_13_6_2);
-  const AnyP13_6_3Diff0: boolean = hasValueAndDiff0(fa?.P_13_6_3);
-  const AnyP13_7Diff0: boolean = hasValueAndDiff0(fa?.P_13_7);
-  const AnyP13_8Diff0: boolean = hasValueAndDiff0(fa?.P_13_8);
-  const AnyP13_9Diff0: boolean = hasValueAndDiff0(fa?.P_13_9);
-  const AnyP13_10Diff0: boolean = hasValueAndDiff0(fa?.P_13_10);
-  const AnyP13_11Diff0: boolean = hasValueAndDiff0(fa?.P_13_11);
+  const AnyP13_1P14_1P14_1W: boolean =
+    hasValue(fa?.P_13_1, false) || hasValue(fa?.P_14_1, false) || hasValue(fa?.P_14_1W, false);
+  const AnyP13_2P14_2P14_2W: boolean =
+    hasValue(fa?.P_13_2, false) || hasValue(fa?.P_14_2, false) || hasValue(fa?.P_14_2W, false);
+  const AnyP13_3P14_3P14_3W: boolean =
+    hasValue(fa?.P_13_3, false) || hasValue(fa?.P_14_3, false) || hasValue(fa?.P_14_3W, false);
+  const AnyP13_4P14_4P14_4W: boolean =
+    hasValue(fa?.P_13_4, false) || hasValue(fa?.P_14_4, false) || hasValue(fa?.P_14_4W, false);
+  const AnyP13_5P14_5: boolean = hasValue(fa?.P_13_5) || hasValue(fa?.P_14_5, false);
+  const AnyP13_6_1: boolean = hasValue(fa?.P_13_6_1, false);
+  const AnyP13_6_2: boolean = hasValue(fa?.P_13_6_2, false);
+  const AnyP13_6_3: boolean = hasValue(fa?.P_13_6_3, false);
+  const AnyP13_7: boolean = hasValue(fa?.P_13_7, false);
+  const AnyP13_8: boolean = hasValue(fa?.P_13_8, false);
+  const AnyP13_9: boolean = hasValue(fa?.P_13_9, false);
+  const AnyP13_10: boolean = hasValue(fa?.P_13_10, false);
+  const AnyP13_11: boolean = hasValue(fa?.P_13_11, false);
   let no = 1;
 
-  if (AnyP13_1P14_1P14_1WDiff0) {
+  if (AnyP13_1P14_1P14_1W) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_1).toFixed(2),
@@ -167,7 +167,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_2P14_2P14_2WDiff0) {
+  if (AnyP13_2P14_2P14_2W) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_2).toFixed(2),
@@ -179,7 +179,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_3P14_3P14_3WDiff0) {
+  if (AnyP13_3P14_3P14_3W) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_3).toFixed(2),
@@ -191,7 +191,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_4P14_4P14_4WDiff0) {
+  if (AnyP13_4P14_4P14_4W) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_4).toFixed(2),
@@ -203,7 +203,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_5P14_5Diff0) {
+  if (AnyP13_5P14_5) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_5).toFixed(2),
@@ -215,7 +215,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_6_1Diff0) {
+  if (AnyP13_6_1) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_6_1).toFixed(2),
@@ -227,7 +227,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_6_2Diff0) {
+  if (AnyP13_6_2) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_6_2).toFixed(2),
@@ -239,7 +239,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_6_3Diff0) {
+  if (AnyP13_6_3) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_6_3).toFixed(2),
@@ -251,7 +251,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_7Diff0) {
+  if (AnyP13_7) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_7).toFixed(2),
@@ -263,7 +263,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_8Diff0) {
+  if (AnyP13_8) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_8).toFixed(2),
@@ -275,7 +275,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_9Diff0) {
+  if (AnyP13_9) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_9).toFixed(2),
@@ -287,7 +287,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_10Diff0) {
+  if (AnyP13_10) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_10).toFixed(2),
@@ -299,7 +299,7 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
     no++;
   }
 
-  if (AnyP13_11Diff0) {
+  if (AnyP13_11) {
     summary.push({
       no,
       net: getNumberRounded(fa.P_13_11).toFixed(2),
@@ -312,8 +312,4 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   }
 
   return summary;
-}
-
-function hasValueAndDiff0(value: FP | string | number | undefined): boolean {
-  return hasValue(value) && getValue(value) != 0;
 }

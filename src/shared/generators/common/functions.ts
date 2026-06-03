@@ -92,5 +92,5 @@ export function formatTime(data?: string, withoutSeconds?: boolean): string {
 }
 
 export function createVersionLabel(application?: string): string {
-  return `${application ? application : i18n.t('invoice.footer.appName')} (ksef-pdf-generator - ${i18n.t('invoice.footer.version')} ${packageInfo.version})`;
+  return `${application || i18n.t('invoice.footer.appName')} (ksef-pdf-generator - ${i18n.t('invoice.footer.version')} ${packageInfo.version})`;
 }

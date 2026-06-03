@@ -118,26 +118,33 @@ export function generateWiersze(faVat: Fa): Content {
   const p_15: string | number | undefined = getValue(faVat.P_15);
   let opis: Content = '';
 
-  if (rodzajFaktury == TRodzajFaktury.ROZ && Number(p_15) !== 0) {
+  if (rodzajFaktury == TRodzajFaktury.ROZ) {
     opis = {
       stack: createLabelTextArray([
         { value: i18n.t('invoice.rows.remainingAmount'), formatTyp: FormatTyp.LabelGreater },
         {
           value: p_15,
-          formatTyp: FormatTyp.CurrencyGreater,
+          formatTyp: FormatTyp.CurrencyGreaterWithSeparator,
           currency: getValue(faVat.KodWaluty)?.toString() ?? '',
         },
       ]),
       alignment: Position.RIGHT,
       margin: [0, 8, 0, 0],
     };
-  } else if (
-    (rodzajFaktury == TRodzajFaktury.VAT ||
-      rodzajFaktury == TRodzajFaktury.KOR ||
-      rodzajFaktury == TRodzajFaktury.KOR_ROZ ||
-      rodzajFaktury == TRodzajFaktury.UPR) &&
-    Number(p_15) !== 0
-  ) {
+  } else if (rodzajFaktury == TRodzajFaktury.KOR || rodzajFaktury == TRodzajFaktury.KOR_ROZ) {
+    opis = {
+      stack: createLabelTextArray([
+        { value: i18n.t('invoice.rows.totalAmountDueCorrection'), formatTyp: FormatTyp.LabelGreater },
+        {
+          value: p_15,
+          formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
+          currency: getValue(faVat.KodWaluty)?.toString() ?? '',
+        },
+      ]),
+      alignment: Position.RIGHT,
+      margin: [0, 8, 0, 0],
+    };
+  } else if (rodzajFaktury == TRodzajFaktury.VAT || rodzajFaktury == TRodzajFaktury.UPR) {
     opis = {
       stack: createLabelTextArray([
         { value: i18n.t('invoice.rows.totalAmountDue'), formatTyp: FormatTyp.LabelGreater },

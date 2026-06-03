@@ -84,13 +84,13 @@ describe('getSummaryTaxRate', () => {
     expect(summary[5].taxRateString).toBe('zwolnione z opodatkowania');
   });
 
-  it('includes only tax rates with non-zero values', () => {
+  it('includes tax rates with zero values', () => {
     const fa: Fa = {
       P_13_1: { _text: '0' },
       P_14_1: { _text: '0' },
       P_14_1W: { _text: '0' },
     };
 
-    expect(getSummaryTaxRate(fa)).toHaveLength(0);
+    expect(getSummaryTaxRate(fa)).toHaveLength(1);
   });
 });

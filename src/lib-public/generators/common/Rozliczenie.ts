@@ -38,7 +38,7 @@ export function generateRozliczenie(
       width: '*',
     },
     {
-      title: 'Kwota',
+      title: i18n.t('invoice.settlement.amount'),
       name: 'Kwota',
       format: FormatTyp.Currency,
       width: 'auto',
@@ -54,7 +54,7 @@ export function generateRozliczenie(
     },
     {
       name: 'Kwota',
-      title: 'Kwota',
+      title: i18n.t('invoice.settlement.amount'),
       format: FormatTyp.Currency,
       width: 'auto',
     },

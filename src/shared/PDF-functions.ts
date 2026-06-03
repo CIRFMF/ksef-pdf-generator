@@ -155,7 +155,9 @@ export function normalizeCurrencySeparator(value: string | number | undefined): 
 
   const numberWithComma = dotToComma(typeof value === 'string' ? value : value.toString());
 
-  if (numberWithComma.includes(',')) {
+  if (numberWithComma === '0') {
+    return numberWithComma;
+  } else if (numberWithComma.includes(',')) {
     const parts = numberWithComma.split(',');
 
     return addThousandSeparator(parts[1].length > 1 ? numberWithComma : numberWithComma + '0');
@@ -182,9 +184,9 @@ function dotToComma(value: string): string {
   return value.replace('.', ',');
 }
 
-export function hasValue(value: FP | string | number | undefined): boolean {
+export function hasValue(value: FP | string | number | undefined, zeroValidator: boolean = true): boolean {
   return (
-    !!((typeof value !== 'object' && value) || (typeof value === 'object' && value._text)) || value === 0
+    !!((typeof value !== 'object' && value) || (typeof value === 'object' && value._text)) || (zeroValidator && value === 0)
   );
 }
 

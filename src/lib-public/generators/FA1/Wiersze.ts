@@ -120,14 +120,14 @@ export function generateWiersze(faVat: Fa): Content {
   const p_15: string | number | undefined = getValue(faVat.P_15);
   let opis: ContentStack[] = [];
 
-  if (rodzajFaktury == TRodzajFaktury.ROZ && Number(p_15) !== 0) {
+  if (rodzajFaktury == TRodzajFaktury.ROZ) {
     opis = [
       {
         stack: createLabelTextArray([
           { value: i18n.t('invoice.rows.remainingAmount'), formatTyp: FormatTyp.LabelGreater },
           {
             value: p_15,
-            formatTyp: FormatTyp.CurrencyGreater,
+            formatTyp: FormatTyp.CurrencyGreaterWithSeparator,
             currency: getValue(faVat.KodWaluty)?.toString() ?? '',
           },
         ]),
@@ -135,13 +135,22 @@ export function generateWiersze(faVat: Fa): Content {
         margin: [0, 8, 0, 0],
       },
     ];
-  } else if (
-    (rodzajFaktury == TRodzajFaktury.VAT ||
-      rodzajFaktury == TRodzajFaktury.KOR ||
-      rodzajFaktury == TRodzajFaktury.KOR_ROZ ||
-      rodzajFaktury == TRodzajFaktury.UPR) &&
-    Number(p_15) !== 0
-  ) {
+  } else if (rodzajFaktury == TRodzajFaktury.KOR || rodzajFaktury == TRodzajFaktury.KOR_ROZ) {
+    opis = [
+      {
+        stack: createLabelTextArray([
+          { value: i18n.t('invoice.rows.totalAmountDueCorrection'), formatTyp: FormatTyp.LabelGreater },
+          {
+            value: p_15,
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator],
+            currency: getValue(faVat.KodWaluty)?.toString() ?? '',
+          },
+        ]),
+        alignment: Position.RIGHT,
+        margin: [0, 8, 0, 0],
+      },
+    ];
+  } else if (rodzajFaktury == TRodzajFaktury.VAT || rodzajFaktury == TRodzajFaktury.UPR) {
     opis = [
       {
         stack: createLabelTextArray([

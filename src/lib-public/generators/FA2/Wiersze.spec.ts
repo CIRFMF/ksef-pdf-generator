@@ -198,7 +198,7 @@ describe(generateWiersze.name, () => {
           { value: 'Kwota pozostała do zapłaty: ', formatTyp: FormatTyp.LabelGreater },
           {
             value: '150',
-            formatTyp: FormatTyp.CurrencyGreater,
+            formatTyp: FormatTyp.CurrencyGreaterWithSeparator,
             currency: 'EUR',
           },
         ]);
@@ -210,7 +210,7 @@ describe(generateWiersze.name, () => {
 
         generateWiersze(mockFaVat);
 
-        expect(PDFFunctions.createLabelTextArray).not.toHaveBeenCalled();
+        expect(PDFFunctions.createLabelTextArray).toHaveBeenCalled();
       });
 
       it('should add "Kwota należności ogółem" for VAT invoice when P_15 > 0', () => {
@@ -234,7 +234,7 @@ describe(generateWiersze.name, () => {
         generateWiersze(mockFaVat);
 
         expect(PDFFunctions.createLabelTextArray).toHaveBeenCalledWith([
-          { value: 'Kwota należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
+          { value: 'Korekta kwoty należności ogółem: ', formatTyp: FormatTyp.LabelGreater },
           {
             value: '300',
             formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
@@ -259,13 +259,13 @@ describe(generateWiersze.name, () => {
         expect(PDFFunctions.createLabelTextArray).toHaveBeenCalled();
       });
 
-      it('should not add description for VAT invoice when P_15 = 0', () => {
+      it('should add description for VAT invoice when P_15 = 0', () => {
         setupBasicMocks('0', TRodzajFaktury.VAT, 'PLN');
         vi.mocked(PDFFunctions.createLabelTextArray).mockClear();
 
         generateWiersze(mockFaVat);
 
-        expect(PDFFunctions.createLabelTextArray).not.toHaveBeenCalled();
+        expect(PDFFunctions.createLabelTextArray).toHaveBeenCalled();
       });
 
       it('should use empty string for currency if KodWaluty is undefined', () => {
