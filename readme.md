@@ -35,7 +35,7 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
 
 Aplikacja uruchomi się domyślnie pod adresem: [http://localhost:5173/](http://localhost:5173/)
 
-## 2.1 Budowanie bibliotki
+## 2.1 Budowanie biblioteki
 
 1. Jak zbudować bibliotekę produkcyjnie:
    ```bash
