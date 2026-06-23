@@ -5,7 +5,7 @@ import en from './lang/en.json';
 export const i18nReady: Promise<void> = i18next
   .init({
     lng: 'pl',
-    debug: true,
+    debug: false,
     resources: {
       en: { translation: en },
       pl: { translation: pl },
