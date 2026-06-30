@@ -13,6 +13,7 @@ inputInvoice.addEventListener('change', async (): Promise<void> => {
 
   const additionalData: AdditionalDataTypes = {
     nrKSeF: '5555555555-20250808-9231003CA67B-BE',
+    acDate: '23.06.2026',
     qrCode:
       'https://ksef-test.mf.gov.pl/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
     qr2Code:

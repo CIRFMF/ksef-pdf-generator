@@ -208,7 +208,11 @@ describe(generateZamowienie.name, () => {
 
         expect(PDFFunctions.createLabelTextArray).toHaveBeenCalledWith([
           { value: 'Kwota zapłaty (zaliczki) dokumentowana fakturą: ', formatTyp: FormatTyp.LabelGreater },
-          { value: '100', formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
+          {
+            value: '100',
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
+            currency: 'PLN',
+          },
         ]);
       });
 
@@ -236,7 +240,11 @@ describe(generateZamowienie.name, () => {
             value: 'Korekta kwoty zapłaty (zaliczki) dokumentowana fakturą: ',
             formatTyp: FormatTyp.LabelGreater,
           },
-          { value: '150', formatTyp: FormatTyp.CurrencyGreaterWithSeparator },
+          {
+            value: '150',
+            formatTyp: [FormatTyp.CurrencyGreaterWithSeparator, FormatTyp.HeaderContent, FormatTyp.Value],
+            currency: 'PLN',
+          },
         ]);
       });
     });
