@@ -86,7 +86,7 @@ export function generateZamowienie(
     { name: 'GTUZ', title: i18n.t('invoice.order.gtu'), format: FormatTyp.Default, width: 'auto' },
     {
       name: 'ProceduraZ',
-      title: i18n.t('invoice.order.procedureMarkings'),
+      title: i18n.t('invoice.order.procedure'),
       format: FormatTyp.Default,
       width: '*',
     },
@@ -98,7 +98,6 @@ export function generateZamowienie(
       width: 'auto',
     },
     { name: 'UU_IDZ', title: i18n.t('invoice.order.uuidz'), format: FormatTyp.Default, width: 'auto' },
-
   ];
 
   let content: TableWithFields = getContentTable<(typeof orderTable)[0]>(

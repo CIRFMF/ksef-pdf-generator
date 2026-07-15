@@ -62,7 +62,7 @@ describe(generateAdnotacje.name, () => {
 
     expect(JSON.stringify(result)).toContain('Metoda kasowa');
     expect(JSON.stringify(result)).toContain('Odwrotne obciążenie');
-    expect(JSON.stringify(result)).toContain('Procedura trójstronna uproszczona');
+    expect(JSON.stringify(result)).toContain('VAT: Faktura WE uproszczona na mocy art. 135-138 ustawy o pt/artykułu 141 dyrektywy 2006/112/WE. Podatek z tytułu dokonanej dostawy zostanie rozliczony przez ostatniego w kolejności podatnika podatku od wartości dodanej');
   });
 
   it('adds "Self-billing" when P_17=1', () => {
