@@ -530,7 +530,8 @@
       "correctionCollective": "Faktura korygująca zbiorcza (rabat)",
       "correctionSettlement": "Faktura korygująca rozliczeniową",
       "invoiceNumberLabel": "Numer Faktury:",
-      "ksefNumberLabel": "Numer KSEF:",
+      "acquisitionDate": "Data nadania numeru KSeF:",
+      "ksefNumberLabel": "Numer KSeF:",
       "ksefPart1": "Krajowy System ",
       "ksefPart2": "e",
       "ksefPart3": "-Faktur",
@@ -573,6 +574,8 @@
       "taxRate": "Stawka podatku",
       "totalAmountDue": "Kwota należności ogółem: ",
       "uniqueRowNumber": "Unikalny numer wiersza",
+      "uuid": "UU_ID",
+      "uuidz": "UU_IDZ",
       "unit": "Miara"
     },
     "payment": {
@@ -679,6 +682,8 @@
       "uniqueRowNumber": "Unikalny numer wiersza",
       "unit": "Miara",
       "unitPrice": "Cena jedn.",
+      "uuid": "UU_ID",
+      "uuidz": "UU_IDZ",
       "valueZZP": "Wartość z ZZP",
       "vatSalesValue": "Wartość sprzedaży vat",
       "wageZZP": "Stawka ZZP"

@@ -14,6 +14,7 @@ import { Fa as Fa2 } from '../../types/fa2.types';
 import { Fa as Fa3 } from '../../types/fa3.types';
 import { FakturaRR as FaRR } from '../../types/FaRR.types';
 import i18n from 'i18next';
+import FormatTyp from '@shared/enums/common.enum';
 
 export function generateDaneFaKorygowanej(invoice?: Fa1 | Fa2 | Fa3 | FaRR): Content[] {
   const result: Content[] = [];
@@ -99,7 +100,13 @@ export function generateDaneFaKorygowanej(invoice?: Fa1 | Fa2 | Fa3 | FaRR): Con
 
 function generateCorrectiveData(data: DaneFaKorygowanej, column: Content[]): void {
   if (data.DataWystFaKorygowanej) {
-    column.push(createLabelText(i18n.t('invoice.correctedInvoice.issueDate'), data.DataWystFaKorygowanej));
+    column.push(
+      createLabelText(
+        i18n.t('invoice.correctedInvoice.issueDate'),
+        data.DataWystFaKorygowanej,
+        FormatTyp.Date
+      )
+    );
   }
   if (data.NrFaKorygowanej) {
     column.push(createLabelText(i18n.t('invoice.correctedInvoice.invoiceNumber'), data.NrFaKorygowanej));

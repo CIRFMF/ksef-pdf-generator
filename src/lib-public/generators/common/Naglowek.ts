@@ -74,6 +74,18 @@ export function generateNaglowek(
           } as Content,
         ]
       : []),
+    ...(additionalData?.acDate
+      ? [
+          {
+            text: [
+              formatText(i18n.t('invoice.header.acquisitionDate'), FormatTyp.LabelMedium),
+              ' ',
+              formatText(additionalData?.acDate, FormatTyp.ValueMedium),
+            ],
+            alignment: Position.RIGHT,
+          } as Content,
+        ]
+      : []),
     ...(additionalData?.isMobile && zalacznik
       ? [
           { stack: [generateLine()], margin: [0, 8, 0, 8] } as Content,

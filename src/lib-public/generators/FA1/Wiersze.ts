@@ -36,12 +36,7 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'NrWierszaFa', title: i18n.t('invoice.rows.lp'), format: FormatTyp.Default, width: 'auto' },
   ];
   const definedHeader1: HeaderDefine[] = [
-    {
-      name: 'UU_ID',
-      title: i18n.t('invoice.rows.uniqueRowNumber'),
-      format: FormatTyp.Default,
-      width: 'auto',
-    },
+
     { name: 'P_7', title: i18n.t('invoice.rows.productName'), format: FormatTyp.Default, width: '*' },
     { name: 'P_9A', title: i18n.t('invoice.rows.netUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_9B', title: i18n.t('invoice.rows.grossUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
@@ -60,6 +55,12 @@ export function generateWiersze(faVat: Fa): Content {
       name: 'P_11A',
       title: i18n.t('invoice.rows.grossSalesValue'),
       format: FormatTyp.Currency,
+      width: 'auto',
+    },
+    {
+      name: 'UU_ID',
+      title: i18n.t('invoice.rows.uuid'),
+      format: FormatTyp.Default,
       width: 'auto',
     },
   ];

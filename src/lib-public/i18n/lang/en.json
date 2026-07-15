@@ -531,6 +531,7 @@
       "correctionSettlement": "ExampleText",
       "invoiceNumberLabel": "ExampleText",
       "ksefNumberLabel": "ExampleText",
+      "acquisitionDate": "ExampleText",
       "ksefPart1": "ExampleText",
       "ksefPart2": "ExampleText",
       "ksefPart3": "ExampleText",
@@ -573,6 +574,8 @@
       "taxRate": "ExampleText",
       "totalAmountDue": "ExampleText",
       "uniqueRowNumber": "ExampleText",
+      "uuid": "ExampleText",
+      "uuidz": "ExampleText",
       "unit": "ExampleText"
     },
     "payment": {
@@ -679,6 +682,8 @@
       "uniqueRowNumber": "ExampleText",
       "unit": "ExampleText",
       "unitPrice": "ExampleText",
+      "uuid": "ExampleText",
+      "uuidz": "ExampleText",
       "valueZZP": "ExampleText",
       "vatSalesValue": "ExampleText",
       "wageZZP": "ExampleText"
