@@ -25,6 +25,7 @@ import { DifferentValues, FilteredKeysOfValues, TypesOfValues } from './types/un
 import { CreateLabelTextData } from './types/additional-data.types';
 import FormatTyp, { Answer, Position } from './enums/common.enum';
 import { TStawkaPodatku_FARR } from './consts/FARR.const';
+import { getDefaultFontName } from './../lib-public/configure-fonts';
 
 export function formatText(
   value: number | string | undefined | null,
@@ -136,7 +137,7 @@ function formatValue(
       result.text = (value as string)?.trim() === '1' ? Answer.TRUE : Answer.FALSE;
       break;
     case FormatTyp.Percentage:
-      result.text = `${value}%`;
+      result.text = value ? `${dotToComma(value.toString())}%` : ' ';
       break;
     case FormatTyp.Number:
       result.text = replaceDotWithCommaIfNeeded(value);
@@ -291,6 +292,14 @@ export function createHeader(text: string, margin?: Margins): Content[] {
   ];
 }
 
+export function createPefHeader(text: string): Content[] {
+  return [{ stack: [formatText(text, FormatTyp.PEFHeaderContent)], marginBottom: 4 }];
+}
+
+export function createPEFSubHeader(text: string): Content[] {
+  return [{ stack: [formatText(text, FormatTyp.PEFSubHeaderContent)], marginBottom: 6 }];
+}
+
 export function createSubHeader(text: string, margin?: Margins): Content[] {
   return [
     {
@@ -300,7 +309,65 @@ export function createSubHeader(text: string, margin?: Margins): Content[] {
   ];
 }
 
+export function createInlineLabelValue(
+  value: string,
+  label: string | undefined = undefined,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [
+        formatText(label, FormatTyp.PEFInlineLabel),
+        formatText(value ? ' ' + value : ' -', FormatTyp.PEFValue),
+      ],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFValue), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createInlineValueLabel(
+  value: string,
+  label: string | undefined = undefined,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [
+        formatText(value ? ' ' + value : ' -', FormatTyp.PEFValue),
+        formatText(label, FormatTyp.PEFInlineLabel),
+      ],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFValue), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createSmallInlineLabelValue(
+  value: string,
+  label: string | undefined = undefined,
+  formatTyp: FormatTyp | FormatTyp[] = FormatTyp.PEFInlineLabel,
+  margin?: Margins
+): ContentText {
+  if (label) {
+    return {
+      text: [formatText(label, FormatTyp.PEFInlineLabel), formatText(value ? ' ' + value : '-', formatTyp)],
+      margin: margin ?? [0, 0, 0, 1],
+    };
+  }
+
+  return { text: formatText(value, FormatTyp.PEFInlineLabel), margin: margin ?? [0, 0, 0, 1] };
+}
+
+export function createPEFSectionTitle(value: string): ContentText {
+  return { text: formatText(value, FormatTyp.PEFTitle), marginBottom: 3 };
+}
+
 export function generateStyle(): Partial<TDocumentDefinitions> {
+  const fontName = getDefaultFontName();
+
   return {
     styles: {
       columnMarginLeft: {
@@ -331,6 +398,9 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
         bold: true,
         fontSize: 9,
       },
+      PEFInlineLabel: {
+        color: '#575757',
+      },
       LabelGreater: {
         color: '#343A40',
         bold: true,
@@ -339,6 +409,7 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       Value: {
         color: '#343A40',
       },
+      PEFValue: { fontSize: 8, color: '#242424' },
       ValueMedium: {
         color: '#343A40',
         fontSize: 9,
@@ -368,10 +439,25 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
         bold: true,
         color: '#343A40',
       },
+      PEFHeaderContent: {
+        fontSize: 12,
+        bold: true,
+        color: '#242424',
+        alignment: Position.CENTER,
+      },
+      PEFSubHeaderContent: {
+        fontSize: 9,
+        color: '#242424',
+        bold: true,
+      },
       SubHeaderContent: {
         fontSize: 7,
         bold: true,
         color: '#343A40',
+      },
+      PEFTitle: {
+        fontSize: 9,
+        color: '#242424',
       },
       TitleContent: {
         fontSize: 10,
@@ -391,7 +477,7 @@ export function generateStyle(): Partial<TDocumentDefinitions> {
       },
     },
     defaultStyle: {
-      font: 'Roboto',
+      font: fontName ?? 'Roboto',
       fontSize: 7,
       lineHeight: 1.2,
     },
@@ -642,4 +728,204 @@ export function formatBankAccountNumber(number: string): string {
   }
 
   return number;
+}
+
+export function createLabelWithBoldText(
+  label: string,
+  value: string | number,
+  formatTyp: FormatTyp | FormatTyp[] = FormatTyp.Label
+): Content[] {
+  if (value) {
+    return [
+      {
+        text: [formatText(label, FormatTyp.Value)],
+      },
+      {
+        text: [formatText(value, formatTyp)],
+      },
+    ];
+  }
+  return [];
+}
+
+export function borderedBox(contents: Content[]): Content {
+  return {
+    margin: [0, 0, 0, 6],
+
+    table: {
+      widths: ['*'],
+      body: [
+        [
+          {
+            stack: contents,
+            fillColor: '#FFFFFF',
+          },
+        ],
+      ],
+    },
+
+    layout: {
+      hLineWidth: () => 0.5,
+      vLineWidth: () => 0.5,
+
+      hLineColor: () => '#E3E3E3',
+      vLineColor: () => '#E3E3E3',
+
+      paddingLeft: () => 10,
+      paddingRight: () => 10,
+      paddingTop: () => 10,
+      paddingBottom: () => 10,
+    },
+  };
+}
+
+export function generateTaxRateLabel(ID?: string, percent?: string): string {
+  if (!ID && !percent) {
+    return '';
+  }
+  const description = getTaxCategoryDescription(ID);
+
+  let result = `VAT: ${ID}`;
+
+  if (description) {
+    result += ` (${description})`;
+  }
+
+  if (percent) {
+    result += `, ${percent}%`;
+  }
+  return result;
+}
+
+export function formatPefTableValue(value: unknown): string {
+  const text = String(value ?? '');
+  const match = text.match(/^(\d+(?:\.\d+)?)(\s+[A-Z]{3})?$/);
+  if (!match) {
+    return text;
+  }
+  const numberPart = match[1];
+  const suffix = match[2] ?? '';
+  const [integerPart, decimalPart] = numberPart.split('.');
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return `${formattedInteger},${(decimalPart ?? '00').padEnd(2, '0')}${suffix}`;
+}
+
+export function generatePefTable<T extends Record<string, unknown>>(
+  rows: T[],
+  headers: Record<keyof T, string>
+): Content {
+  const keys = Object.keys(headers) as (keyof T)[];
+  const body: TableCell[][] = [
+    keys.map(
+      (key): TableCell => ({
+        text: String(headers[key]),
+        bold: true,
+        fillColor: '#E6E6E6',
+      })
+    ),
+    ...rows.map((row): TableCell[] =>
+      keys.map((key): TableCell => {
+        const value = row[key];
+        let textValue;
+        if (typeof value === 'object' && value !== null) {
+          textValue = (value as any).text;
+        } else if (key === 'reasonCode') {
+          textValue = String(value ?? '');
+        } else {
+          textValue = formatPefTableValue(value);
+        }
+
+        return {
+          text: textValue,
+          style: 'formatValue',
+          alignment: ['amount', 'baseAmount', 'taxAmount', 'taxableAmount'].includes(String(key))
+            ? 'right'
+            : 'left',
+        };
+      })
+    ),
+  ];
+  return {
+    table: {
+      widths: Object.keys(headers).map(() => '*'),
+      body,
+    },
+    layout: {
+      hLineWidth: (i: number) => {
+        if (i === 1) {
+          return 1;
+        }
+        if (i === body.length - 1) {
+          return 1;
+        }
+        return 0;
+      },
+
+      vLineWidth: () => 0,
+      paddingLeft: () => 5,
+      paddingRight: () => 5,
+      paddingTop: () => 5,
+      paddingBottom: () => 5,
+    },
+    unbreakable: true,
+  } as ContentTable;
+}
+
+export function createPefTableHeader(text: string, additionalContent?: Content): Content {
+  return {
+    table: {
+      widths: ['*'],
+      body: [
+        [
+          {
+            stack: [
+              {
+                text,
+                style: 'PEFHeaderContent',
+                alignment: 'left',
+              },
+              additionalContent ?? null,
+            ],
+            fillColor: '#FAFAFA',
+            margin: [0, 0, 0, 0],
+          },
+        ],
+      ],
+    },
+    layout: {
+      hLineWidth: () => 0,
+      vLineWidth: () => 0,
+      paddingLeft: () => 5,
+      paddingRight: () => 5,
+      paddingTop: () => 5,
+      paddingBottom: () => 5,
+    },
+  } as Content;
+}
+
+export function getTaxCategoryDescription(ID?: string): string {
+  switch (ID) {
+    case 'AE':
+      return 'Odwrotne obciążenie';
+    case 'E':
+      return 'Zwolniony';
+    case 'S':
+      return 'Standard';
+    case 'G':
+      return 'Export';
+    case 'O':
+      return 'Nie podlega VAT';
+    case 'K':
+      return 'Dostawa wewnątrz UE';
+    case 'Z':
+      return 'Zero';
+    case 'L':
+      return 'Canary Islands general indirect tax';
+    case 'M':
+      return 'Tax for production, services and importation in Ceuta and Melilla';
+    case 'B':
+      return 'Transferred (VAT), In Italy';
+    default:
+      return '';
+  }
 }

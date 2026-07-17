@@ -1,6 +1,7 @@
 export enum Position {
   LEFT = 'left',
   RIGHT = 'right',
+  CENTER = 'center',
 }
 
 export enum Answer {
@@ -44,6 +45,11 @@ export enum FormatTyp {
   AccountNumber = 'AccountNumber',
   Percentage = 'Percentage',
   Number = 'Number',
+  PEFHeaderContent = 'PEFHeaderContent',
+  PEFSubHeaderContent = 'PEFSubHeaderContent',
+  PEFValue = 'PEFValue',
+  PEFInlineLabel = 'PEFInlineLabel',
+  PEFTitle = 'PEFTitle',
 }
 
 export default FormatTyp;

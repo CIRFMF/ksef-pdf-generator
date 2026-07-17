@@ -90,7 +90,14 @@ export function generateAdnotacje(adnotacje?: Adnotacje): Content[] {
       addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.reverseTax') });
     }
     if (adnotacje.P_23?._text === '1') {
-      addToColumn(firstColumn, secondColumn, { text: i18n.t('invoice.annotations.threePartsSimplerMethod') });
+      addToColumn(
+        firstColumn,
+        secondColumn,
+        createLabelText(
+          i18n.t('invoice.annotations.simplifiedWeInfoiceLabel'),
+          i18n.t('invoice.annotations.simplifiedWeInfoice')
+        )
+      );
     }
 
     if (adnotacje.P_PMarzy?._text === '1') {
