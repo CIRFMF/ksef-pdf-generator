@@ -92,7 +92,7 @@ export function generateZamowienie(
     { name: 'GTUZ', title: i18n.t('invoice.order.gtu'), format: FormatTyp.Default, width: 'auto' },
     {
       name: 'ProceduraZ',
-      title: i18n.t('invoice.order.procedureMarkings'),
+      title: i18n.t('invoice.order.procedure'),
       format: FormatTyp.Default,
       width: '*',
     },

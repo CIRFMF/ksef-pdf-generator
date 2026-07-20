@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { createHeader, createLabelText, formatText, getTable } from '../../../shared/PDF-functions';
 import { generateAdnotacje, generateDostawy } from './Adnotacje';
+import FormatTyp from '@shared/enums/common.enum';
 
 vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => ({ text, style: 'header' })),
@@ -29,7 +30,11 @@ describe(generateAdnotacje.name, () => {
     [{ P_18A: { _text: '1' } }, true, 'powinien dodać "Mechanizm podzielonej płatności"'],
     [{ P_16: { _text: '1' } }, true, 'powinien dodać "Metoda kasowa"'],
     [{ P_18: { _text: '1' } }, true, 'powinien dodać "Odwrotne obciążenie"'],
-    [{ P_23: { _text: '1' } }, true, 'powinien dodać "Procedura trójstronna uproszczona"'],
+    [
+      { P_23: { _text: '1' } },
+      true,
+      'powinien dodać "VAT: Faktura WE uproszczona na mocy art. 135-138 ustawy o pt/artykułu 141 dyrektywy 2006/112/WE. Podatek z tytułu dokonanej dostawy zostanie rozliczony przez ostatniego w kolejności podatnika podatku od wartości dodanej"',
+    ],
     [{ P_17: { _text: '1' } }, true, 'powinien dodać "Samofakturowanie"'],
   ])('dla adnotacji %s %s (%s)', (adnotacje, expected, desc) => {
     const result = generateAdnotacje(adnotacje as any);
@@ -87,7 +92,7 @@ describe(generateDostawy.name, () => {
 
     expect(result.length).toBeGreaterThan(0);
     expect(result[0]).toHaveProperty('table');
-    expect(formatText).toHaveBeenCalledWith('2025-01-01');
+    expect(formatText).toHaveBeenCalledWith('2025-01-01', FormatTyp.Date);
   });
 
   test.each([

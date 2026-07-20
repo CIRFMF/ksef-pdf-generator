@@ -27,7 +27,10 @@ export async function generateInvoice(
   formatType: FormatType = 'blob'
 ): Promise<FormatTypeResult> {
   const xml: unknown = await parseXML(file);
-  const wersja: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
+
+  const wersjaFa: any = (xml as any)?.Faktura?.Naglowek?.KodFormularza?._attributes?.kodSystemowy;
+
+  const wersja = wersjaFa;
 
   let pdf: TCreatedPdf;
 
