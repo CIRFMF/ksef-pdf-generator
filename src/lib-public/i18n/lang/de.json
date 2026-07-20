@@ -437,7 +437,9 @@
       "usePermissionDate": "Datum der Nutzungsgenehmigung",
       "vat22DocumentNotRequired": "Keine Pflicht zur Ausstellung eines VAT-22-Dokuments",
       "vat22DocumentRequired": "Pflicht zur Ausstellung eines VAT-22-Dokuments besteht",
-      "vin": "VIN-Nummer"
+      "vin": "VIN-Nummer",
+      "simplifiedWeInfoiceLabel": "MwSt.: ",
+      "simplifiedWeInfoice": "Vereinfachte EG-Rechnung gemäß Art. 135-138 des MwSt.-Gesetzes / Art. 141 der Richtlinie 2006/112/EG. Die Steuer auf die erbrachte Lieferung wird vom letzten Steuerpflichtigen in der Kette der Mehrwertsteuer abgerechnet."
     },
     "attachment": {
       "blockHeader": "Datenblocküberschrift: ",
@@ -514,14 +516,14 @@
       "totalValue": "Gesamter Rabattwert: ",
       "unit": "Einheit"
     },
-"footer": {
-  "generatedIn": "Erstellt in: ",
-  "margin": "Marge",
-  "invoiceFooter": "Rechnungsfußzeile",
-  "appName": "",
-  "version": "Version",
-  "pagesTotal": "von"
-},
+    "footer": {
+      "generatedIn": "Erstellt in: ",
+      "margin": "Marge",
+      "invoiceFooter": "Rechnungsfußzeile",
+      "appName": "",
+      "version": "Version",
+      "pagesTotal": "von"
+    },
     "header": {
       "advance": "Abschlagsrechnung",
       "attachmentWarning": "Hinweis: Die Rechnung enthält eine Anlage, die aufgrund von Visualisierungsbeschränkungen nicht in der PDF-Datei enthalten ist",
@@ -538,7 +540,8 @@
       "primalInvoiceVatRr": "Original-MwSt.-RR-Rechnung",
       "settlement": "Abrechnungsrechnung",
       "simplified": "Vereinfachte Rechnung",
-      "vat": "Standardrechnung"
+      "vat": "Standardrechnung",
+      "acquisitionDate": "Datum der KSeF-Nummer:"
     },
     "information": {
       "header": "Sonstige Informationen",
@@ -574,7 +577,9 @@
       "taxRate": "Steuersatz",
       "totalAmountDue": "Gesamtzahlungsbetrag: ",
       "uniqueRowNumber": "Eindeutige Zeilennummer",
-      "unit": "Einheit"
+      "unit": "Einheit",
+      "uuid": "UU_ID",
+      "uuidz": "UU_IDZ"
     },
     "payment": {
       "bankAccountNumber": "Bankkontonummer",
@@ -680,7 +685,9 @@
       "unitPrice": "Stückpreis",
       "valueZZP": "Wert mit ZZP",
       "vatSalesValue": "MwSt.-Umsatzwert",
-      "wageZZP": "ZZP-Satz"
+      "wageZZP": "ZZP-Satz",
+      "uuid": "UU_ID",
+      "uuidz": "UU_IDZ"
     },
     "settlement": {
       "chargeReason": "Belastungsgrund",
@@ -894,6 +901,147 @@
     "wz": {
       "documentsHeader": "WZ-Lagerdokumentnummern",
       "number": "WZ-Nummer"
+    }
+  },
+  "pef": {
+    "invoiceHeader": {
+      "invoice": "RECHNUNG",
+      "correctiveInvoice": "BERICHTIGUNGSRECHNUNG",
+      "documentCurrencyCode": "Rechnungswährung",
+      "payableAmount": "Zahlbarer Betrag",
+      "dueDate": "Fälligkeitsdatum",
+      "buyerReference": "Käuferreferenz",
+      "issueDate": "Rechnungsausstellungsdatum",
+      "taxPointDate": "Steuerdatum",
+      "startDate": "Beginn des Rechnungszeitraums",
+      "endDate": "Ende des Rechnungszeitraums",
+      "contractDocumentReferenceId": "Vertragsnummer",
+      "orderReferenceId": "Bestellnummer des Käufers",
+      "orderReferenceSalesOrderId": "Versandavisonummer",
+      "receiptDocumentReferenceId": "Empfangsbestätigungsnummer",
+      "note": "Allgemeine Anmerkungen zum Dokument"
+    },
+    "customer": {
+      "header": "Kunde"
+    },
+    "supplier": {
+      "header": "Lieferant"
+    },
+    "contact": {
+      "nameAndSurname": "Vor- und Nachname",
+      "phoneNumber": "Telefonnummer",
+      "mail": "E-Mail",
+      "pefId": "Elektronische PEF-Kennung",
+      "title": "Kontakt"
+    },
+    "postal": {
+      "address": "Adresse"
+    },
+    "registration": {
+      "title": "Registerdaten des Unternehmens",
+      "id": "Registrierungskennung",
+      "identifier": "Kennung {{id}}"
+    },
+    "taxRepresentative": {
+      "header": "Steuervertreter des Lieferanten"
+    },
+    "delivery": {
+      "header": "Empfänger",
+      "deliveryLocationID": "Kennung",
+      "actualDeliveryDate": "Tatsächliches Lieferdatum / Verkaufsdatum"
+    },
+    "payeeparty": {
+      "header": "Zahlungsempfänger",
+      "companyID": "Kennung der rechtlichen Registrierung",
+      "partyIdentificationID": "Kennung"
+    },
+    "invoiceDescrption": {
+      "invoiceNumber": "Nummer der vorangegangenen Rechnung",
+      "dated": " vom ",
+      "referenceNumber": "Nummer der Ausschreibungsbekanntmachung oder ihres Teils",
+      "projectNumber": "Projektnummer",
+      "additionalDocuments": "Zusätzliche Dokumente zur Rechnung",
+      "buyerCostReference": "Kostenstellenreferenz des Käufers",
+      "supportingDocumentReference": "Referenz des Zusatzdokuments",
+      "link": "Link zum Zusatzdokument: ",
+      "documentDescription": "Beschreibung des Zusatzdokuments: ",
+      "fileType": "Dateityp: ",
+      "fileName": "Dateiname: "
+    },
+    "stepper": {
+      "messageVersion": "Nachrichtenversion",
+      "descriptionVersion": "Dieses Dokument wurde auf Basis der Visualisierung PEF.v_1.4.37.02 erstellt",
+      "generatorVersion": "(ksef-pdf-generator - Version {{version}})"
+    },
+    "taxtotal": {
+      "taxAmountId": "Summe",
+      "taxSubtotalHeader": "MwSt.-Aufschlüsselung nach Sätzen",
+      "taxCategory": "Steuerart und -satz",
+      "taxExemptionReason": "Grund der MwSt.-Befreiung",
+      "taxableAmount": "Steuerbemessungsgrundlage in der MwSt.-Kategorie",
+      "taxAmount": "Steuerbetrag in der MwSt.-Kategorie"
+    },
+    "payment": {
+      "title": "Zahlungsanweisungen",
+      "paymentTerms": "Zahlungsbedingungen",
+      "paymentTypeCode": "Zahlungsartcode",
+      "paymentIdentification": "Zahlungsidentifikation",
+      "paymentServiceProviderId": "Kennung des Zahlungsdienstleisters",
+      "paymentRecipientAccountNumber": "Kontonummer des Zahlungsempfängers",
+      "paymentRecipientAccountName": "Kontoname des Zahlungsempfängers",
+      "cardNetworkId": "Kennung des Kartennetzwerks",
+      "paymentCardAccountNumber": "Kontonummer der Zahlungskarte",
+      "paymentCardHolderName": "Name des Karteninhabers",
+      "debitedAccountId": "Kennung des belasteten Kontos",
+      "directDebitId": "Kennung des Lastschriftmandats"
+    },
+    "legalMonetaryTotal": {
+      "taxExclusiveAmount": "Rechnungssumme ohne MwSt.",
+      "taxInclusiveAmount": "Rechnungssumme inkl. MwSt.",
+      "prepaidAmount": "Vorausbezahlter Betrag",
+      "rndPrepaidAmount": "Rundungsbetrag",
+      "payableAmount": "Zahlbarer Betrag"
+    },
+    "allowancecharge": {
+      "allowanceHeader": "Nachlässe auf Dokumentenebene",
+      "chargeHeader": "Zuschläge auf Dokumentenebene",
+      "allowanceReason": "Grund des Nachlasses",
+      "chargeReason": "Grund des Zuschlags",
+      "allowanceReasonCode": "Code für Nachlassgrund",
+      "chargeReasonCode": "Code für Zuschlagsgrund",
+      "baseAmount": "Berechnungsgrundlage",
+      "allowanceAmount": "Nachlassbetrag",
+      "chargeAmount": "Zuschlagsbetrag",
+      "taxCategory": "Steuerart und -satz",
+      "totalAmount": "Summe"
+    },
+    "invoiceLine": {
+      "title": "Rechnungspositionen",
+      "lineNo": "Lfd. Nr.",
+      "name": "Bezeichnung",
+      "quantityUom": "Menge (Einheit)",
+      "netPrice": "Nettopreis",
+      "taxTypeRate": "Steuerart und -satz",
+      "chargesDiscounts": "Zuschläge, Nachlässe",
+      "netAmount": "Nettobetrag",
+      "description": "Beschreibung",
+      "standardId": "Standardkennung",
+      "classificationId": "Klassifikationskennung",
+      "sellerId": "Artikelkennung des Verkäufers",
+      "additionalAttributes": "Zusätzliche Eigenschaften/Parameter",
+      "note": "Anmerkung",
+      "buyerItemId": "Artikelkennung des Käufers",
+      "buyerCostCenterCode": "Kostenstellencode des Käufers",
+      "billingPeriod": "Abrechnungszeitraum für die Rechnungsposition",
+      "periodStartDate": "Beginn des Zeitraums",
+      "periodEndDate": "Ende des Zeitraums",
+      "netPriceDiscount": "Rabatt auf Nettopreis",
+      "grossPrice": "Bruttopreis der Position",
+      "originCountry": "Ursprungsland",
+      "purchaseOrderItemId": "Kennung der zugehörigen Bestellposition",
+      "invoiceItemId": "Abrechnungsartikelkennung in der Rechnungsposition",
+      "charges": "Zuschläge",
+      "discounts": "Nachlässe"
     }
   }
 }
