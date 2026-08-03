@@ -9,6 +9,7 @@ import {
   getTable,
   getTStawkaPodatku,
   getValue,
+  hasValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { Procedura, TRodzajFaktury } from '../../../shared/consts/FA.const';
@@ -36,7 +37,6 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'NrWierszaFa', title: i18n.t('invoice.rows.lp'), format: FormatTyp.Default, width: 'auto' },
   ];
   const definedHeader1: HeaderDefine[] = [
-
     { name: 'P_7', title: i18n.t('invoice.rows.productName'), format: FormatTyp.Default, width: '*' },
     { name: 'P_9A', title: i18n.t('invoice.rows.netUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_9B', title: i18n.t('invoice.rows.grossUnitPrice'), format: FormatTyp.Currency, width: 'auto' },
@@ -100,7 +100,7 @@ export function generateWiersze(faVat: Fa): Content {
     { name: 'GTU', title: i18n.t('invoice.rows.gtu'), format: FormatTyp.Default, width: 'auto' },
     {
       name: 'Procedura',
-      title: i18n.t('invoice.rows.procedureMarkings'),
+      title: i18n.t('invoice.rows.procedure'),
       format: FormatTyp.Default,
       width: '*',
     },
@@ -195,8 +195,13 @@ export function generateWiersze(faVat: Fa): Content {
       table.push(content.content);
     }
   }
-  if (table.length < 1) {
-    return [];
+  if (table.length > 0) {
+    return createSection([...createHeader(i18n.t('invoice.rows.header')), ceny, ...table, ...opis], true);
   }
-  return createSection([...createHeader(i18n.t('invoice.rows.header')), ceny, ...table, ...opis], true);
+
+  if (hasValue(p_15)) {
+    return createSection([opis], true);
+  }
+
+  return [];
 }

@@ -1,13 +1,15 @@
 # Changelog
 
+## [1.1.31]
+
+- Dodano wyświetlenie wszystkich elementow pozycji faktury w korekcie zbiorczej.
+- Zmodyfikowano widoczność pola P_15, zawsze wizualizowana.
+
+---
+
 ## [1.1.30]
 
-### Added
-
 - Dodano `configureFonts()`. Metoda rejestrująca własną czcionkę.
-
-### Updated
-
 - Ujednolicono separator dzisiętny dla stawki podatku OSS.
 - Poprawiono opis dotyczący pola UU_IDZ.
 - Ujednolicono nazewnictwo kolumn dla oznaczenia procedury.
@@ -20,13 +22,10 @@
 
 ## [1.1.25]
 
-### Added
-
 - Dodano datę nadania numeru KSEF.
-
-### Updated
-
 - Ujednolicono separator dziesiętny dla kwoty podatku akcyzowego.
 - usunięto nadmiarową pustą stronę na końcu wizualizacji faktury.
 - Ujednolicono separator dziesiętny w tabeli zamówienie w kolumnie ilość.
 - Dodano kod waluty w podsumowaniu zamówienia, kwoty zapłaty (zaliczki).
+
+---

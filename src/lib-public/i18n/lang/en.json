@@ -513,7 +513,27 @@
       "productName": "ExampleText",
       "quantity": "ExampleText",
       "totalValue": "ExampleText",
-      "unit": "ExampleText"
+      "unit": "ExampleText",
+      "cn": "ExampleText",
+      "currencyRate": "ExampleText",
+      "exciseTaxAmount": "ExampleText",
+      "gtin": "ExampleText",
+      "gtu": "ExampleText",
+      "index": "ExampleText",
+      "netSalesValue": "ExampleText",
+      "netUnitPrice": "ExampleText",
+      "grossUnitPrice": "ExampleText",
+      "ossTaxRate": "ExampleText",
+      "pkob": "ExampleText",
+      "pkwiu": "ExampleText",
+      "procedure": "ExampleText",
+      "productMarker": "ExampleText",
+      "taxAmount": "ExampleText",
+      "taxRate": "ExampleText",
+      "uuid": "ExampleText",
+      "discount": "ExampleText",
+      "grossSalesValue": "ExampleText",
+      "getOrMakeDate": "ExampleText"
     },
     "footer": {
       "generatedIn": "ExampleText",
@@ -906,141 +926,141 @@
   },
   "pef": {
     "invoiceHeader": {
-      "documentCurrencyCode": "Waluta faktury",
-      "payableAmount": "Kwota do zapłaty",
-      "dueDate": "Termin płatności",
-      "buyerReference": "Znak kupującego",
-      "issueDate": "Data wystawienia faktury",
-      "taxPointDate": "Data opodatkowania",
-      "startDate": "Data początkowa okresu faktury",
-      "endDate": "Data końcowa okresu faktury",
-      "contractDocumentReferenceId": "Numer kontraktu",
-      "orderReferenceId": "Numer zamówienia wg kupującego",
-      "orderReferenceSalesOrderId": "Numer awiza wysyłki",
-      "receiptDocumentReferenceId": "Numer potwierdzenia odbioru",
-      "note": "Uwagi ogólne do dokumentu"
+      "documentCurrencyCode": "ExampleText",
+      "payableAmount": "ExampleText",
+      "dueDate": "ExampleText",
+      "buyerReference": "ExampleText",
+      "issueDate": "ExampleText",
+      "taxPointDate": "ExampleText",
+      "startDate": "ExampleText",
+      "endDate": "ExampleText",
+      "contractDocumentReferenceId": "ExampleText",
+      "orderReferenceId": "ExampleText",
+      "orderReferenceSalesOrderId": "ExampleText",
+      "receiptDocumentReferenceId": "ExampleText",
+      "note": "ExampleText"
     },
     "customer": {
-      "header": ""
+      "header": "ExampleText"
     },
     "supplier": {
-      "header": ""
+      "header": "ExampleText"
     },
     "contact": {
-      "nameAndSurname": "",
-      "phoneNumber": "",
-      "mail": "",
-      "pefId": "",
-      "title": ""
+      "nameAndSurname": "ExampleText",
+      "phoneNumber": "ExampleText",
+      "mail": "ExampleText",
+      "pefId": "ExampleText",
+      "title": "ExampleText"
     },
     "postal": {
-      "address": ""
+      "address": "ExampleText"
     },
     "registration": {
-      "title": "",
-      "id": "",
-      "Identifier": ""
+      "title": "ExampleText",
+      "id": "ExampleText",
+      "Identifier": "ExampleText"
     },
     "taxRepresentative": {
-      "header": ""
+      "header": "ExampleText"
     },
     "delivery": {
-      "header": "",
-      "deliveryLocationID": "",
-      "actualDeliveryDate": ""
+      "header": "ExampleText",
+      "deliveryLocationID": "ExampleText",
+      "actualDeliveryDate": "ExampleText"
     },
     "payeeparty": {
       "header": "Payee party",
-      "companyID": "",
-      "partyIdentificationID": ""
+      "companyID": "ExampleText",
+      "partyIdentificationID": "ExampleText"
     },
     "invoiceDescrption": {
-      "invoiceNumber": "Numer faktury poprzedzającej",
-      "dated": " z dn. ",
-      "referenceNumber": "Numer ogłoszenia o przetargu lub jego części",
-      "projectNumber": "Numer projektu",
-      "additionalDocuments": "Dokumenty dodatkowe do faktury",
-      "buyerCostReference": "Znak stanowiska kosztów u nabywcy",
-      "supportingDocumentReference": "Znak dokumentu dodatkowego",
-      "link": "Link do dokumentu dodatkowego: ",
-      "documentDescription": "Opis dokumentu dodatkowego: ",
-      "fileType": "Typ pliku: ",
-      "fileName": "Nazwa pliku: "
+      "invoiceNumber": "ExampleText",
+      "dated": "ExampleText",
+      "referenceNumber": "ExampleText",
+      "projectNumber": "ExampleText",
+      "additionalDocuments": "ExampleText",
+      "buyerCostReference": "ExampleText",
+      "supportingDocumentReference": "ExampleText",
+      "link": "ExampleText",
+      "documentDescription": "ExampleText",
+      "fileType": "ExampleText",
+      "fileName": "ExampleText"
     },
     "stepper": {
-      "messageVersion": "Wersja komunikatu",
-      "descriptionVersion": "Ten dokument został wygenerowany na podstawie wizualizacji PEF.v_1.4.37.02",
-      "generatorVersion": "(ksef-pdf-generator - wersja {{version}})"
+      "messageVersion": "ExampleText",
+      "descriptionVersion": "ExampleText",
+      "generatorVersion": "ExampleText"
     },
     "taxtotal": {
-      "taxAmountId": "",
-      "taxSubtotalHeader": "",
-      "taxCategory": "",
-      "taxExemptionReason": "",
-      "taxableAmount": "",
-      "taxAmount": ""
+      "taxAmountId": "ExampleText",
+      "taxSubtotalHeader": "ExampleText",
+      "taxCategory": "ExampleText",
+      "taxExemptionReason": "ExampleText",
+      "taxableAmount": "ExampleText",
+      "taxAmount": "ExampleText"
     },
     "payment": {
-      "title": "Instrukcje płatności",
-      "paymentTerms": "Warunki płatności",
-      "paymentTypeCode": "Kod typu płatności",
-      "paymentIdentification": "Identyfikacja płatności",
-      "paymentServiceProviderId": "Identyfikator dostawcy usługi płatniczej",
-      "paymentRecipientAccountNumber": "Numer konta odbioru płatności",
-      "paymentRecipientAccountName": "Nazwa konta odbioru płatności",
-      "cardNetworkId": "Identyfikator sieci obsługi karty",
-      "paymentCardAccountNumber": "Numer konta karty płatniczej",
-      "paymentCardHolderName": "Nazwa właściciela karty płatniczej",
-      "debitedAccountId": "Identyfikator obciążanego konta",
-      "directDebitId": "Identyfikator polecenia zapłaty"
+      "title": "ExampleText",
+      "paymentTerms": "ExampleText",
+      "paymentTypeCode": "ExampleText",
+      "paymentIdentification": "ExampleText",
+      "paymentServiceProviderId": "ExampleText",
+      "paymentRecipientAccountNumber": "ExampleText",
+      "paymentRecipientAccountName": "ExampleText",
+      "cardNetworkId": "ExampleText",
+      "paymentCardAccountNumber": "ExampleText",
+      "paymentCardHolderName": "ExampleText",
+      "debitedAccountId": "ExampleText",
+      "directDebitId": "ExampleText"
     },
     "legalMonetaryTotal": {
-      "taxExclusiveAmount": "",
-      "taxInclusiveAmount ": "",
-      "prepaidAmount": "",
-      "rndPrepaidAmount": "",
-      "payableAmount": ""
+      "taxExclusiveAmount": "ExampleText",
+      "taxInclusiveAmount ": "ExampleText",
+      "prepaidAmount": "ExampleText",
+      "rndPrepaidAmount": "ExampleText",
+      "payableAmount": "ExampleText"
     },
     "allowancecharge": {
-      "allowanceHeader": "",
-      "chargeHeader": "",
-      "allowanceReason": "",
-      "chargeReason": "",
-      "allowanceReasonCode": "",
-      "chargeReasonCode": "",
-      "baseAmount": "",
-      "allowanceAmount": "",
-      "chargeAmount": "",
-      "taxCategory": "",
-      "totalAmount": ""
+      "allowanceHeader": "ExampleText",
+      "chargeHeader": "ExampleText",
+      "allowanceReason": "ExampleText",
+      "chargeReason": "ExampleText",
+      "allowanceReasonCode": "ExampleText",
+      "chargeReasonCode": "ExampleText",
+      "baseAmount": "ExampleText",
+      "allowanceAmount": "ExampleText",
+      "chargeAmount": "ExampleText",
+      "taxCategory": "ExampleText",
+      "totalAmount": "ExampleText"
     },
     "invoiceLine": {
-      "title": "Pozycje faktury",
-      "lineNo": "L.p.",
-      "name": "Nazwa",
-      "quantityUom": "Ilość JM",
-      "netPrice": "Cena netto",
-      "taxTypeRate": "Rodzaj i stawka podatku",
-      "chargesDiscounts": "Obciążenia, upusty",
-      "netAmount": "Kwota netto",
-      "description": "Opis",
-      "standardId": "Identyfikator standardowy",
-      "classificationId": "Identyfikator klasyfikacji",
-      "sellerId": "Identyfikator wg sprzedającego",
-      "additionalAttributes": "Dodatkowe właściwości/parametry",
-      "note": "Uwaga",
-      "buyerItemId": "Identyfikator pozycji wg kupującego",
-      "buyerCostCenterCode": "Znak stanowiska kosztów u nabywcy",
-      "billingPeriod": "Okres fakturowania dla pozycji faktury",
-      "periodStartDate": "Data początkowa okresu",
-      "periodEndDate": "Data końcowa okresu",
-      "netPriceDiscount": "Rabat od ceny netto",
-      "grossPrice": "Cena brutto pozycji",
-      "originCountry": "Kraj pochodzenia",
-      "purchaseOrderItemId": "Identyfikator pozycji powiązanego zamówienia zakupu",
-      "invoiceItemId": "Identyfikator przedmiotu fakturowania w pozycji faktury",
-      "charges": "Obciążenia",
-      "discounts": "Upusty"
+      "title": "ExampleText",
+      "lineNo": "ExampleText",
+      "name": "ExampleText",
+      "quantityUom": "ExampleText",
+      "netPrice": "ExampleText",
+      "taxTypeRate": "ExampleText",
+      "chargesDiscounts": "ExampleText",
+      "netAmount": "ExampleText",
+      "description": "ExampleText",
+      "standardId": "ExampleText",
+      "classificationId": "ExampleText",
+      "sellerId": "ExampleText",
+      "additionalAttributes": "ExampleText",
+      "note": "ExampleText",
+      "buyerItemId": "ExampleText",
+      "buyerCostCenterCode": "ExampleText",
+      "billingPeriod": "ExampleText",
+      "periodStartDate": "ExampleText",
+      "periodEndDate": "ExampleText",
+      "netPriceDiscount": "ExampleText",
+      "grossPrice": "ExampleText",
+      "originCountry": "ExampleText",
+      "purchaseOrderItemId": "ExampleText",
+      "invoiceItemId": "ExampleText",
+      "charges": "ExampleText",
+      "discounts": "ExampleText"
     }
   }
 }
