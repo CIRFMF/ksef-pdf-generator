@@ -9,6 +9,7 @@ import {
   getTable,
   getTStawkaPodatku,
   getValue,
+  hasValue,
 } from '../../../shared/PDF-functions';
 import { HeaderDefine } from '../../../shared/types/pdf-types';
 import { TRodzajFaktury } from '../../../shared/consts/FA.const';
@@ -17,6 +18,7 @@ import FormatTyp, { Position } from '../../../shared/enums/common.enum';
 import { TableWithFields } from '../../types/fa1-additional-types';
 import { addMarza } from '../common/Wiersze';
 import i18n from 'i18next';
+import { hasAnyValue } from '@shared/generators/common/functions';
 
 export function generateWiersze(faVat: Fa): Content {
   const table: Content[] = [];
@@ -184,8 +186,13 @@ export function generateWiersze(faVat: Fa): Content {
       table.push(content.content);
     }
   }
-  if (table.length < 1) {
-    return [];
+  if (table.length > 0) {
+    return createSection([...createHeader(i18n.t('invoice.rows.header')), ceny, ...table, opis], true);
   }
-  return createSection([...createHeader(i18n.t('invoice.rows.header')), ceny, ...table, opis], true);
+
+  if (hasValue(p_15)) {
+    return createSection([opis], true);
+  }
+
+  return [];
 }

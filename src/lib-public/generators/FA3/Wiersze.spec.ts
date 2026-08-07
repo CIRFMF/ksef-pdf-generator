@@ -13,6 +13,7 @@ vi.mock('../../../shared/PDF-functions', () => ({
   getContentTable: vi.fn(),
   getTable: vi.fn(),
   getValue: vi.fn((v) => v?._text || v),
+  hasValue: vi.fn((v) => v?._text || v),
   getTStawkaPodatku: vi.fn(),
   getDifferentColumnsValue: vi.fn(),
 }));
@@ -79,7 +80,7 @@ describe(generateWiersze.name, () => {
         content: null,
         fieldsWithValue: [],
       });
-      vi.mocked(PDFFunctions.getValue).mockReturnValue('0');
+      vi.mocked(PDFFunctions.getValue).mockReturnValue(undefined);
       vi.mocked(PDFFunctions.getDifferentColumnsValue).mockReturnValue([]);
 
       const result = generateWiersze(mockFaVat);
