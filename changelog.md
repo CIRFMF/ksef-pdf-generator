@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.36]
+
+- Podbicie wersji pdfmake
+
 ## [1.1.31]
 
 - Dodano wyświetlenie wszystkich elementow pozycji faktury w korekcie zbiorczej.

@@ -20,6 +20,7 @@ export enum FormatTyp {
   Default = 'Default',
   Description = 'Description',
   GrayBoldTitle = 'GrayBoldTitle',
+  GreyTitle = 'GreyTitle',
   Label = 'Label',
   LabelMedium = 'LabelMedium',
   LabelMargin = 'LabelMargin',
@@ -50,6 +51,8 @@ export enum FormatTyp {
   PEFValue = 'PEFValue',
   PEFInlineLabel = 'PEFInlineLabel',
   PEFTitle = 'PEFTitle',
+  Left = 'Left',
+  BoldDefault = 'BoldDefault',
 }
 
 export default FormatTyp;

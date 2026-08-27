@@ -938,12 +938,20 @@
       "orderReferenceId": "ExampleText",
       "orderReferenceSalesOrderId": "ExampleText",
       "receiptDocumentReferenceId": "ExampleText",
-      "note": "ExampleText"
+      "note": "ExampleText",
+      "accountingCost": "ExampleText",
+      "invoiceDocumentReference": {
+        "issueDate": "ExampleText",
+        "id": "ExampleText"
+      }
     },
     "customer": {
       "header": "ExampleText"
     },
     "supplier": {
+      "header": "ExampleText"
+    },
+    "issuer": {
       "header": "ExampleText"
     },
     "contact": {
@@ -973,6 +981,9 @@
       "header": "Payee party",
       "companyID": "ExampleText",
       "partyIdentificationID": "ExampleText"
+    },
+    "receiverParty": {
+      "header": "ExampleText"
     },
     "invoiceDescrption": {
       "invoiceNumber": "ExampleText",
@@ -1019,7 +1030,14 @@
       "taxInclusiveAmount ": "ExampleText",
       "prepaidAmount": "ExampleText",
       "rndPrepaidAmount": "ExampleText",
-      "payableAmount": "ExampleText"
+      "payableAmount": "ExampleText",
+      "settlementAmount": "ExampleText",
+      "additionalInvoiceGrossData": {
+        "Bilans": "ExampleText",
+        "Faktury": "ExampleText",
+        "Raty": "ExampleText",
+        "Odsetki": "ExampleText"
+      }
     },
     "allowancecharge": {
       "allowanceHeader": "ExampleText",
@@ -1061,6 +1079,18 @@
       "invoiceItemId": "ExampleText",
       "charges": "ExampleText",
       "discounts": "ExampleText"
+    },
+    "taxCategory": {
+      "AE": "ExampleText",
+      "E": "ExampleText",
+      "S": "ExampleText",
+      "G": "ExampleText",
+      "O": "ExampleText",
+      "K": "ExampleText",
+      "Z": "ExampleText",
+      "L": "ExampleText",
+      "M": "ExampleText",
+      "B": "ExampleText"
     }
   }
 }

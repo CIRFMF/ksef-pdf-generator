@@ -423,7 +423,7 @@
       "partialPayMechanism": "Mechanizm podzielonej płatności",
       "reverseTax": "Odwrotne obciążenie",
       "selfInvoice": "Samofakturowanie",
-      "simplifiedWeInfoiceLabel":"VAT: ",
+      "simplifiedWeInfoiceLabel": "VAT: ",
       "simplifiedWeInfoice": "Faktura WE uproszczona na mocy art. 135-138 ustawy o pt/artykułu 141 dyrektywy 2006/112/WE. Podatek z tytułu dokonanej dostawy zostanie rozliczony przez ostatniego w kolejności podatnika podatku od wartości dodanej",
       "transportApprovalDate": "Data dopuszczenia nowego środka transportu do użytku",
       "transportBrand": "Marka nowego środka transportu",
@@ -925,6 +925,11 @@
     }
   },
   "pef": {
+    "from": "od",
+    "to": "do",
+    "after": "Stan przed korektą",
+    "before": "Stan po korekcie",
+    "sum": "Suma",
     "invoiceHeader": {
       "invoice": "FAKTURA",
       "correctiveInvoice": "FAKTURA KORYGUJĄCA",
@@ -940,13 +945,21 @@
       "orderReferenceId": "Numer zamówienia wg kupującego",
       "orderReferenceSalesOrderId": "Numer awiza wysyłki",
       "receiptDocumentReferenceId": "Numer potwierdzenia odbioru",
-      "note": "Uwagi ogólne do dokumentu"
+      "note": "Uwagi ogólne do dokumentu",
+      "accountingCost": "Miejsce powstania kosztu",
+      "invoiceDocumentReference": {
+        "issueDate": "Data faktury korygowanej",
+        "id": "Numer faktury korygowanej"
+      }
     },
     "customer": {
-      "header": "Odbiorca"
+      "header": "Nabywca"
     },
     "supplier": {
       "header": "Sprzedawca"
+    },
+    "issuer": {
+      "header": "Wystawca faktury"
     },
     "contact": {
       "nameAndSurname": "Imię i nazwisko",
@@ -976,9 +989,12 @@
       "companyID": "Identyfikator rejestracji prawnej",
       "partyIdentificationID": "Identyfikator"
     },
+    "receiverParty": {
+      "header": "Adresat"
+    },
     "invoiceDescrption": {
       "invoiceNumber": "Numer faktury poprzedzającej",
-      "dated": " z dn. ",
+      "dated": "{{id}} z dn. {{date}}",
       "referenceNumber": "Numer ogłoszenia o przetargu lub jego części",
       "projectNumber": "Numer projektu",
       "additionalDocuments": "Dokumenty dodatkowe do faktury",
@@ -1021,7 +1037,14 @@
       "taxInclusiveAmount": "Całkowita kwota faktury z podatkiem VAT",
       "prepaidAmount": "Kwota przedpłacona",
       "rndPrepaidAmount": "Kwota zaokrągleń",
-      "payableAmount": "Kwota do zapłaty"
+      "payableAmount": "Kwota do zapłaty",
+      "settlementAmount": "Kwota do rozliczenia",
+      "additionalInvoiceGrossData": {
+        "Bilans": "Kwota bilansu poprzedniego okresu",
+        "Faktury": "Wystawione faktury wstępne w okresie rozliczeniowym",
+        "Raty": "Raty za sprzęt",
+        "Odsetki": "Odsetki od faktury"
+      }
     },
     "allowancecharge": {
       "allowanceHeader": "Upusty na poziomie dokumentu",
@@ -1062,7 +1085,39 @@
       "purchaseOrderItemId": "Identyfikator pozycji powiązanego zamówienia zakupu",
       "invoiceItemId": "Identyfikator przedmiotu fakturowania w pozycji faktury",
       "charges": "Obciążenia",
-      "discounts": "Upusty"
+      "discounts": "Upusty",
+      "taxVat": "Podatek Vat",
+      "grossAmount": "Kwota brutto"
+    },
+    "taxCategory": {
+      "AE": "Odwrotne obciążenie",
+      "E": "Zwolniony",
+      "S": "Standard",
+      "G": "Export",
+      "O": "Nie podlega VAT",
+      "K": "Dostawa wewnątrz UE",
+      "Z": "Zero",
+      "L": "Canary Islands general indirect tax",
+      "M": "Tax for producation, services and importation in Centua and Melilla",
+      "B": "Transferred (VAT), In Italy"
+    },
+    "diffSummary": {
+      "title": "Podsumowanie różnic",
+      "table": {
+        "typeAndValue": "Rodzaj i stawka VAT",
+        "netto": "Kwota netto",
+        "discount": "Kwota upustu"
+      }
+    },
+    "accountReckoning": {
+      "title": "Rozliczenie konta",
+      "lineNo": "L.p.",
+      "name": "Nazwa",
+      "description": "Opis",
+      "period": "Okres",
+      "costAmount": "Kwota",
+      "periodFrom": "od",
+      "periodTo": "do"
     }
   }
 }
