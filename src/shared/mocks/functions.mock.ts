@@ -13,6 +13,24 @@ vi.mock('@shared/generators/common/functions.ts', async (importOriginal) => {
   };
 });
 
+vi.mock('../PDF-functions', async () => {
+  const original = await vi.importActual<typeof import('../PDF-functions')>('../PDF-functions');
+
+  return {
+    ...original,
+    formatText: vi.fn(original.formatText),
+    generateColumns: vi.fn(original.generateColumns),
+    generateTwoColumns: vi.fn(original.generateTwoColumns),
+    getValue: vi.fn(original.getValue),
+    getNumber: vi.fn(original.getNumber),
+    createLabelText: vi.fn(original.createLabelText),
+    createHeader: vi.fn(original.createHeader),
+    createSection: vi.fn(original.createSection),
+    generateQRCode: vi.fn(original.generateQRCode),
+    verticalSpacing: vi.fn(original.verticalSpacing),
+  };
+});
+
 beforeAll(async () => {
   await i18nReady;
 });
