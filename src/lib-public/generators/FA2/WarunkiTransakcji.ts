@@ -65,7 +65,7 @@ export function generateWarunkiTransakcji(warunkiTransakcji: WarunkiTransakcji |
     table.push(createHeader(i18n.t('invoice.transaction.currencyAndRate'), [0, 8, 0, 4]));
 
     table.push(createLabelText(i18n.t('invoice.transaction.currency'), warunkiTransakcji.WalutaUmowna));
-    table.push(createLabelText(i18n.t('invoice.transaction.rate'), warunkiTransakcji.KursUmowny));
+    table.push(createLabelText(i18n.t('invoice.transaction.rate'), warunkiTransakcji.KursUmowny, FormatTyp.Currency));
   }
 
   if (partiaTowaru.length > 0) {

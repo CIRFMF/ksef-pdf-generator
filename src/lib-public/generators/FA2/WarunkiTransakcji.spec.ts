@@ -297,7 +297,11 @@ describe(generateWarunkiTransakcji.name, () => {
 
         expect(PDFFunctions.createHeader).toHaveBeenCalledWith('Waluta umowna i kurs umowny', [0, 8, 0, 4]);
         expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Waluta umowna: ', data.WalutaUmowna);
-        expect(PDFFunctions.createLabelText).toHaveBeenCalledWith('Kurs umowny: ', data.KursUmowny);
+        expect(PDFFunctions.createLabelText).toHaveBeenCalledWith(
+          'Kurs umowny: ',
+          data.KursUmowny,
+          FormatTyp.Currency
+        );
       });
 
       it('should create waluta umowna section when KursUmowny exists', () => {
