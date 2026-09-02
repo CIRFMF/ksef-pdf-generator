@@ -9,6 +9,7 @@ Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików 
     Biblioteka zawiera następujące funkcjonalności:
     - Generowanie wizualizacji PDF faktur
     - Generowanie wizualizacji PDF UPO
+    - Generowanie wizualizacji PDF faktur PEF
 
 ---
 
@@ -132,3 +133,9 @@ Biblioteka wspiera lokalizację, poprzez użycie biblioteki i18next. Pliki z tł
 
 - Upewnij się, że pliki XML są poprawnie sformatowane zgodnie z odpowiednią schemą.
 - W przypadku problemów z Node.js, rozważ użycie menedżera wersji Node, np. [nvm](https://github.com/nvm-sh/nvm).
+
+---
+
+## Ważne!!!
+
+Dodano obsługę faktur PEF - nie jest jescze gotowa w użyciu produkcyjnym. Trwają testy.

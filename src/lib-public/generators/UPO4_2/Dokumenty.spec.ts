@@ -81,7 +81,7 @@ describe(generateDokumentUPO.name, () => {
     );
     expect(PDFFunctions.formatText).toHaveBeenCalledWith('Strona dokumentu UPO: ', FormatTyp.GrayBoldTitle);
     expect(PDFFunctions.formatText).toHaveBeenCalledWith(
-      'Całkowita liczba stron dokumentu UPO: ',
+      'Całkowita liczba części dokumentu UPO: ',
       FormatTyp.GrayBoldTitle
     );
     expect(PDFFunctions.formatText).toHaveBeenCalledWith('Zakres dokumentów od: ', FormatTyp.GrayBoldTitle);

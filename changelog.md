@@ -1,8 +1,20 @@
 # Changelog
 
+## [1.1.39]
+
+### zaplanowana data wydania [04.09.2026]
+
+- Poprawiono opis dotyczący liczby części dokumentu UPO.
+- Wyłączono dubug mode.
+- Dodano generyczny typ dla weryfikacji spójnośći kluczy tłumaczeń.
+- Dodano kod waluty do warunków transakcji.
+- Dodano obsługę faktur PEF (w fazie testów, niedostępne na ten moment produkcyjnie w aplikacji podatnika).
+
+---
+
 ## [1.1.36]
 
-- Podbicie wersji pdfmake
+- Podbicie wersji pdfmake.
 
 ## [1.1.31]
 
