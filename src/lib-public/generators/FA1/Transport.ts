@@ -102,7 +102,7 @@ export function generateTransport(transport: Transport, index?: number | null): 
     columns.wysylkaPrzez.push(generateAdres(adres));
   });
 
-  if (transport.WysylkaZ || transport.WysylkaDo || transport.WysylkaPrzez?.length) {
+  if (transport.WysylkaZ || transport.WysylkaDo || transport.WysylkaPrzez?.length || transport.WysylkaPrzez) {
     table.push(createHeader(i18n.t('invoice.transport.shipmentHeader')));
     table.push(generateTwoColumns(columns.wysylkaZ, columns.wysylkaDo));
     table.push(generateTwoColumns(columns.wysylkaPrzez, []));

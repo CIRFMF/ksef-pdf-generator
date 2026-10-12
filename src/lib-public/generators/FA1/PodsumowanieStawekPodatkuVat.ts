@@ -3,9 +3,10 @@ import {
   createHeader,
   createSection,
   formatText,
-  getNumberRounded,
   getValue,
   hasValue,
+  formatBigInt,
+  toBigInt,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import { Fa, Faktura } from '../../types/fa1.types';
@@ -101,7 +102,9 @@ export function generatePodsumowanieStawekPodatkuVat(faktura: Faktura): Content[
       if (AnyP13P14_5) {
         data.push(formatText(item.tax, FormatTyp.Currency));
       } else if (hasValue(faktura.Fa?.P_14_5, false)) {
-        data.push(getValue(faktura.Fa?.P_14_5) ?? '');
+        const P_14_5 = getValue(faktura.Fa?.P_14_5);
+
+        data.push(P_14_5 ? formatText(P_14_5, FormatTyp.Currency) : '');
       }
       if (AnyP13) {
         data.push(formatText(item.gross, FormatTyp.Currency));
@@ -138,10 +141,10 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_1P14_1P14_1W) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_1).toFixed(2),
-      gross: (getNumberRounded(fa.P_13_1) + getNumberRounded(fa.P_14_1)).toFixed(2),
-      tax: getNumberRounded(fa.P_14_1).toFixed(2),
-      taxPLN: getNumberRounded(fa.P_14_1W).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_1)),
+      gross: formatBigInt(toBigInt(fa.P_13_1) + toBigInt(fa.P_14_1)),
+      tax: formatBigInt(toBigInt(fa.P_14_1)),
+      taxPLN: formatBigInt(toBigInt(fa.P_14_1W)),
       taxRateString: i18n.t('invoice.summary.23or22'),
     });
     no++;
@@ -150,10 +153,10 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_2P14_2P14_2W) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_2).toFixed(2),
-      gross: (getNumberRounded(fa.P_13_2) + getNumberRounded(fa.P_14_2)).toFixed(2),
-      tax: getNumberRounded(fa.P_14_2).toFixed(2),
-      taxPLN: getNumberRounded(fa.P_14_2W).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_2)),
+      gross: formatBigInt(toBigInt(fa.P_13_2) + toBigInt(fa.P_14_2)),
+      tax: formatBigInt(toBigInt(fa.P_14_2)),
+      taxPLN: formatBigInt(toBigInt(fa.P_14_2W)),
       taxRateString: i18n.t('invoice.summary.8or7'),
     });
     no++;
@@ -162,10 +165,10 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_3P14_3P14_3W) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_3).toFixed(2),
-      gross: (getNumberRounded(fa.P_13_3) + getNumberRounded(fa.P_14_3)).toFixed(2),
-      tax: getNumberRounded(fa.P_14_3).toFixed(2),
-      taxPLN: getNumberRounded(fa.P_14_3W).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_3)),
+      gross: formatBigInt(toBigInt(fa.P_13_3) + toBigInt(fa.P_14_3)),
+      tax: formatBigInt(toBigInt(fa.P_14_3)),
+      taxPLN: formatBigInt(toBigInt(fa.P_14_3W)),
       taxRateString: i18n.t('invoice.summary.5'),
     });
     no++;
@@ -174,10 +177,10 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_4P14_4P14_4W) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_4).toFixed(2),
-      gross: (getNumberRounded(fa.P_13_4) + getNumberRounded(fa.P_14_4)).toFixed(2),
-      tax: getNumberRounded(fa.P_14_4).toFixed(2),
-      taxPLN: getNumberRounded(fa.P_14_4W).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_4)),
+      gross: formatBigInt(toBigInt(fa.P_13_4) + toBigInt(fa.P_14_4)),
+      tax: formatBigInt(toBigInt(fa.P_14_4)),
+      taxPLN: formatBigInt(toBigInt(fa.P_14_4W)),
       taxRateString: i18n.t('invoice.summary.4or3'),
     });
     no++;
@@ -186,9 +189,9 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_5P14_5) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_5).toFixed(2),
-      gross: (getNumberRounded(fa.P_13_5) + getNumberRounded(fa.P_14_5)).toFixed(2),
-      tax: getNumberRounded(fa.P_14_5).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_5)),
+      gross: formatBigInt(toBigInt(fa.P_13_5) + toBigInt(fa.P_14_5)),
+      tax: formatBigInt(toBigInt(fa.P_14_5)),
       taxPLN: '',
       taxRateString: getValue(fa.P_14_5) != 0 ? i18n.t('invoice.summary.oss') : '',
     });
@@ -198,8 +201,8 @@ export function getSummaryTaxRate(fa: Fa): TaxSummaryTypes[] {
   if (AnyP13_7) {
     summary.push({
       no,
-      net: getNumberRounded(fa.P_13_7).toFixed(2),
-      gross: getNumberRounded(fa.P_13_7).toFixed(2),
+      net: formatBigInt(toBigInt(fa.P_13_7)),
+      gross: formatBigInt(toBigInt(fa.P_13_7)),
       tax: '0.00',
       taxPLN: '',
       taxRateString: i18n.t('invoice.summary.taxFree'),

@@ -10,7 +10,7 @@ import {
   getTable,
   hasValue,
 } from '../../../shared/PDF-functions';
-import { Transport } from '../../types/fa3.types';
+import { Adres, Transport } from '../../types/fa3.types';
 import { getDateTimeWithoutSeconds, translateMap } from '@shared/generators/common/functions';
 import { generatePrzewoznik } from './Przewoznik';
 import FormatTyp from '../../../shared/enums/common.enum';
@@ -114,7 +114,12 @@ export function generateTransport(transport: Transport, index?: number | null): 
     columns.wysylkaPrzez.push(createLabelText(i18n.t('invoice.transport.gln'), adres?.GLN?._text));
   });
 
-  if (transport.WysylkaZ?.AdresL1 || transport.WysylkaDo?.AdresL1 || transport.WysylkaPrzez?.length) {
+  if (
+    transport.WysylkaZ?.AdresL1 ||
+    transport.WysylkaDo?.AdresL1 ||
+    transport.WysylkaPrzez?.length ||
+    (transport.WysylkaPrzez as Adres)?.AdresL1
+  ) {
     table.push(createHeader(i18n.t('invoice.transport.shipmentHeader')));
     table.push(generateTwoColumns(columns.wysylkaZ, columns.wysylkaDo));
     table.push(generateTwoColumns(columns.wysylkaPrzez, []));

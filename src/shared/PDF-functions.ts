@@ -7,7 +7,6 @@ import {
   CustomTableLayout,
   Margins,
   Style,
-  TableCell,
   TDocumentDefinitions,
 } from 'pdfmake/interfaces';
 import {
@@ -200,6 +199,14 @@ export function getValue(value: FP | string | number | undefined): string | numb
   return value;
 }
 
+export function getStrippedValue(value: FP | string | undefined): string | undefined {
+  if (typeof value === 'object') {
+    return value?._text?.replace(/\s+/g, ' ').trim();
+  }
+
+  return value?.replace(/\s+/g, ' ').trim();
+}
+
 export function getNumber(value: FP | string | number | undefined): number {
   const text: string | number | undefined = getValue(value);
 
@@ -213,10 +220,44 @@ export function getNumber(value: FP | string | number | undefined): number {
   return parseFloat(text.toString());
 }
 
-export function getNumberRounded(value: FP | string | number | undefined): number {
-  const number: number = getNumber(value);
+export function getNumberToString(value: FP | string | number | undefined): string {
+  const text: string | number | undefined = getValue(value);
 
-  return Math.round(number * 100) / 100;
+  if (!text) {
+    return '0';
+  }
+  return text.toString();
+}
+
+export function toBigInt(value: FP | string | number | undefined): bigint {
+  const text: string | number | undefined = getValue(value);
+
+  if (!text) {
+    return BigInt(0);
+  }
+
+  const normalized = text.toString().replace(',', '.');
+  const negative = normalized.charAt(0) === '-';
+  const unsigned = negative ? normalized.substring(1) : normalized;
+
+  const parts = unsigned.split('.');
+  const integer = parts[0];
+  const decimal = parts.length > 1 ? parts[1] : '';
+
+  const decimals = (decimal + '00').substring(0, 2);
+
+  const result = BigInt(integer) * BigInt(100) + BigInt(decimals);
+
+  return negative ? -result : result;
+}
+
+export function formatBigInt(value: bigint): string {
+  const negative = value < BigInt(0);
+  const abs = negative ? -value : value;
+  const intPart = abs / BigInt(100);
+  const decPart = (abs % BigInt(100)).toString().padStart(2, '0');
+
+  return `${negative ? '-' : ''}${intPart}.${decPart}`;
 }
 
 export function createLabelTextArray(data: CreateLabelTextData[]): Content[] {

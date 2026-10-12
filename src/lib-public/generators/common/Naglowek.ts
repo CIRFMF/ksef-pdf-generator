@@ -1,5 +1,5 @@
 import { Content, ContentText } from 'pdfmake/interfaces';
-import { formatText, generateLine, getValue } from '../../../shared/PDF-functions';
+import { formatText, generateLine, getStrippedValue, getValue } from '../../../shared/PDF-functions';
 import { TRodzajFaktury } from '../../../shared/consts/FA.const';
 import { Fa as Fa1 } from '../../types/fa1.types';
 import { Fa as Fa2 } from '../../types/fa2.types';
@@ -56,7 +56,7 @@ export function generateNaglowek(
       alignment: Position.RIGHT,
     },
     {
-      ...(formatText(getValue(fa?.P_2), FormatTyp.HeaderPosition) as ContentText),
+      ...(formatText(getStrippedValue(fa?.P_2), FormatTyp.HeaderPosition) as ContentText),
       alignment: Position.RIGHT,
     },
     {
