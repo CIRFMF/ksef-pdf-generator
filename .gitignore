@@ -15,3 +15,5 @@ out
 .idea
 .vscode
 *.swp
+bin/
+test-output/
