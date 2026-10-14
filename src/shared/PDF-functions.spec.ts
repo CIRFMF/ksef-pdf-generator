@@ -1,13 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
-
 import {
   createLabelText,
   formatText,
   generateLine,
   generateQRCode,
   getKraj,
-  getNumber,
-  getNumberRounded,
   getValue,
   hasValue,
   normalizeCurrencySeparator,
@@ -88,17 +85,6 @@ describe('getValue', () => {
     expect(getValue({ _text: 'abc' })).toBe('abc');
     expect(getValue('abc')).toBe('abc');
     expect(getValue(42)).toBe(42);
-  });
-});
-
-describe('getNumber and getNumberRounded', () => {
-  it('parses number from strings or numbers and rounds correctly', () => {
-    expect(getNumber('123.456')).toBeCloseTo(123.456);
-    expect(getNumber(undefined)).toBe(0);
-    expect(getNumber({ _text: '456.789' })).toBeCloseTo(456.789);
-
-    expect(getNumberRounded('123.456')).toBe(123.46);
-    expect(getNumberRounded(123.452)).toBe(123.45);
   });
 });
 

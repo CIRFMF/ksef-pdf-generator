@@ -6,6 +6,7 @@ import {
   generateColumns,
   generateLine,
   getTable,
+  getValue,
   verticalSpacing,
 } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
@@ -32,14 +33,37 @@ export function generatePodmiot2Podmiot2K(podmiot2: Podmiot2, podmiot2K: Podmiot
     firstColumn.push(...generateDaneIdentyfikacyjneTPodmiot2Dto(podmiot2.DaneIdentyfikacyjne));
   }
 
+  firstColumn.push(
+    formatText(i18n.t('invoice.subject2k.contactDetails'), [FormatTyp.Label, FormatTyp.LabelMargin])
+  );
+  if (podmiot2.NrKlienta) {
+    firstColumn.push(createLabelText(i18n.t('invoice.subject2k.clientNumber'), podmiot2.NrKlienta));
+  }
   if (podmiot2.DaneKontaktowe) {
-    firstColumn.push(
-      formatText(i18n.t('invoice.subject2k.contactDetails'), [FormatTyp.Label, FormatTyp.LabelMargin])
-    );
-    if (podmiot2.NrKlienta) {
-      firstColumn.push(createLabelText(i18n.t('invoice.subject2k.clientNumber'), podmiot2.NrKlienta));
-    }
     firstColumn.push(generateDaneKontaktowe(getTable(podmiot2.DaneKontaktowe)));
+  }
+
+  if (podmiot2?.JST) {
+    const jstValue =
+      getValue(podmiot2?.JST)?.toString().trim() === '1' ? 'invoice.subject2.yes' : 'invoice.subject2.no';
+
+    firstColumn.push(
+      createLabelText(i18n.t('invoice.subject2.jst'), i18n.t(jstValue), FormatTyp.Default, { marginTop: 8 })
+    );
+  }
+
+  if (podmiot2?.GV) {
+    const gvValue =
+      getValue(podmiot2?.GV)?.toString().trim() === '1' ? 'invoice.subject2.yes' : 'invoice.subject2.no';
+
+    firstColumn.push(
+      createLabelText(
+        i18n.t('invoice.subject2.gv'),
+        i18n.t(gvValue),
+        FormatTyp.Default,
+        podmiot2?.JST ? {} : { marginTop: 8 }
+      )
+    );
   }
 
   if (firstColumn.length) {

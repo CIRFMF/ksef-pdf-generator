@@ -96,7 +96,7 @@ describe(generateRabat.name, () => {
           format: FormatTyp.Default,
           width: '*',
         }),
-        expect.objectContaining({ name: 'P_8B', title: 'Ilość', format: FormatTyp.Default, width: 'auto' }),
+        expect.objectContaining({ name: 'P_8B', title: 'Ilość', format: FormatTyp.Number, width: 'auto' }),
         expect.objectContaining({ name: 'P_8A', title: 'Miara', format: FormatTyp.Default, width: 'auto' }),
       ]),
       [],

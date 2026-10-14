@@ -1,13 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { generatePodsumowanieStawekPodatkuVat, getSummaryTaxRate } from './PodsumowanieStawekPodatkuVat';
-import {
-  createHeader,
-  createSection,
-  formatText,
-  getNumberRounded,
-  getValue,
-  hasValue,
-} from '../../../shared/PDF-functions';
+import { createHeader, createSection, formatText, hasValue } from '../../../shared/PDF-functions';
 import FormatTyp from '../../../shared/enums/common.enum';
 import type { Fa, Faktura } from '../../types/fa2.types';
 
@@ -15,7 +8,15 @@ vi.mock('../../../shared/PDF-functions', () => ({
   createHeader: vi.fn((text: string) => [{ text }]),
   createSection: vi.fn((content: any[], flag: boolean) => ({ content, flag })),
   formatText: vi.fn((value: any, type: FormatTyp) => ({ value, type })),
-  getNumberRounded: vi.fn((val: any) => Number(val ?? 0)),
+  toBigInt: vi.fn((val: any) => {
+    const raw = val?._text ?? val ?? 0;
+    return BigInt(Math.round(Number(raw) * 100));
+  }),
+  formatBigInt: vi.fn((val: any) => {
+    const raw = val?._text ?? val ?? 0;
+    const num = Number(raw);
+    return (num / 100).toFixed(2);
+  }),
   getValue: vi.fn((val: any) => val?._text ?? val ?? 0),
   hasValue: vi.fn((val: any) => val !== null && val !== undefined && val !== 0),
 }));
@@ -91,7 +92,6 @@ describe(generatePodsumowanieStawekPodatkuVat.name, () => {
 
     getSummaryTaxRate(fa);
     expect(hasValue).toHaveBeenCalled();
-    expect(getNumberRounded).toHaveBeenCalled();
     expect(formatText).not.toHaveBeenCalled();
   });
 

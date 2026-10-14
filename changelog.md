@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.46]
+
+### zaplanowana data wydania [14.10.2026]
+
+- Dodano formatowanie wartosci dla numeru faktury w nagłówku.
+- Zrefaktoryzowano fakaturę korygującą PEF.
+- Ujednolicono separator dzisiętny pola Rabat w korekcie zbiorczej.
+- Dodoane spację w nagłówkach Faktur RR i fakur PEF.
+- Ujednolicono separator dziesiętny pola Kwota podatku w podsumowanie stawek podatku w procedurze OSS.
+- Poprawiono zaokrąglanie kwot.
+
+---
+
 ## [1.1.40]
 
 ### zaplanowana data wydania [18.09.2026]

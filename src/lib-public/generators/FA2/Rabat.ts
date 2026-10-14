@@ -35,7 +35,7 @@ export function generateRabat(invoice: Fa): Content[] {
       format: FormatTyp.Currency,
       width: 'auto',
     },
-    { name: 'P_8B', title: i18n.t('invoice.discount.quantity'), format: FormatTyp.Default, width: 'auto' },
+    { name: 'P_8B', title: i18n.t('invoice.discount.quantity'), format: FormatTyp.Number, width: 'auto' },
     { name: 'P_8A', title: i18n.t('invoice.discount.unit'), format: FormatTyp.Default, width: 'auto' },
     { name: 'P_10', title: i18n.t('invoice.discount.discount'), format: FormatTyp.Currency, width: 'auto' },
     { name: 'P_12', title: i18n.t('invoice.discount.taxRate'), format: FormatTyp.Default, width: 'auto' },

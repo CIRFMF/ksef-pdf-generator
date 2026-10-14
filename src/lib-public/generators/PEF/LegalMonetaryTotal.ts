@@ -31,6 +31,10 @@ export function generateLegalMonetaryTotal(
   if (isPEFCorrective(invoice)) {
     legalMonetaryTotal = getCorrectiveLegalMonetaryTotal(invoice, sectionType);
 
+    if (!Object.keys(legalMonetaryTotal).length) {
+      return [];
+    }
+
     switch (sectionType) {
       case SectionType.BeforeCorrection:
         return setTable(setLegalMonetaryTotal(legalMonetaryTotal), legalMonetaryTotal);
