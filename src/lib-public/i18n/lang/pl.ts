@@ -379,6 +379,8 @@ export const pl = {
       vatGroupMemberRecipient: 'Członek grupy VAT - odbiorca',
     },
   },
+  noData: 'Brak danych',
+  generatorName: ' ksef-pdf-generator',
   invoice: {
     additionalInformation: {
       additionalDescription: 'Dodatkowy opis',
