@@ -20,6 +20,8 @@ import { Position } from '@shared/enums/common.enum';
 import { PEFBasicInvoice } from './types/pef-invoice.types';
 import { SectionType } from '@shared/enums/pef-invoice.enum';
 import { generateInvoiceLine } from './generators/PEF/InvoiceLine';
+import { generateInfo } from '@shared/utils/generate-info';
+import { generateWatermark } from '@shared/consts/watermark';
 
 pdfMake.addVirtualFileSystem(pdfFonts);
 
@@ -43,6 +45,8 @@ export function generateBasicPEF(invoice: PEFBasicInvoice, additionalData: Addit
   );
 
   const docDefinition: TDocumentDefinitions = {
+    info: generateInfo(additionalData?.creator),
+    ...generateWatermark(additionalData?.watermark),
     content: content,
     footer: (currentPage, pageCount) => {
       return {

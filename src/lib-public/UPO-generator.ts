@@ -8,13 +8,21 @@ import { parseXML } from '@shared/XML-parser';
 import { Position } from '@shared/enums/common.enum';
 import i18n from 'i18next';
 import { i18nReady } from './i18n/i18n-init';
+import { AdditionalDataTypes } from './types/common.types';
+import { generateWatermark } from '@shared/consts/watermark';
+import { generateInfo } from '@shared/utils/generate-info';
 
-export async function generatePDFUPO(file: File): Promise<Blob> {
+export async function generatePDFUPO(
+  file: File,
+  additionalData?: Pick<AdditionalDataTypes, 'watermark' | 'creator'>
+): Promise<Blob> {
   const upo = (await parseXML(file)) as Upo;
 
   await i18nReady;
 
   const docDefinition: TDocumentDefinitions = {
+    info: generateInfo(additionalData?.creator),
+    ...generateWatermark(additionalData?.watermark),
     content: [generateNaglowekUPO(upo.Potwierdzenie!), generateDokumentUPO(upo.Potwierdzenie!)],
     ...generateStyle(),
     pageSize: 'A4',

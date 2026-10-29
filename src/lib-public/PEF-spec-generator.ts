@@ -22,6 +22,8 @@ import { PEFSpecInvoice } from './types/pef-invoice-spec.types';
 import { generateReceiverParty } from './generators/PEF/ReceiverParty';
 import { generateAccountReckoning } from './generators/PEF/AccountReckoning';
 import { generateInvoiceLine } from './generators/PEF/InvoiceLine';
+import { generateInfo } from '@shared/utils/generate-info';
+import { generateWatermark } from '@shared/consts/watermark';
 
 pdfMake.addVirtualFileSystem(pdfFonts);
 
@@ -54,6 +56,8 @@ export function generateSpecPEF(invoice: PEFSpecInvoice, additionalData: Additio
   );
 
   const docDefinition: TDocumentDefinitions = {
+    info: generateInfo(additionalData?.creator),
+    ...generateWatermark(additionalData?.watermark),
     content: content,
     footer: (currentPage, pageCount) => {
       return {
