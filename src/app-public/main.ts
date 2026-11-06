@@ -18,6 +18,8 @@ inputInvoice.addEventListener('change', async (): Promise<void> => {
       'https://ksef-test.mf.gov.pl/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
     qr2Code:
       'https://ksef-test.mf.gov.pl/invoice/5265877635/26-10-2025/HS5E1zrA8WVjDNq_xMVIN5SD6nyRymmQ-BcYHReUAa0',
+    creator: 'Aplikacja podatnika KSeF',
+    watermark: 'wersja lokalna',
   };
 
   generateInvoice(file, additionalData, 'blob').then((data: Blob): void => {
@@ -41,7 +43,7 @@ inputUPO.addEventListener('change', async (): Promise<void> => {
   if (!file) {
     return;
   }
-  generatePDFUPO(file).then((blob) => {
+  generatePDFUPO(file, { watermark: 'wersja lokalna' }).then((blob) => {
     const url: string = URL.createObjectURL(blob);
 
     const a: HTMLAnchorElement = document.createElement('a');

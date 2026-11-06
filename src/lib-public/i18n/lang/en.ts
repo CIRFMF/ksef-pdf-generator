@@ -367,6 +367,8 @@ export const en: TranslationKey<typeof pl> = {
       vatGroupMemberRecipient: 'ExampleText',
     },
   },
+  noData: 'ExampleText',
+  generatorName: 'ExampleText',
   invoice: {
     additionalInformation: {
       additionalDescription: 'ExampleText',

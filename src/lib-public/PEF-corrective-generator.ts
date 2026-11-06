@@ -29,6 +29,8 @@ import { generateLegalMonetaryTotal } from './generators/PEF/LegalMonetaryTotal'
 import { generateInvoiceLine } from './generators/PEF/InvoiceLine';
 import { generateAccountReckoning } from './generators/PEF/AccountReckoning';
 import { SectionType } from '@shared/enums/pef-invoice.enum';
+import { generateInfo } from '@shared/utils/generate-info';
+import { generateWatermark } from '@shared/consts/watermark';
 
 pdfMake.addVirtualFileSystem(pdfFonts);
 
@@ -72,6 +74,8 @@ export function generateCorrectivePEF(
     generateFooter(additionalData, invoice!.CustomizationID!) // Elementy struktury
   );
   const docDefinition: TDocumentDefinitions = {
+    info: generateInfo(additionalData?.creator),
+    ...generateWatermark(additionalData?.watermark),
     content: content,
     footer: (currentPage, pageCount) => {
       return {

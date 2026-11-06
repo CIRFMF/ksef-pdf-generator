@@ -4032,6 +4032,8 @@ export interface UBLExtensions {
   UBLExtension?: UBLExtension[];
 }
 
+// TODO: Change this array type to real interfaces like in pef-invoice-cor;
+
 export interface UBLExtension {
   ID?: CustomizationID;
   Name?: AccountingCost;
