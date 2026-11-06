@@ -36,5 +36,7 @@ export async function generatePDFUPO(
     },
   };
 
-  return pdfMake.createPdf(docDefinition).getBlob();
+  return new Promise<Blob>((resolve, reject) => {
+  pdfMake.createPdf(docDefinition).getBlob(resolve);
+});
 }

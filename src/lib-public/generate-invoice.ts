@@ -71,13 +71,17 @@ export async function generateInvoice(
       throw new Error(`Unknown XML Version: ${wersja}`);
   }
 
-  switch (formatType) {
-    case 'blob':
-      return pdf.getBlob();
-    case 'base64':
-    default:
-      return pdf.getBase64();
-  }
+switch (formatType) {
+     case 'blob':
+       return new Promise<Blob>((resolve, reject) => {
+         pdf.getBlob(resolve);
+       });
+     case 'base64':
+     default:
+       return new Promise<string>((resolve, reject) => {
+         pdf.getBase64(resolve);
+       });
+   }
 }
 
 type FormatType = 'blob' | 'base64';
